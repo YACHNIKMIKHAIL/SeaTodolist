@@ -6,7 +6,12 @@ export type TaskType = {
     title: string
     isDone: boolean
 }
-
+export type TodolistType = {
+    id: string
+    title: string
+    filter: FilterType
+}
+export type TasksStateType = { [key: string]: Array<TaskType> }
 type PropsType = {
     title: string
     tasks: Array<TaskType>
@@ -14,6 +19,7 @@ type PropsType = {
     changeFilter: (filter: FilterType) => void
     addTask: (newTitle: string) => void
     filter: FilterType
+    todolistID:string
 }
 
 export function Todolist(props: PropsType) {
