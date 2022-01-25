@@ -4,7 +4,6 @@ import {FilterType, TasksStateType, Todolist, TodolistType} from './Todolist';
 import {v1} from "uuid";
 
 function App() {
-
     const todolist1 = v1()
     const todolist2 = v1()
     const todolist3 = v1()
@@ -70,7 +69,13 @@ function App() {
     const changeTaskStatus = (todolistID: string, id: string, isDone: boolean) => {
         setTasks({...tasks, [todolistID]: tasks[todolistID].map(m => m.id === id ? {...m, isDone} : m)})
     }
+    const removeTodolist = (todolistID: string) => {
+        setTodolists(todolists.filter(f => f.id !== todolistID))
 
+        let tasksCopy = {...tasks}
+        delete tasksCopy[todolistID]
+        setTasks(tasksCopy)
+    }
 
     return (
         <div className="App">
@@ -92,6 +97,7 @@ function App() {
                                  addTask={addTask}
                                  filter={t.filter}
                                  changeTaskStatus={changeTaskStatus}
+                                 removeTodolist={removeTodolist}
                 />
             })}
         </div>
