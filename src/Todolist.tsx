@@ -15,11 +15,12 @@ export type TasksStateType = { [key: string]: Array<TaskType> }
 type PropsType = {
     title: string
     tasks: Array<TaskType>
-    removeTask: (id: string) => void
-    changeFilter: (filter: FilterType) => void
-    addTask: (newTitle: string) => void
+    removeTask: (todolistID: string, id: string) => void
+    changeFilter: (todolistID: string, filter: FilterType) => void
+    addTask: (todolistID: string, newTitle: string) => void
     filter: FilterType
-    todolistID:string
+    todolistID: string
+    changeTaskStatus: (todolistID: string, id: string, isDone: boolean) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -29,7 +30,7 @@ export function Todolist(props: PropsType) {
     const addTaskHandler = () => {
         if (title.trim() !== '') {
             if (title.trim().length < 11) {
-                props.addTask(title.trim())
+                props.addTask(props.todolistID, title.trim())
                 setTitle('')
             } else {
                 setError('Title is too long!')
@@ -47,8 +48,9 @@ export function Todolist(props: PropsType) {
         setTitle(e.currentTarget.value)
         setError('')
     }
-    const removeTaskHandler = (id: string) => props.removeTask(id)
-    const changeTaskFilterHandler = (filterValue: FilterType) => props.changeFilter(filterValue)
+    const removeTaskHandler = (id: string) => props.removeTask(props.todolistID, id)
+    const changeTaskFilterHandler = (filterValue: FilterType) => props.changeFilter(props.todolistID, filterValue)
+    const changeTaskStatusHandler = (id: string, isDone: boolean) => props.changeTaskStatus(props.todolistID, id, isDone)
 
 
     return <div>
@@ -62,7 +64,8 @@ export function Todolist(props: PropsType) {
         <ul>
             {props.tasks.map(m => {
                 return <li key={m.id}>
-                    <input type="checkbox" checked={m.isDone}/>
+                    <input type="checkbox" checked={m.isDone}
+                           onChange={(e) => changeTaskStatusHandler(m.id, e.currentTarget.checked)}/>
                     <span style={m.isDone ? {opacity: '0.4'} : {}}>{m.title}</span>
                     <button onClick={() => removeTaskHandler(m.id)}>x</button>
                 </li>
