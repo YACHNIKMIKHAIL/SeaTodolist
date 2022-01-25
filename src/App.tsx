@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {TaskType, Todolist} from './Todolist';
+import {FilterType, TaskType, Todolist} from './Todolist';
 
 function App() {
     const initialTasks = [
@@ -10,17 +10,31 @@ function App() {
         { id: 4, title: "rest api", isDone: false },
         { id: 5, title: "graphQL", isDone: false },
     ]
-    const [state,setState]=useState<Array<TaskType>>(initialTasks)
+    const [tasks,setTasks]=useState<Array<TaskType>>(initialTasks)
+    const [filter,setFilter]=useState<FilterType>('all')
 
     const removeTask=(id:number)=>{
-        setState(state.filter(f=>f.id!==id))
+        setTasks(tasks.filter(f=>f.id!==id))
+    }
+    let tasksForRender=tasks
+    if(filter==='complited'){
+        tasksForRender=tasks.filter(f=>f.isDone)
+    }
+    if(filter==='active'){
+        tasksForRender=tasks.filter(f=>!f.isDone)
+    }
+
+    const changeFilter=(filter:FilterType)=>{
+        setFilter(filter)
     }
 
     return (
         <div className="App">
             <Todolist title="What to learn"
-                      tasks={state}
-                      removeTask={removeTask}/>
+                      tasks={tasksForRender}
+                      removeTask={removeTask}
+                      changeFilter={changeFilter}
+            />
         </div>
     );
 }
