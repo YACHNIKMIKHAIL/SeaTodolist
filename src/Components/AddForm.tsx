@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, TextField} from "@material-ui/core";
 
 type AddFormPropsType = {
@@ -8,7 +8,7 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string>('')
 
-    const addTaskHandler = useCallback(() => {
+    const addTaskHandler = () => {
         if (title.trim() !== '') {
             if (title.trim().length < 11) {
                 addFn(title.trim())
@@ -19,16 +19,16 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
         } else {
             setError('Invalid title!')
         }
-    }, [addFn, title])
-    const onKeyPressHandler = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    }
+    const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             addTaskHandler()
         }
-    }, [addTaskHandler])
-    const onChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    }
+    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
         setError('')
-    }, [])
+    }
 
     console.log('AddForm called')
     return (
@@ -37,7 +37,7 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
                        value={title} onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
                        helperText={error}/>
-            <Button variant="contained" onClick={addTaskHandler} style={{height: '55px'}}>Add</Button>
+            <Button variant="contained" onClick={addTaskHandler} style={{height: '55px',backgroundColor:'rgba(243,217,212,0.55)'}}>Add</Button>
         </div>
     );
 })

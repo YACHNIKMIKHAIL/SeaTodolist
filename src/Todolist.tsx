@@ -50,9 +50,10 @@ export const Todolist = React.memo(({todolistID}: PropsType) => {
         if (actualTodolist.filter === 'active') {
             tasksForRender = tasks[todolistID].filter(f => !f.isDone)
         }
-        console.log(`Todolist called ${todolistID}`)
+        console.log(`Todolist ${todolistID}`)
         return <div>
-            <h3><EditSpan title={actualTodolist.title} callback={changeTodolistTitle} id={todolistID}/>
+            <h3 style={{display:'flex',justifyContent:'center',alignItems:'center',color:'rgba(11,37,75,0.78)'}}>
+                <EditSpan title={actualTodolist.title} callback={changeTodolistTitle} id={todolistID}/>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>

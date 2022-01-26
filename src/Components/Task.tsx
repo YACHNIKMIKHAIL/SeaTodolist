@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import EditSpan from "./EditSpan";
-import {IconButton} from "@material-ui/core";
+import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Redux/store";
@@ -27,9 +27,21 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         }, [dispatch, todolistID, id])
 
         return (
-            <div>
-                <input type="checkbox" checked={actualTask.isDone}
-                       onChange={(e) => changeTaskStatus(e.currentTarget.checked)}/>
+            <div style={actualTask.isDone
+                ? {
+                    opacity: '0.4',
+                    color: 'rgb(255,225,178)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }
+                : {color: 'rgba(11,37,75,0.78)', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Checkbox
+                    checked={actualTask.isDone}
+                    onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
+                    style={{color: '#09bad0'}}
+                />
+
                 <EditSpan title={actualTask.title} callback={changeTaskTitle} id={actualTask.id}
                           isDone={actualTask.isDone}/>
                 <IconButton aria-label="delete" onClick={removeTask}>
