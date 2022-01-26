@@ -5,7 +5,7 @@ type EditSpanPropsType = {
     title: string
     callback: (id:string,title: string) => void
     id:string
-    isDone:boolean
+    isDone?:boolean
 }
 const EditSpan = (props: EditSpanPropsType) => {
     const [changeMode, setChangeMode] = useState<boolean>(false)
