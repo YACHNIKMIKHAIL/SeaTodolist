@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {TextField} from "@material-ui/core";
 
 type EditSpanPropsType = {
     title: string
@@ -18,8 +19,9 @@ const EditSpan = (props: EditSpanPropsType) => {
     }
 
     return changeMode
-        ? <input value={stateTitle} onChange={(e) => setStateTitle(e.currentTarget.value)}
-                 autoFocus onBlur={desactivate}/>
+        ? <TextField id="outlined-basic" label={props.title} variant="outlined"
+                   value={stateTitle} onChange={(e) => setStateTitle(e.currentTarget.value)}
+                   autoFocus onBlur={desactivate}/>
         : <span onDoubleClick={activate}
                 style={props.isDone ? {opacity: '0.4'} : {}}>{props.title}</span>
 };

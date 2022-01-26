@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
+import {Button, TextField} from "@material-ui/core";
 
 type AddFormPropsType = {
     addFn: (title: string) => void
 }
-const AddForm = (props:AddFormPropsType) => {
+const AddForm = (props: AddFormPropsType) => {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string>('')
     const addTaskHandler = () => {
@@ -29,9 +30,11 @@ const AddForm = (props:AddFormPropsType) => {
     }
     return (
         <div>
-            <input value={title} onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}/>
-            <button onClick={addTaskHandler}>+</button>
+            <TextField id="outlined-basic" label="New challenge:" variant="outlined"
+                       value={title} onChange={onChangeHandler}
+                       onKeyPress={onKeyPressHandler}
+                       helperText={error}/>
+            <Button variant="contained" onClick={addTaskHandler}>Add</Button>
             {error !== '' ? <div style={{color: 'red'}}>{error}</div> : ''}
         </div>
     );

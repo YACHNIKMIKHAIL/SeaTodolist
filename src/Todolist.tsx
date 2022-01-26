@@ -1,6 +1,8 @@
 import React from 'react';
 import AddForm from "./Components/AddForm";
 import EditSpan from "./Components/EditSpan";
+import {Button, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 
 export type FilterType = 'all' | 'complited' | 'active'
 export type TaskType = {
@@ -40,7 +42,9 @@ export function Todolist(props: PropsType) {
 
     return <div>
         <h3>{props.title}
-            <button onClick={removeTodolistHandler}>x</button>
+            <IconButton aria-label="delete" onClick={removeTodolistHandler}>
+                <Delete />
+            </IconButton>
         </h3>
         <AddForm addFn={addTaskHandler}/>
 
@@ -49,22 +53,20 @@ export function Todolist(props: PropsType) {
                 return <li key={m.id}>
                     <input type="checkbox" checked={m.isDone}
                            onChange={(e) => changeTaskStatusHandler(m.id, e.currentTarget.checked)}/>
-                   <EditSpan title={props.title} callback={changeTaskTitleHandler} id={m.id} isDone={m.isDone}/>
-                    <button onClick={() => removeTaskHandler(m.id)}>x</button>
+                   <EditSpan title={m.title} callback={changeTaskTitleHandler} id={m.id} isDone={m.isDone}/>
+                    <IconButton aria-label="delete" onClick={() => removeTaskHandler(m.id)}>
+                        <Delete />
+                    </IconButton>
                 </li>
             })}
         </ul>
         <div>
-            <button style={props.filter === 'all' ? {backgroundColor: 'hotpink', color: 'white'} : {color: 'purple'}}
-                    onClick={() => changeTaskFilterHandler('all')}>All
-            </button>
-            <button style={props.filter === 'active' ? {backgroundColor: 'hotpink', color: 'white'} : {color: 'purple'}}
-                    onClick={() => changeTaskFilterHandler('active')}>Active
-            </button>
-            <button
-                style={props.filter === 'complited' ? {backgroundColor: 'hotpink', color: 'white'} : {color: 'purple'}}
-                onClick={() => changeTaskFilterHandler('complited')}>Complited
-            </button>
+            <Button variant={props.filter === 'all' ?"contained":'outlined'}
+                                onClick={() => changeTaskFilterHandler('all')}>All</Button>
+            <Button variant={props.filter === 'active' ?"contained":'outlined'}
+                                onClick={() => changeTaskFilterHandler('active')}>Active</Button>
+            <Button variant={props.filter === 'complited' ?"contained":'outlined'}
+                            onClick={() => changeTaskFilterHandler('complited')}>Complited</Button>
         </div>
     </div>
 }
