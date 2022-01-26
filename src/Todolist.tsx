@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
+import AddForm from "./Components/AddForm";
 
 export type FilterType = 'all' | 'complited' | 'active'
 export type TaskType = {
@@ -21,34 +22,26 @@ type PropsType = {
     filter: FilterType
     todolistID: string
     changeTaskStatus: (todolistID: string, id: string, isDone: boolean) => void
-    removeTodolist:(todolistID: string)=>void
+    removeTodolist: (todolistID: string) => void
 }
 
 export function Todolist(props: PropsType) {
-    const [title, setTitle] = useState<string>('')
-    const [error, setError] = useState<string>('')
+    // const [title, setTitle] = useState<string>('')
+    // const [error, setError] = useState<string>('')
 
-    const addTaskHandler = () => {
-        if (title.trim() !== '') {
-            if (title.trim().length < 11) {
-                props.addTask(props.todolistID, title.trim())
-                setTitle('')
-            } else {
-                setError('Title is too long!')
-            }
-        } else {
-            setError('Invalid title!')
-        }
+    const addTaskHandler = (title: string) => {
+        props.addTask(props.todolistID, title)
     }
-    const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            addTaskHandler()
-        }
-    }
-    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-        setError('')
-    }
+    // const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    //     if (e.key === 'Enter') {
+    //         addTaskHandler()
+    //     }
+    // }
+    // const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setTitle(e.currentTarget.value)
+    //     setError('')
+    // }
+
     const removeTaskHandler = (id: string) => props.removeTask(props.todolistID, id)
     const changeTaskFilterHandler = (filterValue: FilterType) => props.changeFilter(props.todolistID, filterValue)
     const changeTaskStatusHandler = (id: string, isDone: boolean) => props.changeTaskStatus(props.todolistID, id, isDone)
@@ -56,13 +49,17 @@ export function Todolist(props: PropsType) {
 
 
     return <div>
-        <h3>{props.title} <button onClick={removeTodolistHandler}>x</button> </h3>
-        <div>
-            <input value={title} onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}/>
-            <button onClick={addTaskHandler}>+</button>
-            {error !== '' ? <div style={{color: 'red'}}>{error}</div> : ''}
-        </div>
+        <h3>{props.title}
+            <button onClick={removeTodolistHandler}>x</button>
+        </h3>
+        {/*<div>*/}
+        {/*    <input value={title} onChange={onChangeHandler}*/}
+        {/*           onKeyPress={onKeyPressHandler}/>*/}
+        {/*    <button onClick={addTaskHandler}>+</button>*/}
+        {/*    {error !== '' ? <div style={{color: 'red'}}>{error}</div> : ''}*/}
+        {/*</div>*/}
+        <AddForm addFn={addTaskHandler}/>
+
         <ul>
             {props.tasks.map(m => {
                 return <li key={m.id}>

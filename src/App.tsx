@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {FilterType, TasksStateType, Todolist, TodolistType} from './Todolist';
 import {v1} from "uuid";
+import AddForm from "./Components/AddForm";
 
 function App() {
     const todolist1 = v1()
@@ -76,9 +77,15 @@ function App() {
         delete tasksCopy[todolistID]
         setTasks(tasksCopy)
     }
+    const addTodolist = (newTitle: string) => {
+        const newID = v1()
+        setTodolists([{id: newID, title: newTitle, filter: 'all'}, ...todolists])
+        setTasks({...tasks, [newID]: []})
+    }
 
     return (
         <div className="App">
+            <AddForm addFn={addTodolist}/>
             {todolists.map(t => {
                 let tasksForRender = tasks[t.id]
                 if (t.filter === 'complited') {
