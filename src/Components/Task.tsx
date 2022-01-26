@@ -14,16 +14,17 @@ type TaskPropsType = {
 const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         const actualTask = useSelector<reducerType, TaskType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
+        console.log(`task ${id} called`)
 
         const changeTaskTitle = useCallback((title: string) => {
             dispatch(changeTaskTitleAC(todolistID, id, title))
-        }, [dispatch,todolistID, id])
+        }, [dispatch, todolistID, id])
         const removeTask = useCallback(() => {
             dispatch(removeTaskAC(todolistID, id))
-        }, [dispatch,todolistID, id])
+        }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((isDone: boolean) => {
             dispatch(changeTaskStatusAC(todolistID, id, isDone))
-        }, [dispatch,todolistID, id])
+        }, [dispatch, todolistID, id])
 
         return (
             <div>

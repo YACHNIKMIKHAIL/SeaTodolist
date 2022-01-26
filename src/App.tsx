@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {Todolist, TodolistType} from './Todolist';
 import AddForm from "./Components/AddForm";
@@ -12,9 +12,9 @@ function App() {
     const todolists = useSelector<reducerType, TodolistType[]>(state => state.todolists)
     const dispatch = useDispatch()
 
-    const addTodolist = (newTitle: string) => {
+    const addTodolist =useCallback ((newTitle: string) => {
         dispatch(addTodolistAC(newTitle))
-    }
+    },[dispatch])
 
     return (
         <div className="App">

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {TextField} from "@material-ui/core";
 
 type EditSpanPropsType = {
@@ -7,23 +7,24 @@ type EditSpanPropsType = {
     id: string
     isDone?: boolean
 }
-const EditSpan = (props: EditSpanPropsType) => {
+const EditSpan = React.memo(({title, callback, id, isDone}: EditSpanPropsType) => {
     const [changeMode, setChangeMode] = useState<boolean>(false)
-    const [stateTitle, setStateTitle] = useState(props.title)
-    const activate = () => {
+    const [stateTitle, setStateTitle] = useState(title)
+
+    const activate = useCallback(() => {
         setChangeMode(true)
-    }
-    const desactivate = () => {
+    }, [])
+    const desactivate = useCallback(() => {
         setChangeMode(false)
-        props.callback(props.id, stateTitle)
-    }
+        callback(id, stateTitle)
+    }, [callback, id, stateTitle])
 
     return changeMode
-        ? <TextField id="outlined-basic" label={props.title} variant="outlined"
+        ? <TextField id="outlined-basic" label={title} variant="outlined"
                      value={stateTitle} onChange={(e) => setStateTitle(e.currentTarget.value)}
                      autoFocus onBlur={desactivate}/>
         : <span onDoubleClick={activate}
-                style={props.isDone ? {opacity: '0.4'} : {}}>{props.title}</span>
-};
+                style={isDone ? {opacity: '0.4'} : {}}>{title}</span>
+})
 
 export default EditSpan;

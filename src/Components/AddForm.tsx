@@ -8,7 +8,7 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string>('')
 
-    const addTaskHandler = useCallback (() => {
+    const addTaskHandler = useCallback(() => {
         if (title.trim() !== '') {
             if (title.trim().length < 11) {
                 addFn(title.trim())
@@ -19,16 +19,16 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
         } else {
             setError('Invalid title!')
         }
-    },[addFn,title])
-    const onKeyPressHandler =useCallback ((e: React.KeyboardEvent<HTMLInputElement>) => {
+    }, [addFn, title])
+    const onKeyPressHandler = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             addTaskHandler()
         }
-    },[addTaskHandler])
-    const onChangeHandler =useCallback ((e: React.ChangeEvent<HTMLInputElement>) => {
+    }, [addTaskHandler])
+    const onChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
         setError('')
-    },[])
+    }, [])
 
     console.log('AddForm called')
     return (
