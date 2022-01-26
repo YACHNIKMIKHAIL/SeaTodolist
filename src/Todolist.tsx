@@ -6,6 +6,8 @@ import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Components/Redux/store";
 import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./Components/Redux/TodolistsActions";
+import Task from "./Components/Task";
+import {addTaskAC} from "./Components/Redux/TasksActions";
 
 export type FilterType = 'all' | 'complited' | 'active'
 export type TaskType = {
@@ -20,74 +22,52 @@ export type TodolistType = {
 }
 export type TasksStateType = { [key: string]: Array<TaskType> }
 type PropsType = {
-    // title: string
-    // tasks: Array<TaskType>
-    // removeTask: (todolistID: string, id: string) => void
-    // changeFilter: (todolistID: string, filter: FilterType) => void
-    // addTask: (todolistID: string, newTitle: string) => void
-    // filter: FilterType
     todolistID: string
-    // changeTaskStatus: (todolistID: string, id: string, isDone: boolean) => void
-    // removeTodolist: (todolistID: string) => void
-    // changeTaskTitle: (todolistID: string, id: string, title: string) => void
 }
 
-export function Todolist(props: PropsType) {
+export function Todolist({todolistID}: PropsType) {
     const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
-    const actualTodolist=useSelector<reducerType,TodolistType>(state=>state.todolists.filter(f=>f.id===props.todolistID)[0])
-
-    const addTaskHandler = (title: string) => {
-        props.addTask(props.todolistID, title)
-    }
-    const removeTaskHandler = (id: string) => props.removeTask(props.todolistID, id)
-    // const changeTaskFilterHandler = (filterValue: FilterType) => props.changeFilter(props.todolistID, filterValue)
-    const changeTaskStatusHandler = (id: string, isDone: boolean) => props.changeTaskStatus(props.todolistID, id, isDone)
-    // const removeTodolistHandler = () => props.removeTodolist(props.todolistID)
-    const changeTaskTitleHandler=(id:string,title:string)=>props.changeTaskTitle(props.todolistID,id,title)
-
+    const actualTodolist = useSelector<reducerType, TodolistType>(state => state.todolists.filter(f => f.id === todolistID)[0])
     const dispatch = useDispatch()
-    const changeFilter = ( filter: FilterType) => {
-        dispatch(changeTodolistFilterAC(props.todolistID, filter))
+
+    const changeFilter = (filter: FilterType) => {
+        dispatch(changeTodolistFilterAC(todolistID, filter))
     }
     const removeTodolist = () => {
-        dispatch(removeTodolistAC(props.todolistID))
+        dispatch(removeTodolistAC(todolistID))
     }
-    const changeTodolistTitle = (  title: string) => {
-        dispatch(changeTodolistTitleAC(props.todolistID,  title))
+    const changeTodolistTitle = (title: string) => {
+        dispatch(changeTodolistTitleAC(todolistID, title))
     }
-    let tasksForRender = tasks[props.todolistID]
+    const addTask = (newTitle: string) => {
+        dispatch(addTaskAC(todolistID, newTitle))
+    }
+    let tasksForRender = tasks[todolistID]
     if (actualTodolist.filter === 'complited') {
-        tasksForRender = tasks[props.todolistID].filter(f => f.isDone)
+        tasksForRender = tasks[todolistID].filter(f => f.isDone)
     }
     if (actualTodolist.filter === 'active') {
-        tasksForRender = tasks[props.todolistID].filter(f => !f.isDone)
+        tasksForRender = tasks[todolistID].filter(f => !f.isDone)
     }
     return <div>
-        <h3> <EditSpan title={actualTodolist.title} callback={changeTodolistTitle} id={props.todolistID}/>
+        <h3><EditSpan title={actualTodolist.title} callback={changeTodolistTitle} id={todolistID}/>
             <IconButton aria-label="delete" onClick={removeTodolist}>
-                <Delete />
+                <Delete/>
             </IconButton>
         </h3>
-        <AddForm addFn={addTaskHandler}/>
+        <AddForm addFn={addTask}/>
         <div>
             {tasksForRender.map(m => {
-                return <div key={m.id}>
-                    <input type="checkbox" checked={m.isDone}
-                           onChange={(e) => changeTaskStatusHandler(m.id, e.currentTarget.checked)}/>
-                   <EditSpan title={m.title} callback={changeTaskTitleHandler} id={m.id} isDone={m.isDone}/>
-                    <IconButton aria-label="delete" onClick={() => removeTaskHandler(m.id)}>
-                        <Delete />
-                    </IconButton>
-                </div>
+                return <Task id={m.id} todolistID={todolistID}/>
             })}
         </div>
         <div>
-            <Button variant={actualTodolist.filter === 'all' ?"contained":'outlined'}
-                                onClick={() => changeFilter('all')}>All</Button>
-            <Button variant={actualTodolist.filter === 'active' ?"contained":'outlined'}
-                                onClick={() => changeFilter('active')}>Active</Button>
-            <Button variant={actualTodolist.filter === 'complited' ?"contained":'outlined'}
-                            onClick={() => changeFilter('complited')}>Complited</Button>
+            <Button variant={actualTodolist.filter === 'all' ? "contained" : 'outlined'}
+                    onClick={() => changeFilter('all')}>All</Button>
+            <Button variant={actualTodolist.filter === 'active' ? "contained" : 'outlined'}
+                    onClick={() => changeFilter('active')}>Active</Button>
+            <Button variant={actualTodolist.filter === 'complited' ? "contained" : 'outlined'}
+                    onClick={() => changeFilter('complited')}>Complited</Button>
         </div>
     </div>
 }
