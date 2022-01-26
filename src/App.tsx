@@ -3,6 +3,8 @@ import './App.css';
 import {FilterType, TasksStateType, Todolist, TodolistType} from './Todolist';
 import {v1} from "uuid";
 import AddForm from "./Components/AddForm";
+import {AppBar, Box, Button, Container, Grid, Paper, Toolbar} from "@material-ui/core";
+
 
 function App() {
     const todolist1 = v1()
@@ -88,29 +90,47 @@ function App() {
 
     return (
         <div className="App">
-            <AddForm addFn={addTodolist}/>
-            {todolists.map(t => {
-                let tasksForRender = tasks[t.id]
-                if (t.filter === 'complited') {
-                    tasksForRender = tasks[t.id].filter(f => f.isDone)
-                }
-                if (t.filter === 'active') {
-                    tasksForRender = tasks[t.id].filter(f => !f.isDone)
-                }
+            <Box sx={{flexGrow: 1}}>
+                <AppBar position="static">
+                    <Toolbar>
+                        TODOLIST
+                        <Button color="inherit">Login</Button>
+                    </Toolbar>
+                </AppBar>
+            </Box>
+            <Container fixed>
+                <Grid container style={{padding:'20px'}}>
+                    <AddForm addFn={addTodolist}/>
+                </Grid>
+                <Grid container spacing={5}>
+                    {todolists.map(t => {
+                        let tasksForRender = tasks[t.id]
+                        if (t.filter === 'complited') {
+                            tasksForRender = tasks[t.id].filter(f => f.isDone)
+                        }
+                        if (t.filter === 'active') {
+                            tasksForRender = tasks[t.id].filter(f => !f.isDone)
+                        }
 
-                return <Todolist todolistID={t.id}
-                                 key={t.id}
-                                 title={t.title}
-                                 tasks={tasksForRender}
-                                 removeTask={removeTask}
-                                 changeFilter={changeFilter}
-                                 addTask={addTask}
-                                 filter={t.filter}
-                                 changeTaskStatus={changeTaskStatus}
-                                 removeTodolist={removeTodolist}
-                                 changeTaskTitle={changeTaskTitle}
-                />
-            })}
+                        return <Grid item>
+                            <Paper style={{padding:'10px'}}>
+                            <Todolist todolistID={t.id}
+                                      key={t.id}
+                                      title={t.title}
+                                      tasks={tasksForRender}
+                                      removeTask={removeTask}
+                                      changeFilter={changeFilter}
+                                      addTask={addTask}
+                                      filter={t.filter}
+                                      changeTaskStatus={changeTaskStatus}
+                                      removeTodolist={removeTodolist}
+                                      changeTaskTitle={changeTaskTitle}/>
+                            </Paper>
+                        </Grid>
+
+                    })}
+                </Grid>
+            </Container>
         </div>
     );
 }

@@ -34,8 +34,7 @@ const AddForm = (props: AddFormPropsType) => {
                        value={title} onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
                        helperText={error}/>
-            <Button variant="contained" onClick={addTaskHandler}>Add</Button>
-            {error !== '' ? <div style={{color: 'red'}}>{error}</div> : ''}
+            <Button variant="contained" onClick={addTaskHandler} style={{height: '55px'}}>Add</Button>
         </div>
     );
 };
