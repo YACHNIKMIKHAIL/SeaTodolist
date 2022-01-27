@@ -16,9 +16,9 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         const dispatch = useDispatch()
         console.log(`task ${id} called`)
 
-        const changeTaskTitle = useCallback((title: string) => {
-            dispatch(changeTaskTitleAC(todolistID, id, title))
-        }, [dispatch, todolistID, id])
+        // const changeTaskTitle = useCallback((title: string) => {
+        //     dispatch(changeTaskTitleAC(todolistID, id, title))
+        // }, [dispatch, todolistID, id])
         const removeTask = useCallback(() => {
             dispatch(removeTaskAC(todolistID, id))
         }, [dispatch, todolistID, id])
@@ -42,8 +42,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                     style={{color: '#09bad0'}}
                 />
 
-                <EditSpan title={actualTask.title} callback={changeTaskTitle} id={actualTask.id}
-                          isDone={actualTask.isDone}/>
+                <EditSpan title={actualTask.title} id={actualTask.id}/>
                 <IconButton aria-label="delete" onClick={removeTask}>
                     <Delete/>
                 </IconButton>
