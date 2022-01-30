@@ -12,12 +12,12 @@ const todolist8 = v1()
 const todolist9 = v1()
 
 export const initialTasks: TasksStateType = {
-    // [todolist1]: [{id: v1(), title: "HTML&CSS", isDone: true},
-    //     {id: v1(), title: "JS", isDone: true},
-    //     {id: v1(), title: "ReactJS", isDone: false}],
-    // [todolist2]: [{id: v1(), title: "Book", isDone: false},
-    //     {id: v1(), title: "Milk", isDone: false},
-    //     {id: v1(), title: "Bread", isDone: false}],
+    [todolist1]: [{id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false}],
+    [todolist2]: [{id: v1(), title: "Book", isDone: false},
+        {id: v1(), title: "Milk", isDone: false},
+        {id: v1(), title: "Bread", isDone: false}],
     // [todolist3]: [{id: v1(), title: "Helmet", isDone: true},
     //     {id: v1(), title: "Wheels", isDone: false},
     //     {id: v1(), title: "Crank", isDone: false}],
@@ -41,8 +41,8 @@ export const initialTasks: TasksStateType = {
     //     {id: v1(), title: "Цветы)", isDone: true}]
 }
 export const initialTodolists: TodolistType[] = [
-    // {id: todolist1, title: 'What to learn?', filter: 'all'},
-    // {id: todolist2, title: 'What to buy?', filter: 'all'},
+    {id: todolist1, title: 'What to learn?', filter: 'all'},
+    {id: todolist2, title: 'What to buy?', filter: 'all'},
     // {id: todolist3, title: 'What to fixie?', filter: 'all'},
     // {id: todolist4, title: 'C чего начать?', filter: 'all'},
     // {id: todolist5, title: 'Куда сходить?', filter: 'all'},

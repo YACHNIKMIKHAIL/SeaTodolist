@@ -3,9 +3,8 @@ import AddForm from "./Components/AddForm";
 import EditSpan from "./Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {useDispatch, useSelector} from "react-redux";
-import {reducerType} from "./Components/Redux/store";
-import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./Components/Redux/TodolistsActions";
+import {useDispatch} from "react-redux";
+import {changeTodolistFilterAC, removeTodolistAC} from "./Components/Redux/TodolistsActions";
 import Task from "./Components/Task";
 import {addTaskAC} from "./Components/Redux/TasksActions";
 
@@ -28,21 +27,14 @@ type PropsType = {
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         console.log('todolist')
-        // const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
-        // const actualTodolist = useSelector<reducerType, TodolistType>(state => state.todolists.filter(f => f.id === todolistID)[0])
+
         const dispatch = useDispatch()
-
-        // const changeFilter = useCallback((filter: FilterType) => {
-        //     dispatch(changeTodolistFilterAC(todolist.id, filter))
-        // }, [dispatch, todolist.id])
-
         const changeFilter = (filter: FilterType) => {
             if (filter === todolist.filter) {
                 return
             }
             dispatch(changeTodolistFilterAC(todolist.id, filter))
         }
-
         const removeTodolist = useCallback(() => {
             dispatch(removeTodolistAC(todolist.id))
         }, [dispatch, todolist.id])
@@ -58,8 +50,8 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         if (todolist.filter === 'active') {
             tasksForRender = todoTasks.filter(f => !f.isDone)
         }
-        return <div>
-            <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'rgba(11,37,75,0.78)'}}>
+        return <div style={{color: '#071421'}}>
+            <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <EditSpan title={todolist.title} id={todolist.id}/>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>
@@ -73,10 +65,27 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             </div>
             <div>
                 <Button variant={todolist.filter === 'all' ? "contained" : 'outlined'}
+                        style={todolist.filter === 'all' ? {
+                                backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
+                                fontWeight: 'bold'
+                            } :
+                            {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                         onClick={() => changeFilter('all')}>All</Button>
                 <Button variant={todolist.filter === 'active' ? "contained" : 'outlined'}
+                        style={todolist.filter === 'active' ? {
+                                backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
+                                fontWeight: 'bold'
+                            } :
+                            {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                         onClick={() => changeFilter('active')}>Active</Button>
                 <Button variant={todolist.filter === 'complited' ? "contained" : 'outlined'}
+                        style={todolist.filter === 'complited' ? {
+                                backgroundColor: 'hotpink',
+                                opacity: '0.9',
+                                color: '#071421',
+                                fontWeight: 'bold'
+                            } :
+                            {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                         onClick={() => changeFilter('complited')}>Complited</Button>
             </div>
         </div>

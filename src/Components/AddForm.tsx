@@ -33,11 +33,22 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     console.log(`AddForm ${title}`)
     return (
         <div>
-            <TextField id="outlined-basic" label="New challenge:" variant="outlined"
+            {/*<TextField id="outlined-basic" label="New challenge:" variant="outlined"*/}
+            {/*           value={title} onChange={onChangeHandler}*/}
+            {/*           onKeyPress={onKeyPressHandler}*/}
+            {/*           helperText={error}*/}
+            {/*/>*/}
+            <TextField id="filled-basic" label="New challenge:" variant="filled"
                        value={title} onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
-                       helperText={error}/>
-            <Button variant="contained" onClick={addTaskHandler} style={{height: '55px',backgroundColor:'rgba(243,217,212,0.55)'}}>Add</Button>
+                       helperText={error}
+                       style={!error
+                           ? {backgroundColor: 'white', opacity: '0.6', color: '#F3D9D4'}
+                           : {backgroundColor: 'red', opacity: '0.4', color: 'white'}}
+            />
+
+            <Button variant="contained" onClick={addTaskHandler}
+                    style={{height: '55px', backgroundColor: '#1F4B76',color:'hotpink'}}>Add</Button>
         </div>
     );
 })

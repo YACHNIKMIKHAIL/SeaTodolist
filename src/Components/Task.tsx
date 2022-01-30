@@ -5,7 +5,7 @@ import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Redux/store";
 import {TaskType} from "../Todolist";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./Redux/TasksActions";
+import {changeTaskStatusAC, removeTaskAC} from "./Redux/TasksActions";
 
 type TaskPropsType = {
     id: string
@@ -16,9 +16,6 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         const dispatch = useDispatch()
         console.log(`task ${id} called`)
 
-        // const changeTaskTitle = useCallback((title: string) => {
-        //     dispatch(changeTaskTitleAC(todolistID, id, title))
-        // }, [dispatch, todolistID, id])
         const removeTask = useCallback(() => {
             dispatch(removeTaskAC(todolistID, id))
         }, [dispatch, todolistID, id])
@@ -33,9 +30,15 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                     color: 'rgb(255,225,178)',
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
+                    alignItems: 'center', fontWeight: 'normal'
                 }
-                : {color: 'rgba(11,37,75,0.78)', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                : {
+                    color: 'rgb(11,37,75)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    fontWeight: 'bold'
+                }}>
                 <Checkbox
                     checked={actualTask.isDone}
                     onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
