@@ -26,7 +26,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         return (
             <div style={actualTask.isDone
                 ? {
-                    opacity: '0.4',
+                    opacity: '0.6',
                     color: 'rgb(255,225,178)',
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -42,7 +42,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 <Checkbox
                     checked={actualTask.isDone}
                     onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
-                    style={{color: '#09bad0'}}
+                    style={{color: '#1F4B76'}}
                 />
 
                 <EditSpan title={actualTask.title} id={actualTask.id}/>
