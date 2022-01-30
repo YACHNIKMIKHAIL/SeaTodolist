@@ -48,3 +48,9 @@ export const getTodolistsTC = () => {
             .then(data => dispatch(setTodoFromServAC(data)))
     }
 }
+export const postTodolistsTC = (title:string) => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.postTodolists(title)
+            .then(data => dispatch(addTodolistAC(title)))
+    }
+}

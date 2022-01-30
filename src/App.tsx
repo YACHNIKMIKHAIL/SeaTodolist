@@ -5,7 +5,7 @@ import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Components/Redux/store";
-import {addTodolistAC, getTodolistsTC} from "./Components/Redux/TodolistsActions";
+import {addTodolistAC, getTodolistsTC, postTodolistsTC} from "./Components/Redux/TodolistsActions";
 import img2 from './Components/Images/wallpaperflare.com_wallpaper (1).jpg'
 import {Todolist} from "./Todolist";
 import {TasksStateType} from "./Components/Redux/TaskReducer";
@@ -22,11 +22,12 @@ export const App = () => {
         dispatch(getTodolistsTC())
     }
     useEffect(() => {
+        debugger
         dispatch(getTodolistsTC())
     }, [])
 
     const addTodolist = useCallback((newTitle: string) => {
-        dispatch(addTodolistAC(newTitle))
+        dispatch(postTodolistsTC(newTitle))
     }, [dispatch])
     return (
         <div className="App"
