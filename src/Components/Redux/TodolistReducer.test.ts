@@ -1,7 +1,6 @@
-import {TodolistType} from "../../Todolist";
 import {v1} from "uuid";
 import {
-    todolistReducer
+    todolistReducer, TodolistType
 } from "./TodolistReducer";
 import {addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./TodolistsActions";
 

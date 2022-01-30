@@ -1,12 +1,18 @@
-import {TodolistType} from "../../Todolist";
 import {
     addTodolistACType,
     changeTodolistFilterACType,
     changeTodolistTitleACType,
-    removeTodolistACType,
+    removeTodolistACType, setTodoFromServACType,
     TodolistActions
 } from "./TodolistsActions";
 import {initialTodolists} from "./initailsStates";
+
+export type FilterType = 'all' | 'complited' | 'active'
+export type TodolistType = {
+    id: string
+    title: string
+    filter: FilterType
+}
 
 export const todolistReducer = (state: TodolistType[] = initialTodolists, action: todolistActionsType): TodolistType[] => {
     switch (action.type) {
@@ -22,6 +28,10 @@ export const todolistReducer = (state: TodolistType[] = initialTodolists, action
         case TodolistActions.CHANGE_TODOLIST_FILTER: {
             return state.map(m => m.id === action.todolistId ? {...m, filter: action.filter} : m)
         }
+        case TodolistActions.SET_FROM_SERVER: {
+            debugger
+            return [...state, ...action.data]
+        }
         default:
             return state
     }
@@ -31,3 +41,4 @@ export type todolistActionsType =
     | addTodolistACType
     | changeTodolistTitleACType
     | changeTodolistFilterACType
+    | setTodoFromServACType

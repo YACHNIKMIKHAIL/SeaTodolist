@@ -1,21 +1,29 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {TasksStateType, Todolist, TodolistType} from './Todolist';
 import AddForm from "./Components/AddForm";
 import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Components/Redux/store";
-import {addTodolistAC} from "./Components/Redux/TodolistsActions";
+import {addTodolistAC, getTodolistsTC} from "./Components/Redux/TodolistsActions";
 import img2 from './Components/Images/wallpaperflare.com_wallpaper (1).jpg'
+import {Todolist} from "./Todolist";
+import {TasksStateType} from "./Components/Redux/TaskReducer";
+import {TodolistType} from "./Components/Redux/TodolistReducer";
+import {todolistAPI} from "./Components/Api/SeaApi";
 
 
 export const App = () => {
-
-    console.log('app')
     const todolists = useSelector<reducerType, TodolistType[]>(state => state.todolists)
     const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
+
+    const getFromS = () => {
+        dispatch(getTodolistsTC())
+    }
+    useEffect(() => {
+        dispatch(getTodolistsTC())
+    }, [])
 
     const addTodolist = useCallback((newTitle: string) => {
         dispatch(addTodolistAC(newTitle))
@@ -38,7 +46,7 @@ export const App = () => {
                     <Typography variant="h6">
                         SEA_TODOLIST
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" onClick={getFromS}>Login</Button>
                 </Toolbar>
             </AppBar>
             <Container fixed>
@@ -48,19 +56,23 @@ export const App = () => {
                 <Grid container spacing={5}>
                     {todolists.map((t, i) => {
                         let todoTasks = tasks[t.id]
+                        if (todoTasks === undefined) {
+                            todoTasks = []
+                        }
 
                         return <Grid item key={i}>
                             <div
                                 style={{
                                     padding: '10px',
                                     backgroundColor: '#8AA8D2',
-                                    opacity:'0.75',
+                                    opacity: '0.75',
                                     borderRadius: '10px'
-                                }}
-                            >
-                                <Todolist todolist={t} todoTasks={todoTasks}/>
+                                }}>
+                                <Todolist todolist={t}
+                                          todoTasks={todoTasks}
+                                />
                             </div>
-                        </Grid>
+                        </Grid>;
 
                     })}
                 </Grid>

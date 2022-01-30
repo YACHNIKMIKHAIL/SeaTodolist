@@ -4,8 +4,8 @@ import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Redux/store";
-import {TaskType} from "../Todolist";
 import {changeTaskStatusAC, removeTaskAC} from "./Redux/TasksActions";
+import {TaskType} from "./Redux/TaskReducer";
 
 type TaskPropsType = {
     id: string

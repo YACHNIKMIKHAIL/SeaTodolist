@@ -1,4 +1,3 @@
-import {TasksStateType} from "../../Todolist";
 import {
     addTaskACType,
     changeTaskStatusACType,
@@ -8,6 +7,14 @@ import {
 } from "./TasksActions";
 import {addTodolistACType, removeTodolistACType, TodolistActions} from "./TodolistsActions";
 import {initialTasks} from "./initailsStates";
+
+export type TaskType = {
+    id: string
+    title: string
+    isDone: boolean
+}
+
+export type TasksStateType = { [key: string]: Array<TaskType> }
 
 export const taskReducer = (state: TasksStateType = initialTasks, action: tasksActionsType): TasksStateType => {
     switch (action.type) {

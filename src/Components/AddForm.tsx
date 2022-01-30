@@ -30,7 +30,6 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
         setError('')
     }
 
-    console.log(`AddForm ${title}`)
     return (
         <div>
             {/*<TextField id="outlined-basic" label="New challenge:" variant="outlined"*/}

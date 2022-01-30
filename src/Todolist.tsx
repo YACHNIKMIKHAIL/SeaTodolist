@@ -7,27 +7,16 @@ import {useDispatch} from "react-redux";
 import {changeTodolistFilterAC, removeTodolistAC} from "./Components/Redux/TodolistsActions";
 import Task from "./Components/Task";
 import {addTaskAC} from "./Components/Redux/TasksActions";
+import {FilterType, TodolistType} from "./Components/Redux/TodolistReducer";
+import {TaskType} from "./Components/Redux/TaskReducer";
 
-export type FilterType = 'all' | 'complited' | 'active'
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterType
-}
-export type TasksStateType = { [key: string]: Array<TaskType> }
 type PropsType = {
     todolist: TodolistType
     todoTasks: Array<TaskType>
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
-        console.log('todolist')
-
+    debugger
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
             if (filter === todolist.filter) {
