@@ -51,12 +51,29 @@ export const tasksAPI = {
                 return res.data
             })
     },
-    addTasks(todolistID: string,title:string) {
-        return instance.post(`/todo-lists/${todolistID}/tasks`,{title})
+    addTask(todolistID: string, title: string) {
+        return instance.post(`/todo-lists/${todolistID}/tasks`, {title})
             .then(res => {
                 debugger
                 console.log(res)
                 return res.data
             })
+    },
+    changeTaskTitle(todolistID: string, taskID: string, title: string) {
+        return instance.put(`/todo-lists/${todolistID}/tasks/${taskID}`, {title: title})
+            .then(res => {
+                debugger
+                console.log(res)
+                return res.data
+            })
+    },
+    changeTask(todolistID: string, taskID: string, param: string | boolean) {
+        if (typeof (param) === "boolean")
+            return instance.put(`/todo-lists/${todolistID}/tasks/${taskID}`, {completed: param})
+                .then(res => {
+                    debugger
+                    console.log(res)
+                    return res.data
+                })
     }
 }

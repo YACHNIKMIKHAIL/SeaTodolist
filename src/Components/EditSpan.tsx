@@ -6,8 +6,9 @@ import {useDispatch} from "react-redux";
 type EditSpanPropsType = {
     title: string
     id: string
+    callback:(title:string)=>void
 }
-const EditSpan = React.memo(({title, id}: EditSpanPropsType) => {
+const EditSpan = React.memo(({title, id,callback}: EditSpanPropsType) => {
     const [changeMode, setChangeMode] = useState<boolean>(false)
     const [stateTitle, setStateTitle] = useState(title)
     const dispatch = useDispatch()
@@ -17,7 +18,7 @@ const EditSpan = React.memo(({title, id}: EditSpanPropsType) => {
     }
     const desactivate = () => {
         setChangeMode(false)
-        dispatch(changeTodolistsTC(id, stateTitle))
+        callback(stateTitle)
     }
     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => setStateTitle(e.currentTarget.value)
 

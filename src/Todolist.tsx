@@ -4,9 +4,14 @@ import EditSpan from "./Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
-import {changeTodolistFilterAC, removeTodolistAC, removeTodolistsTC} from "./Components/Redux/TodolistsActions";
+import {
+    changeTodolistFilterAC,
+    changeTodolistsTC,
+    removeTodolistAC,
+    removeTodolistsTC
+} from "./Components/Redux/TodolistsActions";
 import Task from "./Components/Task";
-import {addTaskAC, addTasksTC, getTasksTC} from "./Components/Redux/TasksActions";
+import {addTaskAC, addTaskTC, getTasksTC} from "./Components/Redux/TasksActions";
 import {FilterType, TodolistType} from "./Components/Redux/TodolistReducer";
 import {TaskType} from "./Components/Redux/TaskReducer";
 
@@ -29,8 +34,11 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }, [dispatch, todolist.id])
 
         const addTask = useCallback((newTitle: string) => {
-            dispatch(addTasksTC(todolist.id, newTitle))
+            dispatch(addTaskTC(todolist.id, newTitle))
         }, [dispatch, todolist.id])
+        const changeTodolistTitle = useCallback((newTitle: string) => {
+            dispatch(changeTodolistsTC(todolist.id, newTitle))
+        }, [dispatch])
 
         const getMyTasks = () => {
             dispatch(getTasksTC(todolist.id))
@@ -45,7 +53,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }
         return <div style={{color: '#071421'}} onDoubleClick={getMyTasks}>
             <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <EditSpan title={todolist.title} id={todolist.id}/>
+                <EditSpan title={todolist.title} id={todolist.id} callback={changeTodolistTitle}/>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>

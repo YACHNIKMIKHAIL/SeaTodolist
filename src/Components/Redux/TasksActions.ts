@@ -50,9 +50,15 @@ export const getTasksTC = (todolistID: string) => {
             .then(data => dispatch(setTasksFromServAC(todolistID, data.items)))
     }
 }
-export const addTasksTC = (todolistID: string, title: string) => {
+export const addTaskTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
-        tasksAPI.addTasks(todolistID, title)
+        tasksAPI.addTask(todolistID, title)
             .then(data => dispatch(addTaskAC(todolistID, data.item.title)))
+    }
+}
+export const changeTaskTitleTC = (todolistID: string, taskID:string,title: string) => {
+    return (dispatch: Dispatch) => {
+            tasksAPI.changeTaskTitle(todolistID, taskID, title)
+                .then(data => dispatch(changeTaskTitleAC(todolistID, taskID, data.item.title)))
     }
 }
