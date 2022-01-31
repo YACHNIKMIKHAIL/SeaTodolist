@@ -19,23 +19,23 @@ beforeEach(() => {
     taskID = v1()
 
     startState = {
-        [todolistID1]: [{id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "ReactJS", isDone: false}],
-        [todolistID2]: [{id: v1(), title: "Book", isDone: false},
-            {id: v1(), title: "Milk", isDone: false},
-            {id: v1(), title: "Bread", isDone: false}],
-        [todolistID3]: [{id: v1(), title: "Helmet", isDone: true},
-            {id: taskID, title: "Wheels", isDone: false},
-            {id: v1(), title: "Crank", isDone: false}],
-        [todolistID4]: [{id: v1(), title: "Тудулист", isDone: true},
-            {id: v1(), title: "Нативочка", isDone: false},
-            {id: v1(), title: "Чилл)))", isDone: false}],
+        [todolistID1]: [{id: v1(), title: "HTML&CSS", status: 2},
+            {id: v1(), title: "JS", status: 2},
+            {id: v1(), title: "ReactJS", status: 1}],
+        [todolistID2]: [{id: v1(), title: "Book", status: 1},
+            {id: v1(), title: "Milk", status: 1},
+            {id: v1(), title: "Bread", status: 1}],
+        [todolistID3]: [{id: v1(), title: "Helmet", status: 2},
+            {id: taskID, title: "Wheels", status: 1},
+            {id: v1(), title: "Crank", status: 1}],
+        [todolistID4]: [{id: v1(), title: "Тудулист", status: 2},
+            {id: v1(), title: "Нативочка", status: 1},
+            {id: v1(), title: "Чилл)))", status: 1}],
     }
 })
 
 test('correct todolist should be added', () => {
-    let endState = taskReducer(startState, addTodolistAC('New todolist'))
+    let endState = taskReducer(startState, addTodolistAC({id:'hbdcuhbc',title:'New todolist',filter:'all'}))
 
     expect(endState[todolistID1].length).toBe(3)
 })
@@ -56,15 +56,15 @@ test('correct task should be added', () => {
     expect(endState[todolistID3][0].title).toBe('bla-bla')
 })
 test('correct task status should be changed', () => {
-    let endState = taskReducer(startState, changeTaskStatusAC(todolistID3, taskID, true))
+    let endState = taskReducer(startState, changeTaskStatusAC(todolistID3, taskID, 2))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
     expect(endState[todolistID1].length).toBe(3)
     expect(endState[todolistID3].length).toBe(3)
     expect(endState[todolistID3][1].id).toBe(taskID)
-    expect(endState[todolistID3][1].isDone).toBe(true)
-    expect(endState[todolistID3][2].isDone).toBe(false)
+    expect(endState[todolistID3][1].status).toBe(2)
+    expect(endState[todolistID3][2].status).toBe(1)
 })
 test('correct task title should be changed', () => {
     let endState = taskReducer(startState, changeTaskTitleAC(todolistID3, taskID, 'hcahbdc'))
@@ -75,7 +75,7 @@ test('correct task title should be changed', () => {
     expect(endState[todolistID3].length).toBe(3)
     expect(endState[todolistID3][1].id).toBe(taskID)
     expect(endState[todolistID3][1].title).toBe('hcahbdc')
-    expect(endState[todolistID3][2].isDone).toBe(false)
+    expect(endState[todolistID3][2].status).toBe(1)
 })
 test('correct task should be removed', () => {
     let endState = taskReducer(startState, removeTaskAC(todolistID3, taskID))

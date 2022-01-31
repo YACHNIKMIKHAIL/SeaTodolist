@@ -4,14 +4,9 @@ import EditSpan from "./Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
-import {
-    changeTodolistFilterAC,
-    changeTodolistsTC,
-    removeTodolistAC,
-    removeTodolistsTC
-} from "./Components/Redux/TodolistsActions";
+import {changeTodolistFilterAC, changeTodolistsTC, removeTodolistsTC} from "./Components/Redux/TodolistsActions";
 import Task from "./Components/Task";
-import {addTaskAC, addTaskTC, getTasksTC} from "./Components/Redux/TasksActions";
+import {addTaskTC, getTasksTC} from "./Components/Redux/TasksActions";
 import {FilterType, TodolistType} from "./Components/Redux/TodolistReducer";
 import {TaskType} from "./Components/Redux/TaskReducer";
 
@@ -21,6 +16,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
+    console.log('RENDER!!!')
         debugger
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
@@ -38,7 +34,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }, [dispatch, todolist.id])
         const changeTodolistTitle = useCallback((newTitle: string) => {
             dispatch(changeTodolistsTC(todolist.id, newTitle))
-        }, [dispatch])
+        }, [dispatch,todolist.id])
 
         const getMyTasks = () => {
             dispatch(getTasksTC(todolist.id))

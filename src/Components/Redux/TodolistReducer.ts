@@ -20,7 +20,7 @@ export const todolistReducer = (state: TodolistType[] = initialTodolists, action
             return state.filter(f => f.id !== action.todolistId)
         }
         case TodolistActions.ADD_TODOLIST: {
-            return [{id: action.newID, title: action.newTitle, filter: 'all'}, ...state]
+            return [{id: action.item.id, title: action.item.title, filter: 'all'}, ...state]
         }
         case TodolistActions.CHANGE_TODOLIST_TITLE: {
             return state.map(m => m.id === action.todolistId ? {...m, title: action.newTitle} : m)
@@ -30,7 +30,7 @@ export const todolistReducer = (state: TodolistType[] = initialTodolists, action
         }
         case TodolistActions.SET_FROM_SERVER: {
             debugger
-            return [...action.data]
+            return [...state,...action.data]
         }
         default:
             return state

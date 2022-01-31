@@ -5,12 +5,11 @@ import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from '
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Components/Redux/store";
-import {addTodolistAC, getTodolistsTC, postTodolistsTC} from "./Components/Redux/TodolistsActions";
+import {getTodolistsTC, postTodolistsTC} from "./Components/Redux/TodolistsActions";
 import img2 from './Components/Images/wallpaperflare.com_wallpaper (1).jpg'
 import {Todolist} from "./Todolist";
 import {TasksStateType} from "./Components/Redux/TaskReducer";
 import {TodolistType} from "./Components/Redux/TodolistReducer";
-import {todolistAPI} from "./Components/Api/SeaApi";
 
 
 export const App = () => {
@@ -29,7 +28,7 @@ export const App = () => {
     useEffect(() => {
         debugger
         dispatch(getTodolistsTC())
-    }, [addTodolist])
+    },[dispatch])
 
     return (
         <div className="App"

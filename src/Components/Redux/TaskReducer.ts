@@ -19,7 +19,7 @@ export type TasksStateType = { [key: string]: Array<TaskType> }
 export const taskReducer = (state: TasksStateType = initialTasks, action: tasksActionsType): TasksStateType => {
     switch (action.type) {
         case TodolistActions.ADD_TODOLIST: {
-            return {[action.newID]: [], ...state}
+            return {[action.item.id]: [], ...state}
         }
         case TodolistActions.REMOVE_TODOLIST: {
             let taskCopy = {...state}

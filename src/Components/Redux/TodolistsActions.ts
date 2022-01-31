@@ -1,4 +1,3 @@
-import {v1} from "uuid";
 import {FilterType, TodolistType} from "./TodolistReducer";
 import {Dispatch} from "redux";
 import {todolistAPI} from "../Api/SeaApi";
@@ -18,9 +17,9 @@ export const removeTodolistAC = (todolistId: string) => {
     } as const
 }
 export type addTodolistACType = ReturnType<typeof addTodolistAC>
-export const addTodolistAC = (newTitle: string) => {
+export const addTodolistAC = (item: TodolistType) => {
     return {
-        type: TodolistActions.ADD_TODOLIST, newTitle, newID: v1()
+        type: TodolistActions.ADD_TODOLIST, item
     } as const
 }
 export type changeTodolistTitleACType = ReturnType<typeof changeTodolistTitleAC>
@@ -52,7 +51,7 @@ export const postTodolistsTC = (title:string) => {
     return (dispatch: Dispatch) => {
         debugger
         todolistAPI.postTodolists(title)
-            .then(data => dispatch(addTodolistAC(data.item.title)))
+            .then(data => dispatch(addTodolistAC(data.item)))
     }
 }
 export const removeTodolistsTC = (todolistID:string) => {
