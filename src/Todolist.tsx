@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import AddForm from "./Components/AddForm";
 import EditSpan from "./Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
@@ -16,7 +16,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
-    console.log('RENDER!!!')
+        console.log('RENDER!!!')
         debugger
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
@@ -34,10 +34,16 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }, [dispatch, todolist.id])
         const changeTodolistTitle = useCallback((newTitle: string) => {
             dispatch(changeTodolistsTC(todolist.id, newTitle))
-        }, [dispatch,todolist.id])
+        }, [dispatch, todolist.id])
 
-        const getMyTasks = () => {
-            dispatch(getTasksTC(todolist.id))
+        const [myTasks, setMyTasks] = useState<boolean>(false)
+        const getMyTasks = (myTasks: boolean) => {
+            if (myTasks) {
+                dispatch(getTasksTC(todolist.id))
+                setMyTasks(true)
+            } else {
+                setMyTasks(false)
+            }
         }
 
         let tasksForRender = todoTasks
@@ -47,7 +53,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         if (todolist.filter === 'active') {
             tasksForRender = todoTasks.filter(f => f.status !== 2)
         }
-        return <div style={{color: '#071421'}} onDoubleClick={getMyTasks}>
+        return <div style={{color: '#071421'}} onDoubleClick={() => getMyTasks(!myTasks)}>
             <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <EditSpan title={todolist.title} id={todolist.id} callback={changeTodolistTitle}/>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
@@ -55,11 +61,14 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                 </IconButton>
             </h3>
             <AddForm addFn={addTask}/>
-            <div>
-                {tasksForRender.map((m, i) => {
+
+            {myTasks
+                ? <div>{tasksForRender.map((m, i) => {
                     return <Task key={i} id={m.id} todolistID={todolist.id}/>
-                })}
-            </div>
+                })}</div>
+                : ''}
+
+
             <div>
                 <Button variant={todolist.filter === 'all' ? "contained" : 'outlined'}
                         style={todolist.filter === 'all' ? {
