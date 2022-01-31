@@ -6,7 +6,7 @@ import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
 import {changeTodolistFilterAC, removeTodolistAC, removeTodolistsTC} from "./Components/Redux/TodolistsActions";
 import Task from "./Components/Task";
-import {addTaskAC} from "./Components/Redux/TasksActions";
+import {addTaskAC, getTasksTC} from "./Components/Redux/TasksActions";
 import {FilterType, TodolistType} from "./Components/Redux/TodolistReducer";
 import {TaskType} from "./Components/Redux/TaskReducer";
 
@@ -16,7 +16,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
-    debugger
+        debugger
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
             if (filter === todolist.filter) {
@@ -32,6 +32,10 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             dispatch(addTaskAC(todolist.id, newTitle))
         }, [dispatch, todolist.id])
 
+        const getMyTasks = () => {
+            dispatch(getTasksTC(todolist.id))
+        }
+
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
             tasksForRender = todoTasks.filter(f => f.isDone)
@@ -39,7 +43,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         if (todolist.filter === 'active') {
             tasksForRender = todoTasks.filter(f => !f.isDone)
         }
-        return <div style={{color: '#071421'}}>
+        return <div style={{color: '#071421'}} onDoubleClick={getMyTasks}>
             <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <EditSpan title={todolist.title} id={todolist.id}/>
                 <IconButton aria-label="delete" onClick={removeTodolist}>

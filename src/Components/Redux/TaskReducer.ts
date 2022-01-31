@@ -2,7 +2,7 @@ import {
     addTaskACType,
     changeTaskStatusACType,
     changeTaskTitleACType,
-    removeTaskACType,
+    removeTaskACType, setTasksFromServACType,
     tasksActions
 } from "./TasksActions";
 import {addTodolistACType, removeTodolistACType, TodolistActions} from "./TodolistsActions";
@@ -60,6 +60,11 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: tasksA
                 [action.todolistId]: state[action.todolistId].filter(f => f.id !== action.id)
             }
         }
+        case tasksActions.SET_TASKS_FROM_SERVER: {
+            return {
+                ...state, [action.todolistID]: [...action.data]
+            }
+        }
         default:
             return state
     }
@@ -71,3 +76,4 @@ export type tasksActionsType =
     | changeTaskStatusACType
     | changeTaskTitleACType
     | removeTaskACType
+    | setTasksFromServACType
