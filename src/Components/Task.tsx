@@ -4,7 +4,13 @@ import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Redux/store";
-import {changeTaskStatusAC, changeTaskStatusTC, changeTaskTitleTC, removeTaskAC} from "./Redux/TasksActions";
+import {
+    changeTaskStatusAC,
+    changeTaskStatusTC,
+    changeTaskTitleTC,
+    removeTaskAC,
+    removeTaskTC
+} from "./Redux/TasksActions";
 import {TaskType} from "./Redux/TaskReducer";
 
 type TaskPropsType = {
@@ -17,7 +23,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         console.log(`task ${id} called`)
 
         const removeTask = useCallback(() => {
-            dispatch(removeTaskAC(todolistID, id))
+            dispatch(removeTaskTC(todolistID, id))
         }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((isDone: boolean, title: string) => {
             let status = isDone ? 2 : 1

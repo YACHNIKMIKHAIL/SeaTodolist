@@ -69,3 +69,10 @@ export const changeTaskStatusTC = (todolistID: string, taskID:string, status: nu
             .then(() => dispatch(changeTaskStatusAC(todolistID, taskID, status)))
     }
 }
+export const removeTaskTC = (todolistID: string, taskID:string) => {
+    return (dispatch: Dispatch) => {
+        debugger
+        tasksAPI.removeTask(todolistID, taskID)
+            .then((data) => dispatch(removeTaskAC(todolistID, taskID)))
+    }
+}

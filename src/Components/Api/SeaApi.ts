@@ -74,5 +74,13 @@ export const tasksAPI = {
                 console.log(res)
                 return res.data
             })
+    },
+    removeTask(todolistID: string, taskID: string) {
+        return instance.delete(`/todo-lists/${todolistID}/tasks/${taskID}`)
+            .then(res => {
+                debugger
+                console.log(res)
+                return res.data
+            })
     }
 }
