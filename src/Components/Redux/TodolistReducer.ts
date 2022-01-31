@@ -30,7 +30,7 @@ export const todolistReducer = (state: TodolistType[] = initialTodolists, action
         }
         case TodolistActions.SET_FROM_SERVER: {
             debugger
-            return [...state, ...action.data]
+            return [...action.data]
         }
         default:
             return state

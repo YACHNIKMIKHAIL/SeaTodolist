@@ -21,14 +21,16 @@ export const App = () => {
     const getFromS = () => {
         dispatch(getTodolistsTC())
     }
+    const addTodolist = useCallback((newTitle: string) => {
+        debugger
+        dispatch(postTodolistsTC(newTitle))
+    }, [dispatch])
+
     useEffect(() => {
         debugger
         dispatch(getTodolistsTC())
-    }, [])
+    }, [addTodolist])
 
-    const addTodolist = useCallback((newTitle: string) => {
-        dispatch(postTodolistsTC(newTitle))
-    }, [dispatch])
     return (
         <div className="App"
              style={{

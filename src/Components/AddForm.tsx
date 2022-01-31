@@ -10,7 +10,7 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
 
     const addTaskHandler = () => {
         if (title.trim() !== '') {
-            if (title.trim().length < 11) {
+            if (title.trim().length < 20) {
                 addFn(title.trim())
                 setTitle('')
             } else {

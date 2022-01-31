@@ -50,7 +50,15 @@ export const getTodolistsTC = () => {
 }
 export const postTodolistsTC = (title:string) => {
     return (dispatch: Dispatch) => {
+        debugger
         todolistAPI.postTodolists(title)
-            .then(data => dispatch(addTodolistAC(title)))
+            .then(data => dispatch(addTodolistAC(data.item.title)))
+    }
+}
+export const removeTodolistsTC = (todolistID:string) => {
+    return (dispatch: Dispatch) => {
+        debugger
+        todolistAPI.deleteTodolists(todolistID)
+            .then(data => dispatch(removeTodolistAC(data.item.id)))
     }
 }
