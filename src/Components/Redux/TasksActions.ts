@@ -20,9 +20,9 @@ export const addTaskAC = (todolistId: string, newTitle: string) => {
     } as const
 }
 export type changeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
-export const changeTaskStatusAC = (todolistId: string, id: string, isDone: boolean) => {
+export const changeTaskStatusAC = (todolistId: string, id: string, status: number) => {
     return {
-        type: tasksActions.CHANGE_TASK_STATUS, id, isDone, todolistId
+        type: tasksActions.CHANGE_TASK_STATUS, id, status, todolistId
     } as const
 }
 export type changeTaskTitleACType = ReturnType<typeof changeTaskTitleAC>
@@ -60,5 +60,12 @@ export const changeTaskTitleTC = (todolistID: string, taskID:string,title: strin
     return (dispatch: Dispatch) => {
             tasksAPI.changeTaskTitle(todolistID, taskID, title)
                 .then(data => dispatch(changeTaskTitleAC(todolistID, taskID, data.item.title)))
+    }
+}
+export const changeTaskStatusTC = (todolistID: string, taskID:string, status: number, title: string) => {
+    return (dispatch: Dispatch) => {
+        debugger
+        tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
+            .then(() => dispatch(changeTaskStatusAC(todolistID, taskID, status)))
     }
 }

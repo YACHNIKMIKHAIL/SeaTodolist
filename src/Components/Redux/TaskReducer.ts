@@ -11,7 +11,7 @@ import {initialTasks} from "./initailsStates";
 export type TaskType = {
     id: string
     title: string
-    isDone: boolean
+    status: number
 }
 
 export type TasksStateType = { [key: string]: Array<TaskType> }
@@ -32,7 +32,7 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: tasksA
                 [action.todolistId]: [{
                     id: action.newID,
                     title: action.newTitle,
-                    isDone: false
+                    status: 0
                 }, ...state[action.todolistId]]
             }
         }
@@ -41,7 +41,7 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: tasksA
                 ...state,
                 [action.todolistId]: state[action.todolistId].map(m => m.id === action.id ? {
                     ...m,
-                    isDone: action.isDone
+                    status: action.status
                 } : m)
             }
         }

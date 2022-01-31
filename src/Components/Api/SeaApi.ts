@@ -60,20 +60,19 @@ export const tasksAPI = {
             })
     },
     changeTaskTitle(todolistID: string, taskID: string, title: string) {
-        return instance.put(`/todo-lists/${todolistID}/tasks/${taskID}`, {title: title})
+        return instance.put(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
             .then(res => {
                 debugger
                 console.log(res)
                 return res.data
             })
     },
-    changeTask(todolistID: string, taskID: string, param: string | boolean) {
-        if (typeof (param) === "boolean")
-            return instance.put(`/todo-lists/${todolistID}/tasks/${taskID}`, {completed: param})
-                .then(res => {
-                    debugger
-                    console.log(res)
-                    return res.data
-                })
+    changeTaskStatus(todolistID: string, taskID: string, status: number, title: string) {
+        return instance.put(`/todo-lists/${todolistID}/tasks/${taskID}`, {status, title})
+            .then(res => {
+                debugger
+                console.log(res)
+                return res.data
+            })
     }
 }

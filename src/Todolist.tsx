@@ -46,10 +46,10 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
-            tasksForRender = todoTasks.filter(f => f.isDone)
+            tasksForRender = todoTasks.filter(f => f.status === 2)
         }
         if (todolist.filter === 'active') {
-            tasksForRender = todoTasks.filter(f => !f.isDone)
+            tasksForRender = todoTasks.filter(f => f.status !== 2)
         }
         return <div style={{color: '#071421'}} onDoubleClick={getMyTasks}>
             <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
