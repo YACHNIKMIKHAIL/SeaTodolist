@@ -6,7 +6,7 @@ import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
 import {changeTodolistFilterAC, removeTodolistAC, removeTodolistsTC} from "./Components/Redux/TodolistsActions";
 import Task from "./Components/Task";
-import {addTaskAC, getTasksTC} from "./Components/Redux/TasksActions";
+import {addTaskAC, addTasksTC, getTasksTC} from "./Components/Redux/TasksActions";
 import {FilterType, TodolistType} from "./Components/Redux/TodolistReducer";
 import {TaskType} from "./Components/Redux/TaskReducer";
 
@@ -29,7 +29,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }, [dispatch, todolist.id])
 
         const addTask = useCallback((newTitle: string) => {
-            dispatch(addTaskAC(todolist.id, newTitle))
+            dispatch(addTasksTC(todolist.id, newTitle))
         }, [dispatch, todolist.id])
 
         const getMyTasks = () => {

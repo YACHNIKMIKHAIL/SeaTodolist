@@ -50,5 +50,13 @@ export const tasksAPI = {
                 console.log(res)
                 return res.data
             })
+    },
+    addTasks(todolistID: string,title:string) {
+        return instance.post(`/todo-lists/${todolistID}/tasks`,{title})
+            .then(res => {
+                debugger
+                console.log(res)
+                return res.data
+            })
     }
 }

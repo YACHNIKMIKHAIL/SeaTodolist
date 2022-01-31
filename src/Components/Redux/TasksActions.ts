@@ -10,7 +10,7 @@ export enum tasksActions {
     CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS',
     CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE',
     REMOVE_TASK = 'REMOVE_TASK',
-    SET_TASKS_FROM_SERVER='SET_TASKS_FROM_SERVER'
+    SET_TASKS_FROM_SERVER = 'SET_TASKS_FROM_SERVER'
 }
 
 export type addTaskACType = ReturnType<typeof addTaskAC>
@@ -39,14 +39,20 @@ export const removeTaskAC = (todolistId: string, id: string) => {
 }
 
 export type setTasksFromServACType = ReturnType<typeof setTasksFromServAC>
-export const setTasksFromServAC = (todolistID: string,data:Array<TaskType>) => {
+export const setTasksFromServAC = (todolistID: string, data: Array<TaskType>) => {
     return {
-        type: tasksActions.SET_TASKS_FROM_SERVER,todolistID, data
+        type: tasksActions.SET_TASKS_FROM_SERVER, todolistID, data
     } as const
 };
 export const getTasksTC = (todolistID: string) => {
     return (dispatch: Dispatch) => {
         tasksAPI.getTasks(todolistID)
-            .then(data => dispatch(setTasksFromServAC(todolistID,data)))
+            .then(data => dispatch(setTasksFromServAC(todolistID, data.items)))
+    }
+}
+export const addTasksTC = (todolistID: string, title: string) => {
+    return (dispatch: Dispatch) => {
+        tasksAPI.addTasks(todolistID, title)
+            .then(data => dispatch(addTaskAC(todolistID, data.item.title)))
     }
 }
