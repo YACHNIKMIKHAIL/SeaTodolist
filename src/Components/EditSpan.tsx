@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useCallback, useState} from 'react';
 import {TextField} from "@material-ui/core";
-import {changeTodolistTitleAC} from "./Redux/TodolistsActions";
+import {changeTodolistsTC, changeTodolistTitleAC} from "./Redux/TodolistsActions";
 import {useDispatch} from "react-redux";
 
 type EditSpanPropsType = {
@@ -17,7 +17,7 @@ const EditSpan = React.memo(({title, id}: EditSpanPropsType) => {
     }
     const desactivate = () => {
         setChangeMode(false)
-        dispatch(changeTodolistTitleAC(id, stateTitle))
+        dispatch(changeTodolistsTC(id, stateTitle))
     }
     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => setStateTitle(e.currentTarget.value)
 
