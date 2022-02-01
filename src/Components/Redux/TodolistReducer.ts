@@ -6,6 +6,7 @@ import {
     TodolistActions
 } from "./TodolistsActions";
 import {initialTodolists} from "./initailsStates";
+import {ApiTodolistType} from "../Api/SeaApi";
 
 export type FilterType = 'all' | 'complited' | 'active'
 export type TodolistType = {
@@ -13,6 +14,10 @@ export type TodolistType = {
     title: string
     filter: FilterType
 }
+export type SeaType = ApiTodolistType & {
+    filter: FilterType
+}
+
 
 export const todolistReducer = (state: TodolistType[] = initialTodolists, action: todolistActionsType): TodolistType[] => {
     switch (action.type) {
@@ -30,7 +35,7 @@ export const todolistReducer = (state: TodolistType[] = initialTodolists, action
         }
         case TodolistActions.SET_FROM_SERVER: {
             debugger
-            return [...state,...action.data]
+            return [...state, ...action.data]
         }
         default:
             return state

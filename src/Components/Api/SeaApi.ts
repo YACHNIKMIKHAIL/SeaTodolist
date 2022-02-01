@@ -21,11 +21,11 @@ export type RemoveAndChangeTodolistType = {
     fieldsErrors: string[]
     resultCode: number
 }
-export type SeaResponseType<D>={
+export type SeaResponseType<D> = {
     messages: string[]
     fieldsErrors: string[]
     resultCode: number
-    data:D
+    data: D
 }
 
 const instance = axios.create({

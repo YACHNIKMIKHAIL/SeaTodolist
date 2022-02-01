@@ -1,6 +1,6 @@
 import {FilterType, TodolistType} from "./TodolistReducer";
 import {Dispatch} from "redux";
-import {todolistAPI} from "../Api/SeaApi";
+import {ApiTodolistType, todolistAPI} from "../Api/SeaApi";
 
 export enum TodolistActions {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
