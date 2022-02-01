@@ -1,19 +1,17 @@
-import React, {ChangeEvent, useCallback, useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {TextField} from "@material-ui/core";
-import {changeTodolistsTC, changeTodolistTitleAC} from "./Redux/TodolistsActions";
-import {useDispatch} from "react-redux";
 
 type EditSpanPropsType = {
     title: string
-    id: string
     callback:(title:string)=>void
 }
-const EditSpan = React.memo(({title, id,callback}: EditSpanPropsType) => {
+const EditSpan = React.memo(({title,callback}: EditSpanPropsType) => {
     const [changeMode, setChangeMode] = useState<boolean>(false)
     const [stateTitle, setStateTitle] = useState(title)
-    const dispatch = useDispatch()
+
     console.log(`EditSpan ${title}`)
     const activate = () => {
+        debugger
         setChangeMode(true)
     }
     const desactivate = () => {

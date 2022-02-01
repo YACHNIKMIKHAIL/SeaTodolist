@@ -2,6 +2,8 @@ import {v1} from "uuid";
 import {addTodolistAC, removeTodolistAC} from "./TodolistsActions";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./TasksActions";
 import {taskReducer, TasksStateType} from "./TaskReducer";
+import {ItemType} from "../Api/SeaApi";
+import {SeaTodolistsType} from "./TodolistReducer";
 
 let todolistID1: string
 let todolistID2: string
@@ -9,7 +11,7 @@ let todolistID3: string
 let todolistID4: string
 let taskID: string
 
-let startState: TasksStateType = {};
+let startState = {} as TasksStateType;
 
 beforeEach(() => {
     todolistID1 = v1()
@@ -18,7 +20,7 @@ beforeEach(() => {
     todolistID4 = v1()
     taskID = v1()
 
-    startState = {
+    startState= {
         [todolistID1]: [{id: v1(), title: "HTML&CSS", status: 2},
             {id: v1(), title: "JS", status: 2},
             {id: v1(), title: "ReactJS", status: 1}],
@@ -31,11 +33,11 @@ beforeEach(() => {
         [todolistID4]: [{id: v1(), title: "Тудулист", status: 2},
             {id: v1(), title: "Нативочка", status: 1},
             {id: v1(), title: "Чилл)))", status: 1}],
-    }
+    } as TasksStateType
 })
 
 test('correct todolist should be added', () => {
-    let endState = taskReducer(startState, addTodolistAC({id:'hbdcuhbc',title:'New todolist',filter:'all'}))
+    let endState = taskReducer(startState, addTodolistAC({id:'hbdcuhbc',title:'New todolist',filter:'all'}as SeaTodolistsType))
 
     expect(endState[todolistID1].length).toBe(3)
 })
@@ -47,7 +49,7 @@ test('correct todolist should be removed', () => {
     expect(endState[todolistID1].length).toBe(3)
 })
 test('correct task should be added', () => {
-    let endState = taskReducer(startState, addTaskAC(todolistID3, 'bla-bla'))
+    let endState = taskReducer(startState, addTaskAC(todolistID3, {id: v1(), title: 'bla-bla', status: 1} as ItemType))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)

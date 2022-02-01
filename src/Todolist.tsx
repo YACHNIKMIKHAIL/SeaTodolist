@@ -29,22 +29,23 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             dispatch(removeTodolistsTC(todolist.id))
         }, [dispatch, todolist.id])
 
-        const addTask = useCallback((newTitle: string) => {
-            dispatch(addTaskTC(todolist.id, newTitle))
-        }, [dispatch, todolist.id])
-        const changeTodolistTitle = useCallback((newTitle: string) => {
-            dispatch(changeTodolistsTC(todolist.id, newTitle))
-        }, [dispatch, todolist.id])
-
         const [myTasks, setMyTasks] = useState<boolean>(false)
-        const getMyTasks = (myTasks: boolean) => {
+        const getMyTasks = useCallback ((myTasks: boolean) => {
             if (myTasks) {
                 dispatch(getTasksTC(todolist.id))
                 setMyTasks(true)
             } else {
                 setMyTasks(false)
             }
-        }
+        },[dispatch, todolist.id])
+        const addTask = useCallback((newTitle: string) => {
+            dispatch(addTaskTC(todolist.id, newTitle))
+            getMyTasks(true)
+        }, [dispatch, todolist.id, getMyTasks])
+        const changeTodolistTitle = useCallback((newTitle: string) => {
+            dispatch(changeTodolistsTC(todolist.id, newTitle))
+        }, [dispatch, todolist.id])
+
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
@@ -53,8 +54,9 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         if (todolist.filter === 'active') {
             tasksForRender = todoTasks.filter(f => f.status !== 2)
         }
-        return <div style={{color: '#071421'}} onDoubleClick={() => getMyTasks(!myTasks)}>
-            <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        return <div style={{color: '#071421'}}>
+            <h3 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Button onClick={() => getMyTasks(!myTasks)} color="secondary">Tasks</Button>
                 <EditSpan title={todolist.title} id={todolist.id} callback={changeTodolistTitle}/>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>

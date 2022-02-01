@@ -1,4 +1,4 @@
-import {FilterType, SeaTodolistsType} from "./TodolistReducer";
+import {FilterType} from "./TodolistReducer";
 import {Dispatch} from "redux";
 import {ApiTodolistType, todolistAPI} from "../Api/SeaApi";
 
@@ -53,7 +53,6 @@ export const postTodolistsTC = (title: string) => {
         debugger
         todolistAPI.postTodolists(title)
             .then(data => {
-                console.log(data)
                 const {item} = data.data;
                 dispatch(addTodolistAC(item))
             })
@@ -64,13 +63,15 @@ export const removeTodolistsTC = (todolistID: string) => {
     return (dispatch: Dispatch) => {
         debugger
         todolistAPI.deleteTodolists(todolistID)
-            .then(data => dispatch(removeTodolistAC(data.item.id)))
+            .then(() => dispatch(removeTodolistAC(todolistID)))
+            .catch(err => console.log('err: ' + err))
     }
 }
 export const changeTodolistsTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
         debugger
         todolistAPI.changeTodolists(todolistID, title)
-            .then(data => dispatch(changeTodolistTitleAC(data.item.id, data.item.title)))
+            .then(() => dispatch(changeTodolistTitleAC(todolistID,title)))
+            .catch(err => console.log('err: ' + err))
     }
 }

@@ -7,6 +7,7 @@ import {
 } from "./TasksActions";
 import {addTodolistACType, removeTodolistACType, TodolistActions} from "./TodolistsActions";
 import {initialTasks} from "./initailsStates";
+import {ItemType} from "../Api/SeaApi";
 
 export type TaskType = {
     id: string
@@ -14,7 +15,7 @@ export type TaskType = {
     status: number
 }
 
-export type TasksStateType = { [key: string]: Array<TaskType> }
+export type TasksStateType = { [key: string]: Array<ItemType> }
 
 export const taskReducer = (state: TasksStateType = initialTasks, action: tasksActionsType): TasksStateType => {
     switch (action.type) {
@@ -29,11 +30,7 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: tasksA
         case tasksActions.ADD_TASK: {
             return {
                 ...state,
-                [action.todolistId]: [{
-                    id: action.newID,
-                    title: action.newTitle,
-                    status: 0
-                }, ...state[action.todolistId]]
+                [action.todolistID]: [action.item, ...state[action.todolistID]]
             }
         }
         case tasksActions.CHANGE_TASK_STATUS: {
@@ -63,7 +60,7 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: tasksA
         case tasksActions.SET_TASKS_FROM_SERVER: {
             debugger
             return {
-                ...state, [action.todolistID]: [...action.data]
+                ...state,[action.todolistID]:action.data
             }
         }
         default:

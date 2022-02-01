@@ -1,7 +1,5 @@
 import {v1} from "uuid";
-import {
-    todolistReducer, TodolistType
-} from "./TodolistReducer";
+import {SeaTodolistsType, todolistReducer} from "./TodolistReducer";
 import {addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./TodolistsActions";
 
 let todolistID1: string
@@ -9,7 +7,7 @@ let todolistID2: string
 let todolistID3: string
 let todolistID4: string
 
-let startState: TodolistType[] = []
+let startState: SeaTodolistsType[] = []
 
 beforeEach(() => {
     todolistID1 = v1()
@@ -22,7 +20,7 @@ beforeEach(() => {
         {id: todolistID2, title: 'What to buy?', filter: 'all'},
         {id: todolistID3, title: 'What to fixie?', filter: 'all'},
         {id: todolistID4, title: 'C чего начать?', filter: 'all'}
-    ]
+    ] as SeaTodolistsType[]
 })
 
 test('correct todolist should be removed', () => {
@@ -33,7 +31,12 @@ test('correct todolist should be removed', () => {
     expect(endState[0].title).toBe('What to buy?')
 })
 test('correct todolist should be added', () => {
-    let endState = todolistReducer(startState, addTodolistAC({id: 'hbdcuhbc', title: 'New todolist', filter: 'all'}))
+
+    let endState = todolistReducer(startState, addTodolistAC({
+        id: 'hbdcuhbc',
+        title: 'New todolist',
+        filter: 'all'
+    } as SeaTodolistsType))
 
     expect(startState.length).toBe(4)
     expect(endState.length).toBe(5)

@@ -1,9 +1,5 @@
-import {v1} from "uuid";
-import {TodolistType} from "./TodolistReducer";
-import {setTodoFromServAC, TodolistActions} from "./TodolistsActions";
-import {TaskType} from "./TaskReducer";
 import {Dispatch} from "redux";
-import {tasksAPI, todolistAPI} from "../Api/SeaApi";
+import {ItemType, tasksAPI} from "../Api/SeaApi";
 
 export enum tasksActions {
     ADD_TASK = 'ADD_TASK',
@@ -14,9 +10,9 @@ export enum tasksActions {
 }
 
 export type addTaskACType = ReturnType<typeof addTaskAC>
-export const addTaskAC = (todolistId: string, newTitle: string) => {
+export const addTaskAC = (todolistID: string, item: ItemType) => {
     return {
-        type: tasksActions.ADD_TASK, newTitle, newID: v1(), todolistId
+        type: tasksActions.ADD_TASK, todolistID, item
     } as const
 }
 export type changeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
@@ -39,7 +35,7 @@ export const removeTaskAC = (todolistId: string, id: string) => {
 }
 
 export type setTasksFromServACType = ReturnType<typeof setTasksFromServAC>
-export const setTasksFromServAC = (todolistID: string, data: Array<TaskType>) => {
+export const setTasksFromServAC = (todolistID: string, data: Array<ItemType>) => {
     return {
         type: tasksActions.SET_TASKS_FROM_SERVER, todolistID, data
     } as const
@@ -53,26 +49,30 @@ export const getTasksTC = (todolistID: string) => {
 export const addTaskTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
         tasksAPI.addTask(todolistID, title)
-            .then(data => dispatch(addTaskAC(todolistID, data.item.title)))
+            .then(data => {
+                console.log(data.data.item)
+                dispatch(addTaskAC(todolistID, data.data.item))
+                // dispatch(setTasksFromServAC(todolistID, data.items))
+            })
     }
 }
-export const changeTaskTitleTC = (todolistID: string, taskID:string,title: string) => {
+export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string) => {
     return (dispatch: Dispatch) => {
-            tasksAPI.changeTaskTitle(todolistID, taskID, title)
-                .then(data => dispatch(changeTaskTitleAC(todolistID, taskID, data.item.title)))
+        tasksAPI.changeTaskTitle(todolistID, taskID, title)
+            .then(item => dispatch(changeTaskTitleAC(todolistID, taskID, item.title)))
     }
 }
-export const changeTaskStatusTC = (todolistID: string, taskID:string, status: number, title: string) => {
+export const changeTaskStatusTC = (todolistID: string, taskID: string, status: number, title: string) => {
     return (dispatch: Dispatch) => {
         debugger
         tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
             .then(() => dispatch(changeTaskStatusAC(todolistID, taskID, status)))
     }
 }
-export const removeTaskTC = (todolistID: string, taskID:string) => {
+export const removeTaskTC = (todolistID: string, taskID: string) => {
     return (dispatch: Dispatch) => {
         debugger
         tasksAPI.removeTask(todolistID, taskID)
-            .then((data) => dispatch(removeTaskAC(todolistID, taskID)))
+            .then(() => dispatch(removeTaskAC(todolistID, taskID)))
     }
 }

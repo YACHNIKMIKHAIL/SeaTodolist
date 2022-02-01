@@ -1,5 +1,4 @@
 import axios from "axios";
-import {FilterType, SeaTodolistsType} from "../Redux/TodolistReducer";
 
 export type ApiTodolistType = {
     id: string
@@ -20,12 +19,7 @@ export type PostTodolistType = {
     fieldsErrors: [],
     resultCode: number
 }
-export type RemoveAndChangeTodolistType = {
-    data: {},
-    messages: string[]
-    fieldsErrors: string[]
-    resultCode: number
-}
+
 export type SeaResponseType<D> = {
     data: D
     messages: string[]
@@ -56,18 +50,18 @@ export const todolistAPI = {
                 debugger
                 return res.data
             })
-            // .catch(err => console.log('err: ' + err))
+        // .catch(err => console.log('err: ' + err))
     },
     deleteTodolists(todolistID: string) {
-        return instance.delete(`/todo-lists/${todolistID}`)
+        return instance.delete<SeaResponseType<{}>>(`/todo-lists/${todolistID}`)
             .then(res => {
                 debugger
                 return res.data
             })
-            .catch(err => console.log('err: ' + err))
+        // .catch(err => console.log('err: ' + err))
     },
     changeTodolists(todolistID: string, title: string) {
-        return instance.put(`/todo-lists/${todolistID}`, {title})
+        return instance.put<SeaResponseType<{}>>(`/todo-lists/${todolistID}`, {title})
             .then(res => {
                 debugger
                 return res.data
@@ -75,9 +69,36 @@ export const todolistAPI = {
             .catch(err => console.log('err: ' + err))
     }
 }
+export type ItemType = {
+    id: string,
+    title: string,
+    description: null,
+    todoListId: string,
+    order: number,
+    status: number,
+    priority: number,
+    startDate: null,
+    deadline: null,
+    addedDate: string
+}
+export type ApiTaskType = {
+    items: Array<ItemType>
+    totalCount: number
+    error: null
+}
+export type postTaskType = {
+    data: {
+        item: ItemType
+        messages: []
+        fieldsErrors: []
+        resultCode: number
+    }
+}
+
+
 export const tasksAPI = {
     getTasks(todolistID: string) {
-        return instance.get(`/todo-lists/${todolistID}/tasks`)
+        return instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
             .then(res => {
                 debugger
                 console.log(res)
@@ -85,7 +106,7 @@ export const tasksAPI = {
             })
     },
     addTask(todolistID: string, title: string) {
-        return instance.post(`/todo-lists/${todolistID}/tasks`, {title})
+        return instance.post<postTaskType>(`/todo-lists/${todolistID}/tasks`, {title})
             .then(res => {
                 debugger
                 console.log(res)
@@ -97,7 +118,7 @@ export const tasksAPI = {
             .then(res => {
                 debugger
                 console.log(res)
-                return res.data
+                return res.data.data.item
             })
     },
     changeTaskStatus(todolistID: string, taskID: string, status: number, title: string) {
