@@ -22,10 +22,10 @@ export type RemoveAndChangeTodolistType = {
     resultCode: number
 }
 export type SeaResponseType<D> = {
+    data: D
     messages: string[]
     fieldsErrors: string[]
     resultCode: number
-    data: D
 }
 
 const instance = axios.create({
@@ -43,7 +43,7 @@ export const todolistAPI = {
                 debugger
                 return res.data
             })
-            // .catch(err => console.log('err: ' + err))
+        // .catch(err => console.log('err: ' + err))
     },
     postTodolists(title: string) {
         return instance.post(`/todo-lists`, {title})
