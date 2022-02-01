@@ -50,7 +50,6 @@ export const getTodolistsTC = () => {
 }
 export const postTodolistsTC = (title: string) => {
     return (dispatch: Dispatch) => {
-        debugger
         todolistAPI.postTodolists(title)
             .then(data => {
                 const {item} = data.data;
@@ -61,7 +60,6 @@ export const postTodolistsTC = (title: string) => {
 }
 export const removeTodolistsTC = (todolistID: string) => {
     return (dispatch: Dispatch) => {
-        debugger
         todolistAPI.deleteTodolists(todolistID)
             .then(() => dispatch(removeTodolistAC(todolistID)))
             .catch(err => console.log('err: ' + err))
@@ -69,7 +67,6 @@ export const removeTodolistsTC = (todolistID: string) => {
 }
 export const changeTodolistsTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
-        debugger
         todolistAPI.changeTodolists(todolistID, title)
             .then(() => dispatch(changeTodolistTitleAC(todolistID,title)))
             .catch(err => console.log('err: ' + err))

@@ -20,7 +20,7 @@ export type SeaTodolistsType = ApiTodolistType & {
 
 
 export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, action: todolistActionsType): SeaTodolistsType[] => {
-    debugger
+
     switch (action.type) {
         case TodolistActions.REMOVE_TODOLIST: {
             return state.filter(f => f.id !== action.todolistId)
@@ -35,7 +35,6 @@ export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, ac
             return state.map(m => m.id === action.todolistId ? {...m, filter: action.filter} : m)
         }
         case TodolistActions.SET_FROM_SERVER: {
-            debugger
             return action.data.map(m=>({...m,filter: 'all'}))
         }
         default:

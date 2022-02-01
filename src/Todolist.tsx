@@ -16,8 +16,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
-        console.log('RENDER!!!')
-        debugger
+
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
             if (filter === todolist.filter) {
@@ -30,14 +29,14 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }, [dispatch, todolist.id])
 
         const [myTasks, setMyTasks] = useState<boolean>(false)
-        const getMyTasks = useCallback ((myTasks: boolean) => {
+        const getMyTasks = useCallback((myTasks: boolean) => {
             if (myTasks) {
                 dispatch(getTasksTC(todolist.id))
                 setMyTasks(true)
             } else {
                 setMyTasks(false)
             }
-        },[dispatch, todolist.id])
+        }, [dispatch, todolist.id])
         const addTask = useCallback((newTitle: string) => {
             dispatch(addTaskTC(todolist.id, newTitle))
             getMyTasks(true)
@@ -55,9 +54,10 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             tasksForRender = todoTasks.filter(f => f.status !== 2)
         }
         return <div style={{color: '#071421'}}>
-            <h3 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Button onClick={() => getMyTasks(!myTasks)} color="secondary">Tasks</Button>
-                <EditSpan title={todolist.title} id={todolist.id} callback={changeTodolistTitle}/>
+            <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+                onClick={() => getMyTasks(!myTasks)}>
+                {/*<Button color="secondary">Tasks</Button>*/}
+                <EditSpan title={todolist.title} callback={changeTodolistTitle}/>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>

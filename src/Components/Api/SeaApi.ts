@@ -39,7 +39,6 @@ export const todolistAPI = {
     getTodolists() {
         return instance.get<Array<ApiTodolistType>>(`/todo-lists`)
             .then(res => {
-                debugger
                 return res.data
             })
         // .catch(err => console.log('err: ' + err))
@@ -47,7 +46,6 @@ export const todolistAPI = {
     postTodolists(title: string) {
         return instance.post<PostTodolistType>(`/todo-lists`, {title})
             .then(res => {
-                debugger
                 return res.data
             })
         // .catch(err => console.log('err: ' + err))
@@ -55,7 +53,6 @@ export const todolistAPI = {
     deleteTodolists(todolistID: string) {
         return instance.delete<SeaResponseType<{}>>(`/todo-lists/${todolistID}`)
             .then(res => {
-                debugger
                 return res.data
             })
         // .catch(err => console.log('err: ' + err))
@@ -63,7 +60,6 @@ export const todolistAPI = {
     changeTodolists(todolistID: string, title: string) {
         return instance.put<SeaResponseType<{}>>(`/todo-lists/${todolistID}`, {title})
             .then(res => {
-                debugger
                 return res.data
             })
             .catch(err => console.log('err: ' + err))
@@ -84,15 +80,13 @@ export type ItemType = {
 export type ApiTaskType = {
     items: Array<ItemType>
     totalCount: number
-    error: null
+    error: string | null
 }
-export type postTaskType = {
-    data: {
-        item: ItemType
-        messages: []
-        fieldsErrors: []
-        resultCode: number
-    }
+export type responseTaskType<D> = {
+    data: D,
+    messages: string[],
+    fieldsErrors: string[],
+    resultCode: number
 }
 
 
@@ -100,39 +94,40 @@ export const tasksAPI = {
     getTasks(todolistID: string) {
         return instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
             .then(res => {
-                debugger
                 console.log(res)
                 return res.data
             })
     },
     addTask(todolistID: string, title: string) {
-        return instance.post<postTaskType>(`/todo-lists/${todolistID}/tasks`, {title})
+        return instance.post<responseTaskType<{
+            item: ItemType
+        }>>(`/todo-lists/${todolistID}/tasks`, {title})
             .then(res => {
-                debugger
                 console.log(res)
                 return res.data
             })
     },
     changeTaskTitle(todolistID: string, taskID: string, title: string) {
-        return instance.put(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
+        return instance.put<responseTaskType<{
+            item: ItemType
+        }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
             .then(res => {
-                debugger
                 console.log(res)
                 return res.data.data.item
             })
     },
     changeTaskStatus(todolistID: string, taskID: string, status: number, title: string) {
-        return instance.put(`/todo-lists/${todolistID}/tasks/${taskID}`, {status, title})
+        return instance.put<responseTaskType<{
+            item: ItemType
+        }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {status, title})
             .then(res => {
-                debugger
                 console.log(res)
                 return res.data
             })
     },
     removeTask(todolistID: string, taskID: string) {
-        return instance.delete(`/todo-lists/${todolistID}/tasks/${taskID}`)
+        return instance.delete<responseTaskType<{}>>(`/todo-lists/${todolistID}/tasks/${taskID}`)
             .then(res => {
-                debugger
                 console.log(res)
                 return res.data
             })

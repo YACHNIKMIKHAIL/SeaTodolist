@@ -58,7 +58,6 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: tasksA
             }
         }
         case tasksActions.SET_TASKS_FROM_SERVER: {
-            debugger
             return {
                 ...state,[action.todolistID]:action.data
             }

@@ -44,6 +44,7 @@ export const getTasksTC = (todolistID: string) => {
     return (dispatch: Dispatch) => {
         tasksAPI.getTasks(todolistID)
             .then(data => dispatch(setTasksFromServAC(todolistID, data.items)))
+            .catch(err => console.log('err: ' + err))
     }
 }
 export const addTaskTC = (todolistID: string, title: string) => {
@@ -51,28 +52,31 @@ export const addTaskTC = (todolistID: string, title: string) => {
         tasksAPI.addTask(todolistID, title)
             .then(data => {
                 console.log(data.data.item)
-                dispatch(addTaskAC(todolistID, data.data.item))
+                const {item} = data.data;
+                dispatch(addTaskAC(todolistID, item))
                 // dispatch(setTasksFromServAC(todolistID, data.items))
             })
+            .catch(err => console.log('err: ' + err))
     }
 }
 export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string) => {
     return (dispatch: Dispatch) => {
         tasksAPI.changeTaskTitle(todolistID, taskID, title)
             .then(item => dispatch(changeTaskTitleAC(todolistID, taskID, item.title)))
+            .catch(err => console.log('err: ' + err))
     }
 }
 export const changeTaskStatusTC = (todolistID: string, taskID: string, status: number, title: string) => {
     return (dispatch: Dispatch) => {
-        debugger
         tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
             .then(() => dispatch(changeTaskStatusAC(todolistID, taskID, status)))
+            .catch(err => console.log('err: ' + err))
     }
 }
 export const removeTaskTC = (todolistID: string, taskID: string) => {
     return (dispatch: Dispatch) => {
-        debugger
         tasksAPI.removeTask(todolistID, taskID)
             .then(() => dispatch(removeTaskAC(todolistID, taskID)))
+            .catch(err => console.log('err: ' + err))
     }
 }

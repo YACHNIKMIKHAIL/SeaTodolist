@@ -9,7 +9,7 @@ import {getTodolistsTC, postTodolistsTC} from "./Components/Redux/TodolistsActio
 import img2 from './Components/Images/wallpaperflare.com_wallpaper (1).jpg'
 import {Todolist} from "./Todolist";
 import {TasksStateType} from "./Components/Redux/TaskReducer";
-import {SeaTodolistsType, TodolistType} from "./Components/Redux/TodolistReducer";
+import {SeaTodolistsType} from "./Components/Redux/TodolistReducer";
 
 
 export const App = () => {
@@ -21,14 +21,12 @@ export const App = () => {
         dispatch(getTodolistsTC())
     }
     const addTodolist = useCallback((newTitle: string) => {
-        debugger
         dispatch(postTodolistsTC(newTitle))
     }, [dispatch])
 
     useEffect(() => {
-        debugger
         dispatch(getTodolistsTC())
-    },[])
+    },[dispatch])
 
     return (
         <div className="App"
