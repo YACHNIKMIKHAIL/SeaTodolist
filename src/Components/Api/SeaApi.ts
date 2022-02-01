@@ -1,4 +1,32 @@
 import axios from "axios";
+import {FilterType} from "../Redux/TodolistReducer";
+
+export type ApiTodolistType = {
+    id: string
+    title: string
+    addedDate: string
+    order: number
+}
+export type PostTodolistType = {
+    data: {
+        item: ApiTodolistType
+    },
+    messages: string[]
+    fieldsErrors: string[]
+    resultCode: number
+}
+export type RemoveAndChangeTodolistType = {
+    data: {},
+    messages: string[]
+    fieldsErrors: string[]
+    resultCode: number
+}
+export type SeaResponseType<D>={
+    messages: string[]
+    fieldsErrors: string[]
+    resultCode: number
+    data:D
+}
 
 const instance = axios.create({
     withCredentials: true,
