@@ -1,4 +1,4 @@
-import {FilterType, TodolistType} from "./TodolistReducer";
+import {FilterType, SeaTodolistsType, TodolistType} from "./TodolistReducer";
 import {Dispatch} from "redux";
 import {ApiTodolistType, todolistAPI} from "../Api/SeaApi";
 
@@ -17,7 +17,7 @@ export const removeTodolistAC = (todolistId: string) => {
     } as const
 }
 export type addTodolistACType = ReturnType<typeof addTodolistAC>
-export const addTodolistAC = (item: TodolistType) => {
+export const addTodolistAC = (item: SeaTodolistsType) => {
     return {
         type: TodolistActions.ADD_TODOLIST, item
     } as const
@@ -35,7 +35,7 @@ export const changeTodolistFilterAC = (todolistId: string, filter: FilterType) =
     } as const
 };
 export type setTodoFromServACType = ReturnType<typeof setTodoFromServAC>
-export const setTodoFromServAC = (data:Array<TodolistType>) => {
+export const setTodoFromServAC = (data: ApiTodolistType[]) => {
     return {
         type: TodolistActions.SET_FROM_SERVER, data
     } as const
@@ -45,16 +45,20 @@ export const getTodolistsTC = () => {
     return (dispatch: Dispatch) => {
         todolistAPI.getTodolists()
             .then(data => dispatch(setTodoFromServAC(data)))
+            .catch(err => console.log('err: ' + err))
     }
 }
-export const postTodolistsTC = (title:string) => {
+export const postTodolistsTC = (title: string) => {
     return (dispatch: Dispatch) => {
         debugger
         todolistAPI.postTodolists(title)
-            .then(data => dispatch(addTodolistAC(data.item)))
+            .then(data => {
+                // console.log(data.data.item)
+                dispatch(addTodolistAC(data.data.item))
+            })
     }
 }
-export const removeTodolistsTC = (todolistID:string) => {
+export const removeTodolistsTC = (todolistID: string) => {
     return (dispatch: Dispatch) => {
         debugger
         todolistAPI.deleteTodolists(todolistID)
@@ -64,7 +68,7 @@ export const removeTodolistsTC = (todolistID:string) => {
 export const changeTodolistsTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
         debugger
-        todolistAPI.changeTodolists(todolistID,title)
-            .then(data => dispatch(changeTodolistTitleAC(data.item.id,data.item.title)))
+        todolistAPI.changeTodolists(todolistID, title)
+            .then(data => dispatch(changeTodolistTitleAC(data.item.id, data.item.title)))
     }
 }

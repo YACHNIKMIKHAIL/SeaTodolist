@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {TasksStateType} from "./TaskReducer";
-import {TodolistType} from "./TodolistReducer";
+import {SeaTodolistsType, TodolistType} from "./TodolistReducer";
 
 
 const todolist1 = v1()
@@ -42,7 +42,7 @@ export const initialTasks: TasksStateType = {
     //     {id: v1(), title: "Цветы", isDone: false},
     //     {id: v1(), title: "Цветы)", isDone: true}]
 }
-export const initialTodolists: TodolistType[] = [
+export const initialTodolists: SeaTodolistsType[] = [
     // {id: todolist2, title: 'What to buy?', filter: 'all'},
     // {id: todolist3, title: 'What to fixie?', filter: 'all'},
     // {id: todolist4, title: 'C чего начать?', filter: 'all'},

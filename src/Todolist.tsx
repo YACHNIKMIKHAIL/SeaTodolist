@@ -76,7 +76,8 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                                 fontWeight: 'bold'
                             } :
                             {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
-                        onClick={() => changeFilter('all')}>All</Button>
+                        onClick={() => changeFilter('all')}
+                        defaultChecked>All</Button>
                 <Button variant={todolist.filter === 'active' ? "contained" : 'outlined'}
                         style={todolist.filter === 'active' ? {
                                 backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',

@@ -9,11 +9,11 @@ import {getTodolistsTC, postTodolistsTC} from "./Components/Redux/TodolistsActio
 import img2 from './Components/Images/wallpaperflare.com_wallpaper (1).jpg'
 import {Todolist} from "./Todolist";
 import {TasksStateType} from "./Components/Redux/TaskReducer";
-import {TodolistType} from "./Components/Redux/TodolistReducer";
+import {SeaTodolistsType, TodolistType} from "./Components/Redux/TodolistReducer";
 
 
 export const App = () => {
-    const todolists = useSelector<reducerType, TodolistType[]>(state => state.todolists)
+    const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
     const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
@@ -28,7 +28,7 @@ export const App = () => {
     useEffect(() => {
         debugger
         dispatch(getTodolistsTC())
-    },[dispatch])
+    },[])
 
     return (
         <div className="App"

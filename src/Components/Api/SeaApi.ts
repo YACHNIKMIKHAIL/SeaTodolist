@@ -1,5 +1,5 @@
 import axios from "axios";
-import {FilterType} from "../Redux/TodolistReducer";
+import {FilterType, SeaTodolistsType} from "../Redux/TodolistReducer";
 
 export type ApiTodolistType = {
     id: string
@@ -38,12 +38,12 @@ const instance = axios.create({
 
 export const todolistAPI = {
     getTodolists() {
-        return instance.get(`/todo-lists`)
+        return instance.get<Array<ApiTodolistType>>(`/todo-lists`)
             .then(res => {
                 debugger
                 return res.data
             })
-            .catch(err => console.log('err: ' + err))
+            // .catch(err => console.log('err: ' + err))
     },
     postTodolists(title: string) {
         return instance.post(`/todo-lists`, {title})
