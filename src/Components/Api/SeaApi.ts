@@ -9,10 +9,15 @@ export type ApiTodolistType = {
 }
 export type PostTodolistType = {
     data: {
-        item: ApiTodolistType
+        item: {
+            id: string,
+            title: string,
+            addedDate: string,
+            order: number
+        }
     },
-    messages: string[]
-    fieldsErrors: string[]
+    messages: [],
+    fieldsErrors: [],
     resultCode: number
 }
 export type RemoveAndChangeTodolistType = {
@@ -46,12 +51,12 @@ export const todolistAPI = {
         // .catch(err => console.log('err: ' + err))
     },
     postTodolists(title: string) {
-        return instance.post(`/todo-lists`, {title})
+        return instance.post<PostTodolistType>(`/todo-lists`, {title})
             .then(res => {
                 debugger
                 return res.data
             })
-            .catch(err => console.log('err: ' + err))
+            // .catch(err => console.log('err: ' + err))
     },
     deleteTodolists(todolistID: string) {
         return instance.delete(`/todo-lists/${todolistID}`)
