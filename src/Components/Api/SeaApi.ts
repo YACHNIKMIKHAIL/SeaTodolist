@@ -73,12 +73,13 @@ export enum TaskStatuses {
     Complited = 2,
     Draft = 3
 }
+
 export enum TaskPriorities {
     Low = 0,
     Middle = 1,
     High = 2,
     Urgently = 3,
-    Later=4
+    Later = 4
 }
 
 export type ItemType = {
@@ -100,12 +101,15 @@ export type ApiTaskType = {
 }
 
 export const tasksAPI = {
-    getTasks(todolistID: string) {
-        return instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
-            .then(res => {
-                console.log(res)
-                return res.data
-            })
+    // getTasks(todolistID: string) {
+    //     return instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
+    //         .then(res => {
+    //             console.log(res)
+    //             return res.data
+    //         })
+    async getTasks(todolistID: string) {
+            let res = await instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
+            return res.data
     },
     addTask(todolistID: string, title: string) {
         return instance.post<SeaResponseType<{

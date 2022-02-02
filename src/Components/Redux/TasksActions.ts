@@ -40,13 +40,26 @@ export const setTasksFromServAC = (todolistID: string, data: Array<ItemType>) =>
         type: tasksActions.SET_TASKS_FROM_SERVER, todolistID, data
     } as const
 };
-export const getTasksTC = (todolistID: string) => {
-    return (dispatch: Dispatch) => {
-        tasksAPI.getTasks(todolistID)
-            .then(data => dispatch(setTasksFromServAC(todolistID, data.items)))
-            .catch(err => console.log('err: ' + err))
+// export const getTasksTC = (todolistID: string) => {
+//     return (dispatch: Dispatch) => {
+//         tasksAPI.getTasks(todolistID)
+//             .then(data => {
+//                 console.log(data)
+//                 dispatch(setTasksFromServAC(todolistID, data.items))
+//             })
+//             .catch(err => console.log('err: ' + err))
+//     }
+// }
+
+export const getTasksTC = (todolistID: string) => async (dispatch: Dispatch) => {
+    try {
+        let res = await tasksAPI.getTasks(todolistID)
+        dispatch(setTasksFromServAC(todolistID, res.items))
+    } catch (e) {
+        console.log(e)
     }
 }
+
 export const addTaskTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
         tasksAPI.addTask(todolistID, title)
