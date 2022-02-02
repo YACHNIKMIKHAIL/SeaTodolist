@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Redux/store";
 import {changeTaskStatusTC, changeTaskTitleTC, removeTaskTC} from "./Redux/TasksActions";
 import {ItemType, TaskStatuses} from "./Api/SeaApi";
+import styled from "styled-components";
 
 
 type TaskPropsType = {
@@ -28,21 +29,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         }, [dispatch, todolistID, actualTask.id])
 
         return (
-            <div style={actualTask.status === TaskStatuses.Complited
-                ? {
-                    opacity: '0.6',
-                    color: 'rgb(255,225,178)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center', fontWeight: 'normal'
-                }
-                : {
-                    color: 'rgb(11,37,75)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    fontWeight: 'bold'
-                }}>
+            <TaskCase props={actualTask.status === TaskStatuses.Complited}>
                 <Checkbox
                     checked={actualTask.status === TaskStatuses.Complited}
                     onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
@@ -53,8 +40,31 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 <IconButton aria-label="delete" onClick={removeTask}>
                     <Delete/>
                 </IconButton>
-            </div>
+            </TaskCase>
         );
     }
 )
 export default Task;
+
+export const TaskCase = styled.div<{ props: boolean }>`
+  ${props => {
+    if (props) {
+      return `
+        opacity: 0.6;
+        color: rgb(255,225,178);
+        display: flex;
+        justify-content:space-between;
+        align-items: center;
+        font-weight: normal;
+    `
+    } else if (!props) {
+      return `
+        color: rgb(11,37,75);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+    `
+    }
+  }}
+`

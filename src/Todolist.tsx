@@ -58,7 +58,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         return <MainCase>
             <HCase onClick={() => getMyTasks(!myTasks)}>
                 {/*<Button color="secondary">Tasks</Button>*/}
-                <EditSpan title={todolist.title} callback={changeTodolistTitle}/>
+                <h3><EditSpan title={todolist.title} callback={changeTodolistTitle}/></h3>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>
@@ -81,6 +81,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                             {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                         onClick={() => changeFilter('all')}
                         defaultChecked>All</Button>
+
                 <Button variant={todolist.filter === 'active' ? "contained" : 'outlined'}
                         style={todolist.filter === 'active' ? {
                                 backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
@@ -88,6 +89,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                             } :
                             {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                         onClick={() => changeFilter('active')}>Active</Button>
+
                 <Button variant={todolist.filter === 'complited' ? "contained" : 'outlined'}
                         style={todolist.filter === 'complited' ? {
                                 backgroundColor: 'hotpink',
@@ -97,6 +99,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                             } :
                             {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                         onClick={() => changeFilter('complited')}>Complited</Button>
+
             </div>
         </MainCase>
     }
@@ -107,10 +110,11 @@ export const MainCase = styled.div`
 export const HCase = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center
+  align-items: center;
 `
-export const AppBarCase = styled.div`
-  opacity: 0.65;
-  background-color: #071421;
-  color: #F3D9D4
+export const ButtonCase = styled.div<{ backgroundColor: string, opacity: string, color: string }>`
+  opacity: ${props => props.opacity};
+  background-color: ${props => props.backgroundColor};
+  color: ${props => props.color};
+  font-weight: bold;
 `
