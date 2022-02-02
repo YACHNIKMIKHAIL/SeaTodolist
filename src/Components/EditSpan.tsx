@@ -10,7 +10,6 @@ const EditSpan = React.memo(({title,callback}: EditSpanPropsType) => {
     const [stateTitle, setStateTitle] = useState(title)
 
     const activate = () => {
-        debugger
         setChangeMode(true)
     }
     const desactivate = () => {

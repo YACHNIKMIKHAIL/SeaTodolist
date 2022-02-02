@@ -29,7 +29,26 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         }, [dispatch, todolistID, actualTask.id])
 
         return (
-            <TaskCase props={actualTask.status === TaskStatuses.Complited}>
+            <div
+                // props={actualTask.status === TaskStatuses.Complited}
+                      style={actualTask.status === TaskStatuses.Complited
+                          ? {
+                              opacity: '0.8',
+                              color: 'rgb(255,225,178)',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              fontWeight: 'normal',
+                          }
+                          : {
+                              opacity: '1',
+                              color: 'rgb(11,37,75)',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              fontWeight: 'bold'
+                          }}
+            >
                 <Checkbox
                     checked={actualTask.status === TaskStatuses.Complited}
                     onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
@@ -40,7 +59,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 <IconButton aria-label="delete" onClick={removeTask}>
                     <Delete/>
                 </IconButton>
-            </TaskCase>
+            </div>
         );
     }
 )

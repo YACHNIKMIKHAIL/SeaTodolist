@@ -57,7 +57,6 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }
         return <MainCase>
             <HCase onClick={() => getMyTasks(!myTasks)}>
-                {/*<Button color="secondary">Tasks</Button>*/}
                 <h3><EditSpan title={todolist.title} callback={changeTodolistTitle}/></h3>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>
@@ -71,34 +70,34 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                 })}</div>
                 : ''}
 
-
             <div>
-                <Button variant={todolist.filter === 'all' ? "contained" : 'outlined'}
+                <Button
+                    variant={todolist.filter === 'all' ? "contained" : 'outlined'}
                         style={todolist.filter === 'all' ? {
                                 backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
                                 fontWeight: 'bold'
                             } :
                             {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
-                        onClick={() => changeFilter('all')}
-                        defaultChecked>All</Button>
-
-                <Button variant={todolist.filter === 'active' ? "contained" : 'outlined'}
+                    onClick={() => changeFilter('all')}
+                    defaultChecked>All</Button>
+                <Button
+                    variant={todolist.filter === 'active' ? "contained" : 'outlined'}
                         style={todolist.filter === 'active' ? {
                                 backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
                                 fontWeight: 'bold'
                             } :
                             {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
-                        onClick={() => changeFilter('active')}>Active</Button>
-
-                <Button variant={todolist.filter === 'complited' ? "contained" : 'outlined'}
-                        style={todolist.filter === 'complited' ? {
-                                backgroundColor: 'hotpink',
-                                opacity: '0.9',
-                                color: '#071421',
-                                fontWeight: 'bold'
-                            } :
-                            {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
-                        onClick={() => changeFilter('complited')}>Complited</Button>
+                    onClick={() => changeFilter('active')}>Active</Button>
+                <Button
+                    variant={todolist.filter === 'complited' ? "contained" : 'outlined'}
+                    style={todolist.filter === 'complited' ? {
+                            backgroundColor: 'hotpink',
+                            opacity: '0.9',
+                            color: '#071421',
+                            fontWeight: 'bold'
+                        } :
+                        {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
+                    onClick={() => changeFilter('complited')}>Complited</Button>
 
             </div>
         </MainCase>
@@ -112,9 +111,21 @@ export const HCase = styled.div`
   justify-content: center;
   align-items: center;
 `
-export const ButtonCase = styled.div<{ backgroundColor: string, opacity: string, color: string }>`
-  opacity: ${props => props.opacity};
-  background-color: ${props => props.backgroundColor};
-  color: ${props => props.color};
-  font-weight: bold;
+export const ButtonCase = styled.div<{ props: boolean }>`
+  ${props => {
+    if (props) {
+      return `
+         background-color: hotpink;
+         opacity: 0.9;
+         color: #071421;
+         fontWeight: bold
+    `
+    } else if (!props) {
+      return `
+       background-color: #1F4B76;
+        opacity: 0.7;
+        color: hotpink;
+    `
+    }
+  }}
 `
