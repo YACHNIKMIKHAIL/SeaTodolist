@@ -20,7 +20,7 @@ export type PostTodolistType = {
     resultCode: number
 }
 
-export type SeaResponseType<D> = {
+export type SeaResponseType<D = {}> = {
     data: D
     messages: string[]
     fieldsErrors: string[]
@@ -51,14 +51,14 @@ export const todolistAPI = {
         // .catch(err => console.log('err: ' + err))
     },
     deleteTodolists(todolistID: string) {
-        return instance.delete<SeaResponseType<{}>>(`/todo-lists/${todolistID}`)
+        return instance.delete<SeaResponseType>(`/todo-lists/${todolistID}`)
             .then(res => {
                 return res.data
             })
         // .catch(err => console.log('err: ' + err))
     },
     changeTodolists(todolistID: string, title: string) {
-        return instance.put<SeaResponseType<{}>>(`/todo-lists/${todolistID}`, {title})
+        return instance.put<SeaResponseType>(`/todo-lists/${todolistID}`, {title})
             .then(res => {
                 return res.data
             })
@@ -82,13 +82,6 @@ export type ApiTaskType = {
     totalCount: number
     error: string | null
 }
-export type responseTaskType<D> = {
-    data: D,
-    messages: string[],
-    fieldsErrors: string[],
-    resultCode: number
-}
-
 
 export const tasksAPI = {
     getTasks(todolistID: string) {
@@ -99,7 +92,7 @@ export const tasksAPI = {
             })
     },
     addTask(todolistID: string, title: string) {
-        return instance.post<responseTaskType<{
+        return instance.post<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks`, {title})
             .then(res => {
@@ -108,7 +101,7 @@ export const tasksAPI = {
             })
     },
     changeTaskTitle(todolistID: string, taskID: string, title: string) {
-        return instance.put<responseTaskType<{
+        return instance.put<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
             .then(res => {
@@ -117,7 +110,7 @@ export const tasksAPI = {
             })
     },
     changeTaskStatus(todolistID: string, taskID: string, status: number, title: string) {
-        return instance.put<responseTaskType<{
+        return instance.put<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {status, title})
             .then(res => {
@@ -126,7 +119,7 @@ export const tasksAPI = {
             })
     },
     removeTask(todolistID: string, taskID: string) {
-        return instance.delete<responseTaskType<{}>>(`/todo-lists/${todolistID}/tasks/${taskID}`)
+        return instance.delete<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}`)
             .then(res => {
                 console.log(res)
                 return res.data
