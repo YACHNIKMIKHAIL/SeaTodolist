@@ -5,27 +5,30 @@ import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Redux/store";
 import {changeTaskStatusTC, changeTaskTitleTC, removeTaskTC} from "./Redux/TasksActions";
-import {TaskType} from "./Redux/TaskReducer";
+import {ItemType, TaskStatuses} from "./Api/SeaApi";
+
 
 type TaskPropsType = {
     id: string
     todolistID: string
 }
 const Task = React.memo(({todolistID, id}: TaskPropsType) => {
-        const actualTask = useSelector<reducerType, TaskType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
+        const actualTask = useSelector<reducerType, ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
         console.log(`task ${id} called`)
 
         const removeTask = useCallback(() => {
             dispatch(removeTaskTC(todolistID, id))
         }, [dispatch, todolistID, id])
-        const changeTaskStatus = useCallback((isDone: boolean, title: string) => {
-            let status = isDone ? 2 : 1
-            dispatch(changeTaskStatusTC(todolistID, id, status, title))
-        }, [dispatch, todolistID, id])
+        const changeTaskStatus = useCallback((num: boolean) => {
+            num
+                ? dispatch(changeTaskStatusTC(todolistID, id, TaskStatuses.Complited, actualTask.title))
+                : dispatch(changeTaskStatusTC(todolistID, id, TaskStatuses.New, actualTask.title))
+
+        }, [dispatch, todolistID, id,actualTask.title])
         const changeTaskTitle = useCallback((title: string) => {
             dispatch(changeTaskTitleTC(todolistID, actualTask.id, title))
-        }, [dispatch,todolistID,actualTask.id])
+        }, [dispatch, todolistID, actualTask.id])
 
         return (
             <div style={actualTask.status === 2
@@ -45,11 +48,11 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 }}>
                 <Checkbox
                     checked={actualTask.status === 2}
-                    onChange={(e) => changeTaskStatus(e.currentTarget.checked, actualTask.title)}
+                    onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
                     style={{color: '#1F4B76'}}
                 />
 
-                <EditSpan title={actualTask.title}  callback={changeTaskTitle}/>
+                <EditSpan title={actualTask.title} callback={changeTaskTitle}/>
                 <IconButton aria-label="delete" onClick={removeTask}>
                     <Delete/>
                 </IconButton>

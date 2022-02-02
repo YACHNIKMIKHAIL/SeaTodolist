@@ -1,17 +1,16 @@
-import {v1} from "uuid";
 import {TasksStateType} from "./TaskReducer";
-import {SeaTodolistsType, TodolistType} from "./TodolistReducer";
+import {SeaTodolistsType} from "./TodolistReducer";
 
 
-const todolist1 = v1()
-const todolist2 = v1()
-const todolist3 = v1()
-const todolist4 = v1()
-const todolist5 = v1()
-const todolist6 = v1()
-const todolist7 = v1()
-const todolist8 = v1()
-const todolist9 = v1()
+// const todolist1 = v1()
+// const todolist2 = v1()
+// const todolist3 = v1()
+// const todolist4 = v1()
+// const todolist5 = v1()
+// const todolist6 = v1()
+// const todolist7 = v1()
+// const todolist8 = v1()
+// const todolist9 = v1()
 
 export const initialTasks: TasksStateType = {
     // [todolist1]: [{id: v1(), title: "HTML&CSS", isDone: true},

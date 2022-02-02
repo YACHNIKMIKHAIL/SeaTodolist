@@ -9,11 +9,6 @@ import {addTodolistACType, removeTodolistACType, TodolistActions} from "./Todoli
 import {initialTasks} from "./initailsStates";
 import {ItemType} from "../Api/SeaApi";
 
-export type TaskType = {
-    id: string
-    title: string
-    status: number
-}
 
 export type TasksStateType = { [key: string]: Array<ItemType> }
 

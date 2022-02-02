@@ -9,11 +9,7 @@ import {initialTodolists} from "./initailsStates";
 import {ApiTodolistType} from "../Api/SeaApi";
 
 export type FilterType = 'all' | 'complited' | 'active'
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterType
-}
+
 export type SeaTodolistsType = ApiTodolistType & {
     filter: FilterType
 }

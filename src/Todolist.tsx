@@ -7,12 +7,13 @@ import {useDispatch} from "react-redux";
 import {changeTodolistFilterAC, changeTodolistsTC, removeTodolistsTC} from "./Components/Redux/TodolistsActions";
 import Task from "./Components/Task";
 import {addTaskTC, getTasksTC} from "./Components/Redux/TasksActions";
-import {FilterType, TodolistType} from "./Components/Redux/TodolistReducer";
-import {TaskType} from "./Components/Redux/TaskReducer";
+import {FilterType, SeaTodolistsType} from "./Components/Redux/TodolistReducer";
+import {ItemType, TaskStatuses} from "./Components/Api/SeaApi";
+
 
 type PropsType = {
-    todolist: TodolistType
-    todoTasks: Array<TaskType>
+    todolist: SeaTodolistsType
+    todoTasks: Array<ItemType>
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
@@ -48,10 +49,10 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
-            tasksForRender = todoTasks.filter(f => f.status === 2)
+            tasksForRender = todoTasks.filter(f => f.status === TaskStatuses.Complited)
         }
         if (todolist.filter === 'active') {
-            tasksForRender = todoTasks.filter(f => f.status !== 2)
+            tasksForRender = todoTasks.filter(f => f.status === TaskStatuses.New)
         }
         return <div style={{color: '#071421'}}>
             <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}

@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {ItemType, tasksAPI} from "../Api/SeaApi";
+import {ItemType, tasksAPI, TaskStatuses} from "../Api/SeaApi";
 
 export enum tasksActions {
     ADD_TASK = 'ADD_TASK',
@@ -16,7 +16,7 @@ export const addTaskAC = (todolistID: string, item: ItemType) => {
     } as const
 }
 export type changeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
-export const changeTaskStatusAC = (todolistId: string, id: string, status: number) => {
+export const changeTaskStatusAC = (todolistId: string, id: string, status: TaskStatuses) => {
     return {
         type: tasksActions.CHANGE_TASK_STATUS, id, status, todolistId
     } as const
@@ -66,7 +66,7 @@ export const changeTaskTitleTC = (todolistID: string, taskID: string, title: str
             .catch(err => console.log('err: ' + err))
     }
 }
-export const changeTaskStatusTC = (todolistID: string, taskID: string, status: number, title: string) => {
+export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string) => {
     return (dispatch: Dispatch) => {
         tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
             .then(() => dispatch(changeTaskStatusAC(todolistID, taskID, status)))
