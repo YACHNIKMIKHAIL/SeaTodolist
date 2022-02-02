@@ -10,6 +10,7 @@ import img2 from './Components/Images/wallpaperflare.com_wallpaper (1).jpg'
 import {Todolist} from "./Todolist";
 import {TasksStateType} from "./Components/Redux/TaskReducer";
 import {SeaTodolistsType} from "./Components/Redux/TodolistReducer";
+import styled from "styled-components";
 
 
 export const App = () => {
@@ -26,20 +27,12 @@ export const App = () => {
 
     useEffect(() => {
         dispatch(getTodolistsTC())
-    },[dispatch])
+    }, [dispatch])
 
     return (
-        <div className="App"
-             style={{
-                 background: `url('${img2}')no-repeat center/cover`,
-                 height: '100vh',
-                 overflow: 'auto'
-             }}
-        >
-            <AppBar position="static"
-                    style={{opacity: '0.65', backgroundColor: '#071421', color: '#F3D9D4'}}
-            >
-                <Toolbar style={{display: 'flex', justifyContent: 'space-between'}}>
+        <AppCase>
+            <AppBarCase>
+                <ToolbarCase>
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <Menu/>
                     </IconButton>
@@ -47,8 +40,8 @@ export const App = () => {
                         SEA_TODOLIST
                     </Typography>
                     <Button color="inherit" onClick={getFromS}>Login</Button>
-                </Toolbar>
-            </AppBar>
+                </ToolbarCase>
+            </AppBarCase>
             <Container fixed>
                 <Grid container style={{padding: '20px', color: 'white'}}>
                     <AddForm addFn={addTodolist}/>
@@ -61,22 +54,38 @@ export const App = () => {
                         }
 
                         return <Grid item key={i}>
-                            <div
-                                style={{
-                                    padding: '10px',
-                                    backgroundColor: '#8AA8D2',
-                                    opacity: '0.75',
-                                    borderRadius: '10px'
-                                }}>
+                            <TodolistCase>
                                 <Todolist todolist={t}
                                           todoTasks={todoTasks}
                                 />
-                            </div>
+                            </TodolistCase>
                         </Grid>;
 
                     })}
                 </Grid>
             </Container>
-        </div>
+        </AppCase>
     );
 }
+
+export const AppCase = styled.div`
+  background: url('${img2}') no-repeat center/cover;
+  height: 100vh;
+  overflow: auto
+`
+export const AppBarCase = styled.div`
+  opacity: 0.65;
+  background-color: #071421;
+  color: #F3D9D4
+`
+export const ToolbarCase = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+export const TodolistCase = styled.div`
+  padding: 10px;
+  background-color: #8AA8D2;
+  opacity: 0.75;
+  border-radius: 10px
+`

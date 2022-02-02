@@ -21,17 +21,14 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
             dispatch(removeTaskTC(todolistID, id))
         }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((num: boolean) => {
-            num
-                ? dispatch(changeTaskStatusTC(todolistID, id, TaskStatuses.Complited, actualTask.title))
-                : dispatch(changeTaskStatusTC(todolistID, id, TaskStatuses.New, actualTask.title))
-
-        }, [dispatch, todolistID, id,actualTask.title])
+            dispatch(changeTaskStatusTC(todolistID, id, num ? TaskStatuses.Complited : TaskStatuses.New, actualTask.title))
+        }, [dispatch, todolistID, id, actualTask.title])
         const changeTaskTitle = useCallback((title: string) => {
             dispatch(changeTaskTitleTC(todolistID, actualTask.id, title))
         }, [dispatch, todolistID, actualTask.id])
 
         return (
-            <div style={actualTask.status === 2
+            <div style={actualTask.status === TaskStatuses.Complited
                 ? {
                     opacity: '0.6',
                     color: 'rgb(255,225,178)',
@@ -47,7 +44,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                     fontWeight: 'bold'
                 }}>
                 <Checkbox
-                    checked={actualTask.status === 2}
+                    checked={actualTask.status === TaskStatuses.Complited}
                     onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
                     style={{color: '#1F4B76'}}
                 />

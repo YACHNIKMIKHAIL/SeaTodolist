@@ -9,6 +9,7 @@ import Task from "./Components/Task";
 import {addTaskTC, getTasksTC} from "./Components/Redux/TasksActions";
 import {FilterType, SeaTodolistsType} from "./Components/Redux/TodolistReducer";
 import {ItemType, TaskStatuses} from "./Components/Api/SeaApi";
+import styled from "styled-components";
 
 
 type PropsType = {
@@ -54,15 +55,14 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         if (todolist.filter === 'active') {
             tasksForRender = todoTasks.filter(f => f.status === TaskStatuses.New)
         }
-        return <div style={{color: '#071421'}}>
-            <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
-                onClick={() => getMyTasks(!myTasks)}>
+        return <MainCase>
+            <HCase onClick={() => getMyTasks(!myTasks)}>
                 {/*<Button color="secondary">Tasks</Button>*/}
                 <EditSpan title={todolist.title} callback={changeTodolistTitle}/>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>
-            </h3>
+            </HCase>
             <AddForm addFn={addTask}/>
 
             {myTasks
@@ -98,6 +98,19 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                             {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                         onClick={() => changeFilter('complited')}>Complited</Button>
             </div>
-        </div>
+        </MainCase>
     }
 )
+export const MainCase = styled.div`
+  color: #071421
+`
+export const HCase = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center
+`
+export const AppBarCase = styled.div`
+  opacity: 0.65;
+  background-color: #071421;
+  color: #F3D9D4
+`
