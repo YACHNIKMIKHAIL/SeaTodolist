@@ -111,30 +111,41 @@ export const tasksAPI = {
             let res = await instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
             return res.data
     },
-    addTask(todolistID: string, title: string) {
-        return instance.post<SeaResponseType<{
+    // addTask(todolistID: string, title: string) {
+    //     return instance.post<SeaResponseType<{
+    //         item: ItemType
+    //     }>>(`/todo-lists/${todolistID}/tasks`, {title})
+    //         .then(res => {
+    //             console.log(res)
+    //             return res.data
+    //         })
+    // },
+    async addTask(todolistID: string, title: string) {
+        let res= await instance.post<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks`, {title})
-            .then(res => {
-                console.log(res)
                 return res.data
-            })
     },
-    changeTaskTitle(todolistID: string, taskID: string, title: string) {
-        return instance.put<SeaResponseType<{
+    // changeTaskTitle(todolistID: string, taskID: string, title: string) {
+    //     return instance.put<SeaResponseType<{
+    //         item: ItemType
+    //     }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
+    //         .then(res => {
+    //             console.log(res)
+    //             return res.data.data.item
+    //         })
+    // },
+    async changeTaskTitle(todolistID: string, taskID: string, title: string) {
+        let res= await instance.put<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
-            .then(res => {
-                console.log(res)
                 return res.data.data.item
-            })
     },
     changeTaskStatus(todolistID: string, taskID: string, status: number, title: string) {
         return instance.put<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {status, title})
             .then(res => {
-                console.log(res)
                 return res.data
             })
     },

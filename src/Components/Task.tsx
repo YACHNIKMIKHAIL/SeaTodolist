@@ -16,7 +16,6 @@ type TaskPropsType = {
 const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         const actualTask = useSelector<reducerType, ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
-        console.log(`task ${id} called`)
 
         const removeTask = useCallback(() => {
             dispatch(removeTaskTC(todolistID, id))
@@ -29,27 +28,28 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         }, [dispatch, todolistID, actualTask.id])
 
         return (
-            <div
-                // props={actualTask.status === TaskStatuses.Complited}
-                      style={actualTask.status === TaskStatuses.Complited
-                          ? {
-                              opacity: '0.8',
-                              color: 'rgb(255,225,178)',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              fontWeight: 'normal',
-                          }
-                          : {
-                              opacity: '1',
-                              color: 'rgb(11,37,75)',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              fontWeight: 'bold'
-                          }}
+            <TaskCaseII
+                opacity={actualTask.status === TaskStatuses.Complited ? '0.3' : '1'}
+                color={actualTask.status === TaskStatuses.Complited ? 'rgb(255,225,178)' : 'rgb(11,37,75)'}
+                // style={actualTask.status === TaskStatuses.Complited
+                // ? {
+                //     opacity: '0.8',
+                //     color: 'rgb(255,225,178)',
+                //     display: 'flex',
+                //     justifyContent: 'space-between',
+                //     alignItems: 'center',
+                //     fontWeight: 'normal',
+                // }
+                // : {
+                //     opacity: '1',
+                //     color: 'rgb(11,37,75)',
+                //     display: 'flex',
+                //     justifyContent: 'space-between',
+                //     alignItems: 'center',
+                //     fontWeight: 'bold'
+                // }}
             >
-                <Checkbox
+                < Checkbox
                     checked={actualTask.status === TaskStatuses.Complited}
                     onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
                     style={{color: '#1F4B76'}}
@@ -59,11 +59,20 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 <IconButton aria-label="delete" onClick={removeTask}>
                     <Delete/>
                 </IconButton>
-            </div>
+            </TaskCaseII>
         );
     }
 )
 export default Task;
+
+export const TaskCaseII = styled.div<{ opacity: string, color: string }>`
+  color: ${props => props.color};
+  opacity: ${props => props.opacity};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+`
 
 export const TaskCase = styled.div<{ props: boolean }>`
   ${props => {

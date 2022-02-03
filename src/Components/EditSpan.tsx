@@ -7,10 +7,11 @@ type EditSpanPropsType = {
 }
 const EditSpan = React.memo(({title,callback}: EditSpanPropsType) => {
     const [changeMode, setChangeMode] = useState<boolean>(false)
-    const [stateTitle, setStateTitle] = useState(title)
+    const [stateTitle, setStateTitle] = useState('')
 
     const activate = () => {
         setChangeMode(true)
+        setStateTitle(title)
     }
     const desactivate = () => {
         setChangeMode(false)

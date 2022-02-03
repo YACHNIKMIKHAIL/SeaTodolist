@@ -60,24 +60,42 @@ export const getTasksTC = (todolistID: string) => async (dispatch: Dispatch) => 
     }
 }
 
-export const addTaskTC = (todolistID: string, title: string) => {
-    return (dispatch: Dispatch) => {
-        tasksAPI.addTask(todolistID, title)
-            .then(data => {
-                console.log(data.data.item)
-                const {item} = data.data;
-                dispatch(addTaskAC(todolistID, item))
-                // dispatch(setTasksFromServAC(todolistID, data.items))
-            })
-            .catch(err => console.log('err: ' + err))
+// export const addTaskTC = (todolistID: string, title: string) => {
+//     return (dispatch: Dispatch) => {
+//         tasksAPI.addTask(todolistID, title)
+//             .then(data => {
+//                 console.log(data.data.item)
+//                 const {item} = data.data;
+//                 dispatch(addTaskAC(todolistID, item))
+//                 // dispatch(setTasksFromServAC(todolistID, data.items))
+//             })
+//             .catch(err => console.log('err: ' + err))
+//     }
+// }
+export const addTaskTC = (todolistID: string, title: string) => async (dispatch: Dispatch) => {
+    try {
+        let res = await tasksAPI.addTask(todolistID, title)
+        const {item} = res.data;
+        dispatch(addTaskAC(todolistID, item))
+    } catch (e) {
+        console.log(e)
     }
 }
-export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string) => {
-    return (dispatch: Dispatch) => {
-        tasksAPI.changeTaskTitle(todolistID, taskID, title)
-            .then(item => dispatch(changeTaskTitleAC(todolistID, taskID, item.title)))
-            .catch(err => console.log('err: ' + err))
+// export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string) => {
+//     return (dispatch: Dispatch) => {
+//         tasksAPI.changeTaskTitle(todolistID, taskID, title)
+//             .then(item => dispatch(changeTaskTitleAC(todolistID, taskID, item.title)))
+//             .catch(err => console.log('err: ' + err))
+//     }
+// }
+export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string) => async (dispatch: Dispatch) => {
+    try {
+        let res = await tasksAPI.changeTaskTitle(todolistID, taskID, title)
+        dispatch(changeTaskTitleAC(todolistID, taskID, res.title))
+    } catch (e) {
+        console.log(e)
     }
+
 }
 export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string) => {
     return (dispatch: Dispatch) => {
