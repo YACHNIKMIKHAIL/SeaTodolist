@@ -97,17 +97,33 @@ export const changeTaskTitleTC = (todolistID: string, taskID: string, title: str
     }
 
 }
-export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string) => {
-    return (dispatch: Dispatch) => {
-        tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
-            .then(() => dispatch(changeTaskStatusAC(todolistID, taskID, status)))
-            .catch(err => console.log('err: ' + err))
+// export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string) => {
+//     return (dispatch: Dispatch) => {
+//         tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
+//             .then(() => dispatch(changeTaskStatusAC(todolistID, taskID, status)))
+//             .catch(err => console.log('err: ' + err))
+//     }
+// }
+export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string) => async (dispatch: Dispatch) => {
+    try {
+        let res = await tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
+        dispatch(changeTaskStatusAC(todolistID, taskID, res.data.item.status))
+    } catch (e) {
+        console.log(e)
     }
 }
-export const removeTaskTC = (todolistID: string, taskID: string) => {
-    return (dispatch: Dispatch) => {
-        tasksAPI.removeTask(todolistID, taskID)
-            .then(() => dispatch(removeTaskAC(todolistID, taskID)))
-            .catch(err => console.log('err: ' + err))
+// export const removeTaskTC = (todolistID: string, taskID: string) => {
+//     return (dispatch: Dispatch) => {
+//         tasksAPI.removeTask(todolistID, taskID)
+//             .then(() => dispatch(removeTaskAC(todolistID, taskID)))
+//             .catch(err => console.log('err: ' + err))
+//     }
+// }
+export const removeTaskTC = (todolistID: string, taskID: string) => async (dispatch: Dispatch) => {
+    try {
+        await tasksAPI.removeTask(todolistID, taskID)
+        dispatch(removeTaskAC(todolistID, taskID))
+    } catch (e) {
+        console.log(e)
     }
 }
