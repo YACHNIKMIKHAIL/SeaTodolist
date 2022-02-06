@@ -12,7 +12,7 @@ import {ItemType} from "../Api/SeaApi";
 
 export type TasksStateType = { [key: string]: Array<ItemType> }
 
-export const taskReducer = (state: TasksStateType = initialTasks, action: tasksActionsType): TasksStateType => {
+export const taskReducer = (state: TasksStateType = initialTasks, action: seaTasksActionsType): TasksStateType => {
     switch (action.type) {
         case TodolistActions.ADD_TODOLIST: {
             return {[action.item.id]: [], ...state}
@@ -61,7 +61,7 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: tasksA
             return state
     }
 }
-export type tasksActionsType =
+export type seaTasksActionsType =
     addTodolistACType
     | removeTodolistACType
     | addTaskACType

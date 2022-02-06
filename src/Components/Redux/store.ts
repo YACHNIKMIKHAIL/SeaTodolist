@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {todolistReducer} from "./TodolistReducer";
-import {taskReducer} from "./TaskReducer";
-import thunk from "redux-thunk";
+import {seaTodolistActionsType, todolistReducer} from "./TodolistReducer";
+import {seaTasksActionsType, taskReducer} from "./TaskReducer";
+import thunk, {ThunkAction} from "redux-thunk";
 
 const reducer = combineReducers({
     todolists: todolistReducer,
@@ -10,7 +10,12 @@ const reducer = combineReducers({
 
 export type reducerType = ReturnType<typeof reducer>
 export const store = createStore(reducer, applyMiddleware(thunk))
-
-
+export type seaActionsType = seaTasksActionsType | seaTodolistActionsType
+export type SeaThunkType<ReturnType = void> = ThunkAction<
+    ReturnType,
+    reducerType,
+    unknown,
+    seaActionsType
+    >
 // @ts-ignore
 window.store = store

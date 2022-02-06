@@ -1,6 +1,6 @@
 import {FilterType} from "./TodolistReducer";
-import {Dispatch} from "redux";
 import {ApiTodolistType, todolistAPI} from "../Api/SeaApi";
+import {SeaThunkType} from "./store";
 
 export enum TodolistActions {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
@@ -41,15 +41,15 @@ export const setTodoFromServAC = (data: ApiTodolistType[]) => {
     } as const
 };
 
-export const getTodolistsTC = () => {
-    return (dispatch: Dispatch) => {
+export const getTodolistsTC = ():SeaThunkType => {
+    return (dispatch) => {
         todolistAPI.getTodolists()
             .then(data => dispatch(setTodoFromServAC(data)))
             .catch(err => console.log('err: ' + err))
     }
 }
-export const postTodolistsTC = (title: string) => {
-    return (dispatch: Dispatch) => {
+export const postTodolistsTC = (title: string):SeaThunkType => {
+    return (dispatch) => {
         todolistAPI.postTodolists(title)
             .then(data => {
                 const {item} = data.data;
@@ -58,15 +58,15 @@ export const postTodolistsTC = (title: string) => {
             .catch(err => console.log('err: ' + err))
     }
 }
-export const removeTodolistsTC = (todolistID: string) => {
-    return (dispatch: Dispatch) => {
+export const removeTodolistsTC = (todolistID: string):SeaThunkType => {
+    return (dispatch) => {
         todolistAPI.deleteTodolists(todolistID)
             .then(() => dispatch(removeTodolistAC(todolistID)))
             .catch(err => console.log('err: ' + err))
     }
 }
-export const changeTodolistsTC = (todolistID: string, title: string) => {
-    return (dispatch: Dispatch) => {
+export const changeTodolistsTC = (todolistID: string, title: string):SeaThunkType => {
+    return (dispatch) => {
         todolistAPI.changeTodolists(todolistID, title)
             .then(() => dispatch(changeTodolistTitleAC(todolistID,title)))
             .catch(err => console.log('err: ' + err))

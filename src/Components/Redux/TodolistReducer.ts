@@ -15,7 +15,7 @@ export type SeaTodolistsType = ApiTodolistType & {
 }
 
 
-export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, action: todolistActionsType): SeaTodolistsType[] => {
+export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, action: seaTodolistActionsType): SeaTodolistsType[] => {
 
     switch (action.type) {
         case TodolistActions.REMOVE_TODOLIST: {
@@ -37,7 +37,7 @@ export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, ac
             return state
     }
 }
-export type todolistActionsType =
+export type seaTodolistActionsType =
     removeTodolistACType
     | addTodolistACType
     | changeTodolistTitleACType

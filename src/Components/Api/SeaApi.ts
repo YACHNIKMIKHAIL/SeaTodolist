@@ -163,7 +163,6 @@ export const tasksAPI = {
     //         })
     // }
     async removeTask(todolistID: string, taskID: string) {
-        let res = await instance.delete<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}`)
-        return res.data
+        await instance.delete<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}`)
     }
 }
