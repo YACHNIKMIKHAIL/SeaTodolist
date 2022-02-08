@@ -29,8 +29,8 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
 
         return (
             <TaskCaseII
-                opacity={actualTask.status === TaskStatuses.Complited ? '0.3' : '1'}
-                color={actualTask.status === TaskStatuses.Complited ? 'rgb(255,225,178)' : 'rgb(11,37,75)'}
+                opacity={actualTask.status === TaskStatuses.Complited ? '0.8' : '1'}
+                color={actualTask.status === TaskStatuses.Complited ? 'white' : 'rgb(11,37,75)'}
                 // style={actualTask.status === TaskStatuses.Complited
                 // ? {
                 //     opacity: '0.8',

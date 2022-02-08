@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import AddForm from "./Components/AddForm";
 import EditSpan from "./Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
@@ -29,24 +29,16 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const removeTodolist = useCallback(() => {
             dispatch(removeTodolistsTC(todolist.id))
         }, [dispatch, todolist.id])
-
-        const [myTasks, setMyTasks] = useState<boolean>(false)
-        const getMyTasks = useCallback((myTasks: boolean) => {
-            if (myTasks) {
-                dispatch(getTasksTC(todolist.id))
-                setMyTasks(true)
-            } else {
-                setMyTasks(false)
-            }
-        }, [dispatch, todolist.id])
         const addTask = useCallback((newTitle: string) => {
             dispatch(addTaskTC(todolist.id, newTitle))
-            getMyTasks(true)
-        }, [dispatch, todolist.id, getMyTasks])
+        }, [dispatch, todolist.id])
         const changeTodolistTitle = useCallback((newTitle: string) => {
             dispatch(changeTodolistsTC(todolist.id, newTitle))
         }, [dispatch, todolist.id])
 
+        useEffect(() => {
+            dispatch(getTasksTC(todolist.id))
+        }, [])
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
@@ -56,37 +48,34 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             tasksForRender = todoTasks.filter(f => f.status === TaskStatuses.New)
         }
         return <MainCase>
-            <HCase onClick={() => getMyTasks(!myTasks)}>
+            <HCase>
                 <h3><EditSpan title={todolist.title} callback={changeTodolistTitle}/></h3>
                 <IconButton aria-label="delete" onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>
             </HCase>
             <AddForm addFn={addTask}/>
-
-            {myTasks
-                ? <div>{tasksForRender.map((m, i) => {
-                    return <Task key={i} id={m.id} todolistID={todolist.id}/>
-                })}</div>
-                : ''}
+            <div>{tasksForRender.map((m, i) => {
+                return <Task key={i} id={m.id} todolistID={todolist.id}/>
+            })}</div>
 
             <div>
                 <Button
                     variant={todolist.filter === 'all' ? "contained" : 'outlined'}
-                        style={todolist.filter === 'all' ? {
-                                backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
-                                fontWeight: 'bold'
-                            } :
-                            {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
+                    style={todolist.filter === 'all' ? {
+                            backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
+                            fontWeight: 'bold'
+                        } :
+                        {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                     onClick={() => changeFilter('all')}
                     defaultChecked>All</Button>
                 <Button
                     variant={todolist.filter === 'active' ? "contained" : 'outlined'}
-                        style={todolist.filter === 'active' ? {
-                                backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
-                                fontWeight: 'bold'
-                            } :
-                            {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
+                    style={todolist.filter === 'active' ? {
+                            backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
+                            fontWeight: 'bold'
+                        } :
+                        {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
                     onClick={() => changeFilter('active')}>Active</Button>
                 <Button
                     variant={todolist.filter === 'complited' ? "contained" : 'outlined'}
