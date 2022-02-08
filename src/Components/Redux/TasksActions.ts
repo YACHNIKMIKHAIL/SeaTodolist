@@ -88,38 +88,6 @@ export const addTaskTC = (todolistID: string, title: string): SeaThunkType => as
         console.log(e)
     }
 }
-// export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string) => {
-//     return (dispatch: Dispatch) => {
-//         tasksAPI.changeTaskTitle(todolistID, taskID, title)
-//             .then(item => dispatch(changeTaskTitleAC(todolistID, taskID, item.title)))
-//             .catch(err => console.log('err: ' + err))
-//     }
-// }
-export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string): SeaThunkType => async (dispatch) => {
-    try {
-        let res = await tasksAPI.changeTaskTitle(todolistID, taskID, title)
-        dispatch(changeTaskTitleAC(todolistID, taskID, res.title))
-    } catch (e) {
-        console.log(e)
-    }
-
-}
-// export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string) => {
-//     return (dispatch: Dispatch) => {
-//         tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
-//             .then(() => dispatch(changeTaskStatusAC(todolistID, taskID, status)))
-//             .catch(err => console.log('err: ' + err))
-//     }
-// }
-export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string): SeaThunkType => async (dispatch) => {
-    try {
-        let res = await tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
-        dispatch(changeTaskStatusAC(todolistID, taskID, res.data.item.status))
-    } catch (e) {
-        console.log(e)
-    }
-}
-
 export type UpdateSeaTaskType = {
     title?: string
     description?: string
@@ -131,7 +99,7 @@ export type UpdateSeaTaskType = {
 export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSeaTaskType): SeaThunkType => async (dispatch, getState: () => reducerType) => {
     const actualTaskParams = getState().tasks[todolistID].filter(f => f.id === taskID)[0]
     if (!actualTaskParams) return
-    const apiModel:UpdateTaskType = {
+    const apiModel: UpdateTaskType = {
         title: actualTaskParams.title,
         description: actualTaskParams.description,
         status: actualTaskParams.status,

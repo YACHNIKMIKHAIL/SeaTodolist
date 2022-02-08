@@ -65,7 +65,6 @@ export const todolistAPI = {
             .catch(err => console.log('err: ' + err))
     }
 }
-export type StatusType = 1 | 2
 
 export enum TaskStatuses {
     New = 0,
@@ -132,35 +131,6 @@ export const tasksAPI = {
         let res = await instance.post<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks`, {title})
-        return res.data
-    },
-    // changeTaskTitle(todolistID: string, taskID: string, title: string) {
-    //     return instance.put<SeaResponseType<{
-    //         item: ItemType
-    //     }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
-    //         .then(res => {
-    //             console.log(res)
-    //             return res.data.data.item
-    //         })
-    // },
-    async changeTaskTitle(todolistID: string, taskID: string, title: string) {
-        let res = await instance.put<SeaResponseType<{
-            item: ItemType
-        }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
-        return res.data.data.item
-    },
-    // changeTaskStatus(todolistID: string, taskID: string, status: number, title: string) {
-    //     return instance.put<SeaResponseType<{
-    //         item: ItemType
-    //     }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {status, title})
-    //         .then(res => {
-    //             return res.data
-    //         })
-    // },
-    async changeTaskStatus(todolistID: string, taskID: string, status: number, title: string) {
-        let res = await instance.put<SeaResponseType<{
-            item: ItemType
-        }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {status, title})
         return res.data
     },
     // removeTask(todolistID: string, taskID: string) {

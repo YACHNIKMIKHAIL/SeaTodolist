@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import AddForm from "./Components/AddForm";
 import EditSpan from "./Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
@@ -38,7 +38,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
         useEffect(() => {
             dispatch(getTasksTC(todolist.id))
-        }, [])
+        }, [dispatch,todolist.id])
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
