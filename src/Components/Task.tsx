@@ -4,7 +4,7 @@ import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./Redux/store";
-import {changeTaskStatusTC, changeTaskTitleTC, removeTaskTC} from "./Redux/TasksActions";
+import {changeTaskStatusTC, changeTaskTC, changeTaskTitleTC, removeTaskTC} from "./Redux/TasksActions";
 import {ItemType, TaskStatuses} from "./Api/SeaApi";
 import styled from "styled-components";
 
@@ -21,10 +21,10 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
             dispatch(removeTaskTC(todolistID, id))
         }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((num: boolean) => {
-            dispatch(changeTaskStatusTC(todolistID, id, num ? TaskStatuses.Complited : TaskStatuses.New, actualTask.title))
+            dispatch(changeTaskTC(todolistID, id, {status: num ? TaskStatuses.Complited : TaskStatuses.New}))
         }, [dispatch, todolistID, id, actualTask.title])
         const changeTaskTitle = useCallback((title: string) => {
-            dispatch(changeTaskTitleTC(todolistID, actualTask.id, title))
+            dispatch(changeTaskTC(todolistID, actualTask.id, {title}))
         }, [dispatch, todolistID, actualTask.id])
 
         return (

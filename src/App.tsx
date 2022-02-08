@@ -17,7 +17,6 @@ export const App = () => {
     const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
     const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
-
     const getFromS = () => {
         dispatch(getTodolistsTC())
     }

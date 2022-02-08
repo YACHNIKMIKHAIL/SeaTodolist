@@ -1,5 +1,5 @@
 import {
-    addTaskACType,
+    addTaskACType, changeTaskACType,
     changeTaskStatusACType,
     changeTaskTitleACType,
     removeTaskACType, setTasksFromServACType,
@@ -54,7 +54,13 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: seaTas
         }
         case tasksActions.SET_TASKS_FROM_SERVER: {
             return {
-                ...state,[action.todolistID]:action.data
+                ...state, [action.todolistID]: action.data
+            }
+        }
+        case tasksActions.CHANGE_TASK: {
+            return {
+                ...state,
+                [action.todolistID]: state[action.todolistID].map(m => m.id === action.taskID ? {...action.item} : m)
             }
         }
         default:
@@ -69,3 +75,4 @@ export type seaTasksActionsType =
     | changeTaskTitleACType
     | removeTaskACType
     | setTasksFromServACType
+    | changeTaskACType

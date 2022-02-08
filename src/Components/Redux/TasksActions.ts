@@ -1,12 +1,13 @@
-import {ItemType, tasksAPI, TaskStatuses} from "../Api/SeaApi";
-import {SeaThunkType} from "./store";
+import {ItemType, TaskPriorities, tasksAPI, TaskStatuses, UpdateTaskType} from "../Api/SeaApi";
+import {reducerType, SeaThunkType} from "./store";
 
 export enum tasksActions {
     ADD_TASK = 'ADD_TASK',
     CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS',
     CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE',
     REMOVE_TASK = 'REMOVE_TASK',
-    SET_TASKS_FROM_SERVER = 'SET_TASKS_FROM_SERVER'
+    SET_TASKS_FROM_SERVER = 'SET_TASKS_FROM_SERVER',
+    CHANGE_TASK = 'CHANGE_TASK'
 }
 
 export type addTaskACType = ReturnType<typeof addTaskAC>
@@ -40,6 +41,12 @@ export const setTasksFromServAC = (todolistID: string, data: Array<ItemType>) =>
         type: tasksActions.SET_TASKS_FROM_SERVER, todolistID, data
     } as const
 };
+export type changeTaskACType = ReturnType<typeof changeTaskAC>
+export const changeTaskAC = (todolistID: string, taskID: string, item: ItemType) => {
+    return {
+        type: tasksActions.CHANGE_TASK, todolistID, taskID, item
+    } as const
+};
 // export const getTasksTC = (todolistID: string) => {
 //     return (dispatch: Dispatch) => {
 //         tasksAPI.getTasks(todolistID)
@@ -51,7 +58,7 @@ export const setTasksFromServAC = (todolistID: string, data: Array<ItemType>) =>
 //     }
 // }
 
-export const getTasksTC = (todolistID: string):SeaThunkType => async (dispatch) => {
+export const getTasksTC = (todolistID: string): SeaThunkType => async (dispatch) => {
     try {
         let res = await tasksAPI.getTasks(todolistID)
         dispatch(setTasksFromServAC(todolistID, res.items))
@@ -72,7 +79,7 @@ export const getTasksTC = (todolistID: string):SeaThunkType => async (dispatch) 
 //             .catch(err => console.log('err: ' + err))
 //     }
 // }
-export const addTaskTC = (todolistID: string, title: string):SeaThunkType => async (dispatch) => {
+export const addTaskTC = (todolistID: string, title: string): SeaThunkType => async (dispatch) => {
     try {
         let res = await tasksAPI.addTask(todolistID, title)
         const {item} = res.data;
@@ -88,7 +95,7 @@ export const addTaskTC = (todolistID: string, title: string):SeaThunkType => asy
 //             .catch(err => console.log('err: ' + err))
 //     }
 // }
-export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string):SeaThunkType => async (dispatch) => {
+export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string): SeaThunkType => async (dispatch) => {
     try {
         let res = await tasksAPI.changeTaskTitle(todolistID, taskID, title)
         dispatch(changeTaskTitleAC(todolistID, taskID, res.title))
@@ -104,10 +111,39 @@ export const changeTaskTitleTC = (todolistID: string, taskID: string, title: str
 //             .catch(err => console.log('err: ' + err))
 //     }
 // }
-export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string):SeaThunkType => async (dispatch) => {
+export const changeTaskStatusTC = (todolistID: string, taskID: string, status: TaskStatuses, title: string): SeaThunkType => async (dispatch) => {
     try {
         let res = await tasksAPI.changeTaskStatus(todolistID, taskID, status, title)
         dispatch(changeTaskStatusAC(todolistID, taskID, res.data.item.status))
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export type UpdateSeaTaskType = {
+    title?: string
+    description?: string
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string
+    deadline?: string
+}
+export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSeaTaskType): SeaThunkType => async (dispatch, getState: () => reducerType) => {
+    const actualTaskParams = getState().tasks[todolistID].filter(f => f.id === taskID)[0]
+    if (!actualTaskParams) return
+    const apiModel:UpdateTaskType = {
+        title: actualTaskParams.title,
+        description: actualTaskParams.description,
+        status: actualTaskParams.status,
+        priority: actualTaskParams.priority,
+        startDate: actualTaskParams.startDate,
+        deadline: actualTaskParams.deadline,
+        ...model
+    }
+
+    try {
+        let res = await tasksAPI.changeTask(todolistID, taskID, apiModel)
+        dispatch(changeTaskAC(todolistID, taskID, res))
     } catch (e) {
         console.log(e)
     }
@@ -119,7 +155,7 @@ export const changeTaskStatusTC = (todolistID: string, taskID: string, status: T
 //             .catch(err => console.log('err: ' + err))
 //     }
 // }
-export const removeTaskTC = (todolistID: string, taskID: string):SeaThunkType => async (dispatch) => {
+export const removeTaskTC = (todolistID: string, taskID: string): SeaThunkType => async (dispatch) => {
     try {
         await tasksAPI.removeTask(todolistID, taskID)
         dispatch(removeTaskAC(todolistID, taskID))

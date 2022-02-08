@@ -82,16 +82,24 @@ export enum TaskPriorities {
     Later = 4
 }
 
+export type UpdateTaskType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
 export type ItemType = {
     id: string,
     title: string,
-    description: null,
+    description: string,
     todoListId: string,
     order: number,
     status: TaskStatuses,
     priority: TaskPriorities,
-    startDate: null,
-    deadline: null,
+    startDate: string,
+    deadline: string,
     addedDate: string
 }
 export type ApiTaskType = {
@@ -164,5 +172,11 @@ export const tasksAPI = {
     // }
     async removeTask(todolistID: string, taskID: string) {
         await instance.delete<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}`)
+    },
+    async changeTask(todolistID: string, taskID: string, model: UpdateTaskType) {
+        let res = await instance.put<SeaResponseType<{
+            item: ItemType
+        }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, model)
+        return res.data.data.item
     }
 }
