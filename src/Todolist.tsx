@@ -4,11 +4,11 @@ import EditSpan from "./Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
-import {changeTodolistFilterAC, changeTodolistsTC, removeTodolistsTC} from "./Components/Redux/TodolistsActions";
-import Task from "./Components/Task";
-import {addTaskTC, getTasksTC} from "./Components/Redux/TasksActions";
-import {FilterType, SeaTodolistsType} from "./Components/Redux/TodolistReducer";
-import {ItemType, TaskStatuses} from "./Components/Api/SeaApi";
+import {changeTodolistFilterAC, changeTodolistsTC, removeTodolistsTC} from "./Redux/TodolistsActions";
+import Task from "./Task";
+import {addTaskTC, getTasksTC} from "./Redux/TasksActions";
+import {FilterType, SeaTodolistsType} from "./Redux/TodolistReducer";
+import {ItemType, TaskStatuses} from "./Api/SeaApi";
 import styled from "styled-components";
 
 

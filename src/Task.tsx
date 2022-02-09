@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import EditSpan from "./EditSpan";
+import EditSpan from "./Components/EditSpan";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";

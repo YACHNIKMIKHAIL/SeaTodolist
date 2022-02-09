@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import AddForm from "./Components/AddForm";
+import AddForm from "../Components/AddForm";
 import {Button, Container, Grid, IconButton, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
-import {reducerType} from "./Components/Redux/store";
-import {getTodolistsTC, postTodolistsTC} from "./Components/Redux/TodolistsActions";
-import img2 from './Components/Images/wallpaperflare.com_wallpaper (1).jpg'
-import {Todolist} from "./Todolist";
-import {TasksStateType} from "./Components/Redux/TaskReducer";
-import {SeaTodolistsType} from "./Components/Redux/TodolistReducer";
+import {reducerType} from "../Redux/store";
+import {getTodolistsTC, postTodolistsTC} from "../Redux/TodolistsActions";
+import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
+import {TasksStateType} from "../Redux/TaskReducer";
+import {SeaTodolistsType} from "../Redux/TodolistReducer";
 import styled from "styled-components";
+import TodolistsList from "../Features/Todolists/TodolistsList";
 
 
 export const App = () => {
@@ -54,9 +54,7 @@ export const App = () => {
 
                         return <Grid item key={i}>
                             <TodolistCase>
-                                <Todolist todolist={t}
-                                          todoTasks={todoTasks}
-                                />
+                                <TodolistsList t={t} todoTasks={todoTasks}/>
                             </TodolistCase>
                         </Grid>;
 
