@@ -100,21 +100,3 @@ export const HCase = styled.div`
   justify-content: center;
   align-items: center;
 `
-export const ButtonCase = styled.div<{ props: boolean }>`
-  ${props => {
-    if (props) {
-      return `
-         background-color: hotpink;
-         opacity: 0.9;
-         color: #071421;
-         fontWeight: bold
-    `
-    } else if (!props) {
-      return `
-       background-color: #1F4B76;
-        opacity: 0.7;
-        color: hotpink;
-    `
-    }
-  }}
-`

@@ -28,26 +28,10 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         }, [dispatch, todolistID, actualTask.id])
 
         return (
-            <TaskCaseII
-                opacity={actualTask.status === TaskStatuses.Complited ? '0.8' : '1'}
-                color={actualTask.status === TaskStatuses.Complited ? 'white' : 'rgb(11,37,75)'}
-                // style={actualTask.status === TaskStatuses.Complited
-                // ? {
-                //     opacity: '0.8',
-                //     color: 'rgb(255,225,178)',
-                //     display: 'flex',
-                //     justifyContent: 'space-between',
-                //     alignItems: 'center',
-                //     fontWeight: 'normal',
-                // }
-                // : {
-                //     opacity: '1',
-                //     color: 'rgb(11,37,75)',
-                //     display: 'flex',
-                //     justifyContent: 'space-between',
-                //     alignItems: 'center',
-                //     fontWeight: 'bold'
-                // }}
+            <TaskCase
+                $opacity={actualTask.status === TaskStatuses.Complited ? '0.8' : '1'}
+                $color={actualTask.status === TaskStatuses.Complited ? 'white' : 'rgb(11,37,75)'}
+                $fontWeight={actualTask.status === TaskStatuses.Complited ? 'normal' : 'bold'}
             >
                 < Checkbox
                     checked={actualTask.status === TaskStatuses.Complited}
@@ -59,40 +43,17 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 <IconButton aria-label="delete" onClick={removeTask}>
                     <Delete/>
                 </IconButton>
-            </TaskCaseII>
+            </TaskCase>
         );
     }
 )
 export default Task;
 
-export const TaskCaseII = styled.div<{ opacity: string, color: string }>`
-  color: ${props => props.color};
-  opacity: ${props => props.opacity};
+export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeight: string }>`
+  color: ${props => props.$color};
+  opacity: ${props => props.$opacity};
+  font-weight: ${props => props.$fontWeight};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: bold;
-`
-
-export const TaskCase = styled.div<{ props: boolean }>`
-  ${props => {
-    if (props) {
-      return `
-        opacity: 0.6;
-        color: rgb(255,225,178);
-        display: flex;
-        justify-content:space-between;
-        align-items: center;
-        font-weight: normal;
-    `
-    } else if (!props) {
-      return `
-        color: rgb(11,37,75);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: bold;
-    `
-    }
-  }}
 `
