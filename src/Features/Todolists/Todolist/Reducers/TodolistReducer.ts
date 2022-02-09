@@ -5,9 +5,9 @@ import {
     removeTodolistAC,
     setTodoFromServAC,
     TodolistActions
-} from "./TodolistsActions";
-import {initialTodolists} from "./initailsStates";
-import {ApiTodolistType} from "../Api/SeaApi";
+} from "../Actions/TodolistsActions";
+import {initialTodolists} from "../../../../State/initailsStates";
+import {ApiTodolistType} from "../../../../Api/SeaApi";
 
 export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, action: seaTodolistActionsType): SeaTodolistsType[] => {
 

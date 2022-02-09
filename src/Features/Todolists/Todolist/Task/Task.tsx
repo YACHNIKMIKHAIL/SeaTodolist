@@ -1,11 +1,11 @@
 import React, {useCallback} from 'react';
-import EditSpan from "./Components/EditSpan";
+import EditSpan from "../../../../Components/EditSpan";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {reducerType} from "./Redux/store";
-import {changeTaskTC, removeTaskTC} from "./Redux/TasksActions";
-import {ItemType, TaskStatuses} from "./Api/SeaApi";
+import {reducerType} from "../../../../App/store";
+import {changeTaskTC, removeTaskTC} from "../Actions/TasksActions";
+import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 
 

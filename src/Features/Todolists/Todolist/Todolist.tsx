@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect} from 'react';
-import AddForm from "./Components/AddForm";
-import EditSpan from "./Components/EditSpan";
+import AddForm from "../../../Components/AddForm";
+import EditSpan from "../../../Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
-import {changeTodolistFilterAC, changeTodolistsTC, removeTodolistsTC} from "./Redux/TodolistsActions";
-import Task from "./Task";
-import {addTaskTC, getTasksTC} from "./Redux/TasksActions";
-import {FilterType, SeaTodolistsType} from "./Redux/TodolistReducer";
-import {ItemType, TaskStatuses} from "./Api/SeaApi";
+import {changeTodolistFilterAC, changeTodolistsTC, removeTodolistsTC} from "./Actions/TodolistsActions";
+import Task from "./Task/Task";
+import {addTaskTC, getTasksTC} from "./Actions/TasksActions";
+import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
+import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 
 

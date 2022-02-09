@@ -1,5 +1,5 @@
-import {TasksStateType} from "./TaskReducer";
-import {SeaTodolistsType} from "./TodolistReducer";
+import {TasksStateType} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
+import {SeaTodolistsType} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
 
 
 // const todolist1 = v1()

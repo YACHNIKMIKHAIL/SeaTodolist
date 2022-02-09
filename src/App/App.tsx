@@ -4,11 +4,11 @@ import AddForm from "../Components/AddForm";
 import {Button, Container, Grid, IconButton, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
-import {reducerType} from "../Redux/store";
-import {getTodolistsTC, postTodolistsTC} from "../Redux/TodolistsActions";
+import {reducerType} from "./store";
+import {getTodolistsTC, postTodolistsTC} from "../Features/Todolists/Todolist/Actions/TodolistsActions";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
-import {TasksStateType} from "../Redux/TaskReducer";
-import {SeaTodolistsType} from "../Redux/TodolistReducer";
+import {TasksStateType} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
+import {SeaTodolistsType} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
 import styled from "styled-components";
 import TodolistsList from "../Features/Todolists/TodolistsList";
 

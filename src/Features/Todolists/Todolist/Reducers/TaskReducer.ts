@@ -4,10 +4,10 @@ import {
     removeTaskAC,
     setTasksFromServAC,
     tasksActions
-} from "./TasksActions";
-import {addTodolistAC, removeTodolistAC, TodolistActions} from "./TodolistsActions";
-import {initialTasks} from "./initailsStates";
-import {ItemType} from "../Api/SeaApi";
+} from "../Actions/TasksActions";
+import {addTodolistAC, removeTodolistAC, TodolistActions} from "../Actions/TodolistsActions";
+import {initialTasks} from "../../../../State/initailsStates";
+import {ItemType} from "../../../../Api/SeaApi";
 
 export const taskReducer = (state: TasksStateType = initialTasks, action: seaTasksActionsType): TasksStateType => {
     switch (action.type) {

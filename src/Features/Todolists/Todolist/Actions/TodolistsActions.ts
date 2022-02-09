@@ -1,6 +1,6 @@
-import {FilterType} from "./TodolistReducer";
-import {ApiTodolistType, todolistAPI} from "../Api/SeaApi";
-import {SeaThunkType} from "./store";
+import {FilterType} from "../Reducers/TodolistReducer";
+import {ApiTodolistType, todolistAPI} from "../../../../Api/SeaApi";
+import {SeaThunkType} from "../../../../App/store";
 
 export enum TodolistActions {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',

@@ -1,6 +1,6 @@
 import React from 'react';
-import {Todolist} from "../../Todolist";
-import {SeaTodolistsType} from "../../Redux/TodolistReducer";
+import {Todolist} from "./Todolist/Todolist";
+import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
 import {ItemType} from "../../Api/SeaApi";
 
 type TodolistsListPropsType={

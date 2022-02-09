@@ -1,8 +1,8 @@
 import {v1} from "uuid";
-import {addTodolistAC, removeTodolistAC} from "./TodolistsActions";
-import {addTaskAC, changeTaskAC, removeTaskAC} from "./TasksActions";
+import {addTodolistAC, removeTodolistAC} from "../Actions/TodolistsActions";
+import {addTaskAC, changeTaskAC, removeTaskAC} from "../Actions/TasksActions";
 import {taskReducer, TasksStateType} from "./TaskReducer";
-import {ItemType} from "../Api/SeaApi";
+import {ItemType} from "../../../../Api/SeaApi";
 import {SeaTodolistsType} from "./TodolistReducer";
 
 let todolistID1: string

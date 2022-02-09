@@ -1,5 +1,5 @@
-import {ItemType, TaskPriorities, tasksAPI, TaskStatuses, UpdateTaskType} from "../Api/SeaApi";
-import {reducerType, SeaThunkType} from "./store";
+import {ItemType, TaskPriorities, tasksAPI, TaskStatuses, UpdateTaskType} from "../../../../Api/SeaApi";
+import {reducerType, SeaThunkType} from "../../../../App/store";
 
 export enum tasksActions {
     ADD_TASK = 'ADD_TASK',

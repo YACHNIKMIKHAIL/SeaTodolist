@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {SeaTodolistsType, todolistReducer} from "./TodolistReducer";
-import {addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./TodolistsActions";
+import {addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "../Actions/TodolistsActions";
 
 let todolistID1: string
 let todolistID2: string
