@@ -1,32 +1,5 @@
 import axios from "axios";
 
-export type ApiTodolistType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
-export type PostTodolistType = {
-    data: {
-        item: {
-            id: string,
-            title: string,
-            addedDate: string,
-            order: number
-        }
-    },
-    messages: [],
-    fieldsErrors: [],
-    resultCode: number
-}
-
-export type SeaResponseType<D = {}> = {
-    data: D
-    messages: string[]
-    fieldsErrors: string[]
-    resultCode: number
-}
-
 const instance = axios.create({
     withCredentials: true,
     baseURL: 'https://social-network.samuraijs.com/api/1.1',
@@ -41,21 +14,18 @@ export const todolistAPI = {
             .then(res => {
                 return res.data
             })
-        // .catch(err => console.log('err: ' + err))
     },
     postTodolists(title: string) {
         return instance.post<PostTodolistType>(`/todo-lists`, {title})
             .then(res => {
                 return res.data
             })
-        // .catch(err => console.log('err: ' + err))
     },
     deleteTodolists(todolistID: string) {
         return instance.delete<SeaResponseType>(`/todo-lists/${todolistID}`)
             .then(res => {
                 return res.data
             })
-        // .catch(err => console.log('err: ' + err))
     },
     changeTodolists(todolistID: string, title: string) {
         return instance.put<SeaResponseType>(`/todo-lists/${todolistID}`, {title})
@@ -79,32 +49,6 @@ export enum TaskPriorities {
     High = 2,
     Urgently = 3,
     Later = 4
-}
-
-export type UpdateTaskType = {
-    title: string
-    description: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-}
-export type ItemType = {
-    id: string,
-    title: string,
-    description: string,
-    todoListId: string,
-    order: number,
-    status: TaskStatuses,
-    priority: TaskPriorities,
-    startDate: string,
-    deadline: string,
-    addedDate: string
-}
-export type ApiTaskType = {
-    items: Array<ItemType>
-    totalCount: number
-    error: string | null
 }
 
 export const tasksAPI = {
@@ -149,4 +93,55 @@ export const tasksAPI = {
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, model)
         return res.data.data.item
     }
+}
+
+export type ApiTodolistType = {
+    id: string
+    title: string
+    addedDate: string
+    order: number
+}
+export type PostTodolistType = {
+    data: {
+        item: {
+            id: string,
+            title: string,
+            addedDate: string,
+            order: number
+        }
+    },
+    messages: [],
+    fieldsErrors: [],
+    resultCode: number
+}
+export type SeaResponseType<D = {}> = {
+    data: D
+    messages: string[]
+    fieldsErrors: string[]
+    resultCode: number
+}
+export type UpdateTaskType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
+export type ItemType = {
+    id: string,
+    title: string,
+    description: string,
+    todoListId: string,
+    order: number,
+    status: TaskStatuses,
+    priority: TaskPriorities,
+    startDate: string,
+    deadline: string,
+    addedDate: string
+}
+export type ApiTaskType = {
+    items: Array<ItemType>
+    totalCount: number
+    error: string | null
 }

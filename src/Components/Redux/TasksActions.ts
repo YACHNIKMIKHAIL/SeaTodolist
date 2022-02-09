@@ -12,13 +12,6 @@ export enum tasksActions {
 
 
 export const addTaskAC = (todolistID: string, item: ItemType) => ({type: tasksActions.ADD_TASK, todolistID, item} as const)
-export const changeTaskStatusAC = (todolistId: string, id: string, status: TaskStatuses) => ({
-    type: tasksActions.CHANGE_TASK_STATUS,
-    id,
-    status,
-    todolistId
-} as const)
-export const changeTaskTitleAC = (todolistId: string, id: string, newTitle: string) =>  ({type: tasksActions.CHANGE_TASK_TITLE, id, newTitle, todolistId} as const)
 export const removeTaskAC = (todolistId: string, id: string) => ({type: tasksActions.REMOVE_TASK, id, todolistId} as const)
 export const setTasksFromServAC = (todolistID: string, data: Array<ItemType>) => ({type: tasksActions.SET_TASKS_FROM_SERVER, todolistID, data} as const)
 export const changeTaskAC = (todolistID: string, taskID: string, item: ItemType) =>({

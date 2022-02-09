@@ -9,13 +9,6 @@ import {
 import {initialTodolists} from "./initailsStates";
 import {ApiTodolistType} from "../Api/SeaApi";
 
-export type FilterType = 'all' | 'complited' | 'active'
-
-export type SeaTodolistsType = ApiTodolistType & {
-    filter: FilterType
-}
-
-
 export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, action: seaTodolistActionsType): SeaTodolistsType[] => {
 
     switch (action.type) {
@@ -32,15 +25,20 @@ export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, ac
             return state.map(m => m.id === action.todolistId ? {...m, filter: action.filter} : m)
         }
         case TodolistActions.SET_FROM_SERVER: {
-            return action.data.map(m=>({...m,filter: 'all'}))
+            return action.data.map(m => ({...m, filter: 'all'}))
         }
         default:
             return state
     }
 }
+
 export type seaTodolistActionsType =
     ReturnType<typeof removeTodolistAC>
     | ReturnType<typeof addTodolistAC>
     | ReturnType<typeof changeTodolistTitleAC>
     | ReturnType<typeof changeTodolistFilterAC>
     | ReturnType<typeof setTodoFromServAC>
+export type FilterType = 'all' | 'complited' | 'active'
+export type SeaTodolistsType = ApiTodolistType & {
+    filter: FilterType
+}

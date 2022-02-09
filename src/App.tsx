@@ -85,6 +85,6 @@ export const ToolbarCase = styled.div`
 export const TodolistCase = styled.div`
   padding: 10px;
   background-color: #8AA8D2;
-  opacity: 0.75;
+  opacity: 0.95;
   border-radius: 10px
 `

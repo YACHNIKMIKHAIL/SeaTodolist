@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {addTodolistAC, removeTodolistAC} from "./TodolistsActions";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./TasksActions";
+import {addTaskAC, changeTaskAC, removeTaskAC} from "./TasksActions";
 import {taskReducer, TasksStateType} from "./TaskReducer";
 import {ItemType} from "../Api/SeaApi";
 import {SeaTodolistsType} from "./TodolistReducer";
@@ -20,7 +20,7 @@ beforeEach(() => {
     todolistID4 = v1()
     taskID = v1()
 
-    startState= {
+    startState = {
         [todolistID1]: [{id: v1(), title: "HTML&CSS", status: 2},
             {id: v1(), title: "JS", status: 2},
             {id: v1(), title: "ReactJS", status: 1}],
@@ -37,7 +37,11 @@ beforeEach(() => {
 })
 
 test('correct todolist should be added', () => {
-    let endState = taskReducer(startState, addTodolistAC({id:'hbdcuhbc',title:'New todolist',filter:'all'}as SeaTodolistsType))
+    let endState = taskReducer(startState, addTodolistAC({
+        id: 'hbdcuhbc',
+        title: 'New todolist',
+        filter: 'all'
+    } as SeaTodolistsType))
 
     expect(endState[todolistID1].length).toBe(3)
 })
@@ -58,24 +62,30 @@ test('correct task should be added', () => {
     expect(endState[todolistID3][0].title).toBe('bla-bla')
 })
 test('correct task status should be changed', () => {
-    let endState = taskReducer(startState, changeTaskStatusAC(todolistID3, taskID, 2))
+    let endState = taskReducer(startState, changeTaskAC(todolistID3, taskID, {
+        id: v1(),
+        title: 'hcahbdc',
+        status: 2
+    } as ItemType))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
     expect(endState[todolistID1].length).toBe(3)
     expect(endState[todolistID3].length).toBe(3)
-    expect(endState[todolistID3][1].id).toBe(taskID)
     expect(endState[todolistID3][1].status).toBe(2)
     expect(endState[todolistID3][2].status).toBe(1)
 })
 test('correct task title should be changed', () => {
-    let endState = taskReducer(startState, changeTaskTitleAC(todolistID3, taskID, 'hcahbdc'))
+    let endState = taskReducer(startState, changeTaskAC(todolistID3, taskID, {
+        id: v1(),
+        title: 'hcahbdc',
+        status: 0
+    } as ItemType))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
     expect(endState[todolistID1].length).toBe(3)
     expect(endState[todolistID3].length).toBe(3)
-    expect(endState[todolistID3][1].id).toBe(taskID)
     expect(endState[todolistID3][1].title).toBe('hcahbdc')
     expect(endState[todolistID3][2].status).toBe(1)
 })
