@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/SeaTodolist/static/css/main.e6c13ad2.css",
+    "main.js": "/SeaTodolist/static/js/main.b5e0e4b4.js",
+    "static/media/wallpaperflare.com_wallpaper (1).jpg": "/SeaTodolist/static/media/wallpaperflare.com_wallpaper (1).e8032a0a3020c40c8ffc.jpg",
+    "index.html": "/SeaTodolist/index.html",
+    "main.e6c13ad2.css.map": "/SeaTodolist/static/css/main.e6c13ad2.css.map",
+    "main.b5e0e4b4.js.map": "/SeaTodolist/static/js/main.b5e0e4b4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.b5e0e4b4.js"
+  ]
+}
