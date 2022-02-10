@@ -4,7 +4,7 @@ import EditSpan from "../../../Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
-import {changeTodolistFilterAC, changeTodolistsTC, removeTodolistsTC} from "./Actions/TodolistsActions";
+import {changeTodolistsTC, removeTodolistsTC, seaTodolistActions} from "./Actions/TodolistsActions";
 import Task from "./Task/Task";
 import {addTaskTC, getTasksTC} from "./Actions/TasksActions";
 import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
@@ -24,7 +24,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             if (filter === todolist.filter) {
                 return
             }
-            dispatch(changeTodolistFilterAC(todolist.id, filter))
+            dispatch(seaTodolistActions.changeTodolistFilterAC(todolist.id, filter))
         }
         const removeTodolist = useCallback(() => {
             dispatch(removeTodolistsTC(todolist.id))

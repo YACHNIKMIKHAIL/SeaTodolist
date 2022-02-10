@@ -1,9 +1,9 @@
 import {v1} from "uuid";
-import {addTodolistAC, removeTodolistAC} from "../Actions/TodolistsActions";
 import {addTaskAC, changeTaskAC, removeTaskAC} from "../Actions/TasksActions";
 import {taskReducer, TasksStateType} from "./TaskReducer";
 import {ItemType} from "../../../../Api/SeaApi";
 import {SeaTodolistsType} from "./TodolistReducer";
+import {seaTodolistActions} from "../Actions/TodolistsActions";
 
 let todolistID1: string
 let todolistID2: string
@@ -37,7 +37,7 @@ beforeEach(() => {
 })
 
 test('correct todolist should be added', () => {
-    let endState = taskReducer(startState, addTodolistAC({
+    let endState = taskReducer(startState, seaTodolistActions.addTodolistAC({
         id: 'hbdcuhbc',
         title: 'New todolist',
         filter: 'all'
@@ -46,7 +46,7 @@ test('correct todolist should be added', () => {
     expect(endState[todolistID1].length).toBe(3)
 })
 test('correct todolist should be removed', () => {
-    let endState = taskReducer(startState, removeTodolistAC(todolistID3))
+    let endState = taskReducer(startState, seaTodolistActions.removeTodolistAC(todolistID3))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)

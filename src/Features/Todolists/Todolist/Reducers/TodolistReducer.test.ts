@@ -1,6 +1,8 @@
 import {v1} from "uuid";
 import {SeaTodolistsType, todolistReducer} from "./TodolistReducer";
-import {addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "../Actions/TodolistsActions";
+import {
+    seaTodolistActions
+} from "../Actions/TodolistsActions";
 
 let todolistID1: string
 let todolistID2: string
@@ -24,7 +26,7 @@ beforeEach(() => {
 })
 
 test('correct todolist should be removed', () => {
-    let endState = todolistReducer(startState, removeTodolistAC(todolistID1))
+    let endState = todolistReducer(startState, seaTodolistActions.removeTodolistAC(todolistID1))
 
     expect(startState.length).toBe(4)
     expect(endState.length).toBe(3)
@@ -32,7 +34,7 @@ test('correct todolist should be removed', () => {
 })
 test('correct todolist should be added', () => {
 
-    let endState = todolistReducer(startState, addTodolistAC({
+    let endState = todolistReducer(startState, seaTodolistActions.addTodolistAC({
         id: 'hbdcuhbc',
         title: 'New todolist',
         filter: 'all'
@@ -43,14 +45,14 @@ test('correct todolist should be added', () => {
     expect(endState[0].title).toBe('New todolist')
 })
 test('correct todolist title should be changed', () => {
-    let endState = todolistReducer(startState, changeTodolistTitleAC(todolistID3, 'Changed todolist'))
+    let endState = todolistReducer(startState, seaTodolistActions.changeTodolistTitleAC(todolistID3, 'Changed todolist'))
 
     expect(startState.length).toBe(4)
     expect(endState.length).toBe(4)
     expect(endState[2].title).toBe('Changed todolist')
 })
 test('correct todolist filter should be changed', () => {
-    let endState = todolistReducer(startState, changeTodolistFilterAC(todolistID3, 'complited'))
+    let endState = todolistReducer(startState, seaTodolistActions.changeTodolistFilterAC(todolistID3, 'complited'))
 
     expect(endState.length).toBe(4)
     expect(endState[2].filter).toBe('complited')

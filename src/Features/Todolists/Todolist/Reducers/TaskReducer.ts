@@ -5,7 +5,7 @@ import {
     setTasksFromServAC,
     tasksActions
 } from "../Actions/TasksActions";
-import {addTodolistAC, removeTodolistAC, TodolistActions} from "../Actions/TodolistsActions";
+import {seaTodolistActions, seaTodolistActionsTypes, TodolistActions} from "../Actions/TodolistsActions";
 import {initialTasks} from "../../../../State/initailsStates";
 import {ItemType} from "../../../../Api/SeaApi";
 
@@ -47,8 +47,7 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: seaTas
     }
 }
 export type seaTasksActionsType =
-    ReturnType<typeof removeTodolistAC>
-    | ReturnType<typeof addTodolistAC>
+    ReturnType<seaTodolistActionsTypes<typeof seaTodolistActions>>
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof setTasksFromServAC>
     | ReturnType<typeof changeTaskAC>
