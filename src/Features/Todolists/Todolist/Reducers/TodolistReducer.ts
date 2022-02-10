@@ -1,4 +1,4 @@
-import {seaTodolistActions, seaTodolistActionsTypes, TodolistActions} from "../Actions/TodolistsActions";
+import {seaTodolistActions, seaReturnedTodolistActionsTypes, TodolistActions} from "../Actions/TodolistsActions";
 import {initialTodolists} from "../../../../State/initailsStates";
 import {ApiTodolistType} from "../../../../Api/SeaApi";
 
@@ -26,7 +26,7 @@ export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, ac
 }
 
 export type seaTodolistActionsType =
-    ReturnType<seaTodolistActionsTypes<typeof seaTodolistActions>>
+    ReturnType<seaReturnedTodolistActionsTypes<typeof seaTodolistActions>>
 
 
 export type FilterType = 'all' | 'complited' | 'active'

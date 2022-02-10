@@ -10,21 +10,36 @@ export enum tasksActions {
     CHANGE_TASK = 'CHANGE_TASK'
 }
 
-
-export const addTaskAC = (todolistID: string, item: ItemType) => ({type: tasksActions.ADD_TASK, todolistID, item} as const)
-export const removeTaskAC = (todolistId: string, id: string) => ({type: tasksActions.REMOVE_TASK, id, todolistId} as const)
-export const setTasksFromServAC = (todolistID: string, data: Array<ItemType>) => ({type: tasksActions.SET_TASKS_FROM_SERVER, todolistID, data} as const)
-export const changeTaskAC = (todolistID: string, taskID: string, item: ItemType) =>({
-    type: tasksActions.CHANGE_TASK,
-    todolistID,
-    taskID,
-    item
-} as const)
+export type seaReturnedTasksActionsType<S> = S extends { [key: string]: infer T } ? T : never
+export const seaTasksActions = {
+    addTaskAC: (todolistID: string, item: ItemType) => ({type: tasksActions.ADD_TASK, todolistID, item} as const),
+    removeTaskAC: (todolistId: string, id: string) => ({type: tasksActions.REMOVE_TASK, id, todolistId} as const),
+    setTasksFromServAC: (todolistID: string, data: Array<ItemType>) => ({
+        type: tasksActions.SET_TASKS_FROM_SERVER,
+        todolistID,
+        data
+    } as const),
+    changeTaskAC: (todolistID: string, taskID: string, item: ItemType) => ({
+        type: tasksActions.CHANGE_TASK,
+        todolistID,
+        taskID,
+        item
+    } as const)
+}
+// export const addTaskAC = (todolistID: string, item: ItemType) => ({type: tasksActions.ADD_TASK, todolistID, item} as const)
+// export const removeTaskAC = (todolistId: string, id: string) => ({type: tasksActions.REMOVE_TASK, id, todolistId} as const)
+// export const setTasksFromServAC = (todolistID: string, data: Array<ItemType>) => ({type: tasksActions.SET_TASKS_FROM_SERVER, todolistID, data} as const)
+// export const changeTaskAC = (todolistID: string, taskID: string, item: ItemType) =>({
+//     type: tasksActions.CHANGE_TASK,
+//     todolistID,
+//     taskID,
+//     item
+// } as const)
 
 export const getTasksTC = (todolistID: string): SeaThunkType => async (dispatch) => {
     try {
         let res = await tasksAPI.getTasks(todolistID)
-        dispatch(setTasksFromServAC(todolistID, res.items))
+        dispatch(seaTasksActions.setTasksFromServAC(todolistID, res.items))
     } catch (e) {
         console.log(e)
     }
@@ -33,7 +48,7 @@ export const addTaskTC = (todolistID: string, title: string): SeaThunkType => as
     try {
         let res = await tasksAPI.addTask(todolistID, title)
         const {item} = res.data;
-        dispatch(addTaskAC(todolistID, item))
+        dispatch(seaTasksActions.addTaskAC(todolistID, item))
     } catch (e) {
         console.log(e)
     }
@@ -61,7 +76,7 @@ export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSe
 
     try {
         let res = await tasksAPI.changeTask(todolistID, taskID, apiModel)
-        dispatch(changeTaskAC(todolistID, taskID, res))
+        dispatch(seaTasksActions.changeTaskAC(todolistID, taskID, res))
     } catch (e) {
         console.log(e)
     }
@@ -69,7 +84,7 @@ export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSe
 export const removeTaskTC = (todolistID: string, taskID: string): SeaThunkType => async (dispatch) => {
     try {
         await tasksAPI.removeTask(todolistID, taskID)
-        dispatch(removeTaskAC(todolistID, taskID))
+        dispatch(seaTasksActions.removeTaskAC(todolistID, taskID))
     } catch (e) {
         console.log(e)
     }
