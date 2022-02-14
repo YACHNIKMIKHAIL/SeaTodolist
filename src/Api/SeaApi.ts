@@ -29,10 +29,7 @@ export const todolistAPI = {
     },
     changeTodolists(todolistID: string, title: string) {
         return instance.put<SeaResponseType>(`/todo-lists/${todolistID}`, {title})
-            .then(res => {
-                return res.data
-            })
-            .catch(err => console.log('err: ' + err))
+
     }
 }
 
@@ -91,7 +88,7 @@ export const tasksAPI = {
         let res = await instance.put<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, model)
-        return res.data.data.item
+        return res
     }
 }
 

@@ -11,8 +11,6 @@ import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {reducerType} from "../../../App/store";
-import {seaStatusTypes} from "../../../App/SeaAppReducer";
-import {CircularProgress} from '@mui/material';
 
 
 type PropsType = {
@@ -21,7 +19,8 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
-        const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
+        const seaTodolist = useSelector<reducerType, SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
+
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
             if (filter === todolist.filter) {
@@ -53,19 +52,19 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         return <MainCase>
             <HCase>
                 <h3><EditSpan title={todolist.title} callback={changeTodolistTitle}/></h3>
-                <IconButton aria-label="delete" onClick={removeTodolist} disabled={seaStatus === 'loading'}>
+                <IconButton aria-label="delete" onClick={removeTodolist} disabled={seaTodolist.todolistStatus === 'loading'}>
                     <Delete/>
                 </IconButton>
             </HCase>
             <AddForm addFn={addTask}/>
-                {/*{seaStatus === 'loading'*/}
-                {/*    ? <CircularProgress color="secondary"/>*/}
-                {/*    : <div>*/}
-                {/*        {tasksForRender.map((m, i) => {*/}
-                {/*            return <Task key={i} id={m.id} todolistID={todolist.id}/>*/}
-                {/*        })}*/}
-                {/*    </div>}*/}
-            <div style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
+            {/*{seaStatus === 'loading'*/}
+            {/*    ? <CircularProgress color="secondary"/>*/}
+            {/*    : <div>*/}
+            {/*        {tasksForRender.map((m, i) => {*/}
+            {/*            return <Task key={i} id={m.id} todolistID={todolist.id}/>*/}
+            {/*        })}*/}
+            {/*    </div>}*/}
+            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 {tasksForRender.map((m, i) => {
                     return <Task key={i} id={m.id} todolistID={todolist.id}/>
                 })}

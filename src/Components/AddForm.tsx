@@ -12,7 +12,7 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const [error, setError] = useState<string>('')
 
     const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
-    console.log(seaStatus)
+
 
     const addTaskHandler = () => {
         if (title.trim() !== '') {

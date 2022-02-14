@@ -18,10 +18,10 @@ beforeEach(() => {
     todolistID4 = v1()
 
     startState = [
-        {id: todolistID1, title: 'What to learn?', filter: 'all'},
-        {id: todolistID2, title: 'What to buy?', filter: 'all'},
-        {id: todolistID3, title: 'What to fixie?', filter: 'all'},
-        {id: todolistID4, title: 'C чего начать?', filter: 'all'}
+        {id: todolistID1, title: 'What to learn?', filter: 'all',todolistStatus:'idle'},
+        {id: todolistID2, title: 'What to buy?', filter: 'all',todolistStatus:'idle'},
+        {id: todolistID3, title: 'What to fixie?', filter: 'all',todolistStatus:'idle'},
+        {id: todolistID4, title: 'C чего начать?', filter: 'all',todolistStatus:'idle'}
     ] as SeaTodolistsType[]
 })
 
@@ -56,4 +56,10 @@ test('correct todolist filter should be changed', () => {
 
     expect(endState.length).toBe(4)
     expect(endState[2].filter).toBe('complited')
+})
+test('correct todolist status should be changed', () => {
+    let endState = todolistReducer(startState, seaTodolistActions.changeTodolistStatusAC(todolistID3, 'loading'))
+
+    expect(endState.length).toBe(4)
+    expect(endState[2].todolistStatus).toBe('loading')
 })

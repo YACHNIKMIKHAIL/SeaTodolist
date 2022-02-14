@@ -11,6 +11,7 @@ export const seaHandleServer = <T>(data: SeaResponseType<T>, dispatch: Dispatch<
     }
     dispatch(setSeaAppStatus('failed'))
 }
-export const seaHandleNetwork = () => {
-
+export const seaHandleNetwork = (err: any, dispatch: Dispatch<seaAppActionsType>) => {
+    dispatch(setSeaAppError(err.message ? err.message : 'Some sea trouble was happend!'))
+    dispatch(setSeaAppStatus('failed'))
 }
