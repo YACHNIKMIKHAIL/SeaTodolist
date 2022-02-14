@@ -11,6 +11,7 @@ import {TasksStateType} from "../Features/Todolists/Todolist/Reducers/TaskReduce
 import {SeaTodolistsType} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
 import styled from "styled-components";
 import TodolistsList from "../Features/Todolists/TodolistsList";
+import LinearBuffer from "../Features/Todolists/LinearBuffer /LinearBuffer";
 
 
 export const App = () => {
@@ -40,6 +41,7 @@ export const App = () => {
                     </Typography>
                     <Button color="inherit" onClick={getFromS}>Login</Button>
                 </ToolbarCase>
+                <LinearBuffer/>
             </AppBarCase>
             <Container fixed>
                 <Grid container style={{padding: '20px', color: 'white'}}>

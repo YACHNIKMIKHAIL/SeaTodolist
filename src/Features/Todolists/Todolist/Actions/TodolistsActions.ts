@@ -10,7 +10,9 @@ export enum TodolistActions {
     SET_FROM_SERVER = 'SET_FROM_SERVER'
 }
 
+
 export type seaReturnedTodolistActionsTypes<T> = T extends { [key: string]: infer A } ? A : never
+
 export const seaTodolistActions = {
     removeTodolistAC: (todolistId: string) => ({type: TodolistActions.REMOVE_TODOLIST, todolistId} as const),
     addTodolistAC: (item: ApiTodolistType) => ({type: TodolistActions.ADD_TODOLIST, item} as const),
