@@ -16,7 +16,7 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: seaTas
         case tasksActions.ADD_TASK: {
             return {
                 ...state,
-                [action.todolistID]: [action.item, ...state[action.todolistID]]
+                [action.todolistID]: [{...action.item,loading:false}, ...state[action.todolistID]]
             }
         }
         case tasksActions.REMOVE_TASK: {
@@ -34,6 +34,15 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: seaTas
             return {
                 ...state,
                 [action.todolistID]: state[action.todolistID].map(m => m.id === action.taskID ? {...action.item} : m)
+            }
+        }
+        case tasksActions.loadTask: {
+            return {
+                ...state,
+                [action.todolistID]: state[action.todolistID].map(m => m.id === action.taskID ? {
+                    ...m,
+                    loading: action.loading
+                } : m)
             }
         }
         default:

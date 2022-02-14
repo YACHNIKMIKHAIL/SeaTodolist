@@ -8,7 +8,6 @@ import {changeTaskTC, removeTaskTC} from "../Actions/TasksActions";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 import {CircularProgress} from "@mui/material";
-import {SeaTodolistsType} from "../Reducers/TodolistReducer";
 
 
 type TaskPropsType = {
@@ -16,9 +15,11 @@ type TaskPropsType = {
     todolistID: string
 }
 const Task = React.memo(({todolistID, id}: TaskPropsType) => {
-        const seaTodolistStatus = useSelector<reducerType, SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolistID)[0])
+        const seaTaskLoading = useSelector<reducerType, boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
         const actualTask = useSelector<reducerType, ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
+        console.log(seaTaskLoading)
+
 
         const removeTask = useCallback(() => {
             dispatch(removeTaskTC(todolistID, id))
@@ -40,15 +41,15 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                     checked={actualTask.status === TaskStatuses.Complited}
                     onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
                     style={{color: '#1F4B76'}}
-                    disabled={seaTodolistStatus.todolistStatus === 'loading'}
+                    disabled={seaTaskLoading}
                 />
 
-                {seaTodolistStatus.todolistStatus === 'loading'
+                {seaTaskLoading
                     ? <CircularProgress style={{color: 'hotpink'}}/>
                     : <EditSpan title={actualTask.title} callback={changeTaskTitle}/>}
 
                 <IconButton aria-label="delete" onClick={removeTask}
-                            disabled={seaTodolistStatus.todolistStatus === 'loading'}
+                            disabled={seaTaskLoading}
                 >
                     <Delete/>
                 </IconButton>

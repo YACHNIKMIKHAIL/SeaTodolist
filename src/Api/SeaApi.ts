@@ -135,7 +135,7 @@ export type ItemType = {
     startDate: string,
     deadline: string,
     addedDate: string
-}
+} & { loading: boolean }
 export type ApiTaskType = {
     items: Array<ItemType>
     totalCount: number

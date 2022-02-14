@@ -10,7 +10,8 @@ export enum tasksActions {
     CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE',
     REMOVE_TASK = 'REMOVE_TASK',
     SET_TASKS_FROM_SERVER = 'SET_TASKS_FROM_SERVER',
-    CHANGE_TASK = 'CHANGE_TASK'
+    CHANGE_TASK = 'CHANGE_TASK',
+    loadTask='loadTask'
 }
 
 export type seaReturnedTasksActionsType<S> = S extends { [key: string]: infer T } ? T : never
@@ -27,7 +28,10 @@ export const seaTasksActions = {
         todolistID,
         taskID,
         item
-    } as const)
+    } as const),
+    loadTask:(todolistID: string, taskID: string, loading: boolean)=>({
+        type:tasksActions.loadTask,todolistID,taskID,loading
+    }as const)
 }
 
 export const getTasksTC = (todolistID: string): SeaThunkType => async (dispatch) => {
@@ -79,6 +83,7 @@ export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSe
     }
     dispatch(setSeaAppStatus('loading'))
     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
+    dispatch(seaTasksActions.loadTask(todolistID,taskID,true))
     try {
         let res = await tasksAPI.changeTask(todolistID, taskID, apiModel)
         const {item} = res.data.data
@@ -86,6 +91,7 @@ export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSe
             dispatch(seaTasksActions.changeTaskAC(todolistID, taskID, item))
             dispatch(setSeaAppStatus('succesed'))
             dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
+            dispatch(seaTasksActions.loadTask(todolistID,taskID,false))
         } else {
             seaHandleServer(res.data, dispatch)
             dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'failed'))
@@ -97,6 +103,7 @@ export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSe
 export const removeTaskTC = (todolistID: string, taskID: string): SeaThunkType => async (dispatch) => {
     dispatch(setSeaAppStatus('loading'))
     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
+    dispatch(seaTasksActions.loadTask(todolistID,taskID,true))
     try {
         await tasksAPI.removeTask(todolistID, taskID)
         dispatch(seaTasksActions.removeTaskAC(todolistID, taskID))
