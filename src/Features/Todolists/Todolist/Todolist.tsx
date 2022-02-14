@@ -12,6 +12,7 @@ import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {reducerType} from "../../../App/store";
 import {seaStatusTypes} from "../../../App/SeaAppReducer";
+import {CircularProgress} from '@mui/material';
 
 
 type PropsType = {
@@ -57,9 +58,19 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                 </IconButton>
             </HCase>
             <AddForm addFn={addTask}/>
-            <div>{tasksForRender.map((m, i) => {
-                return <Task key={i} id={m.id} todolistID={todolist.id}/>
-            })}</div>
+                {/*{seaStatus === 'loading'*/}
+                {/*    ? <CircularProgress color="secondary"/>*/}
+                {/*    : <div>*/}
+                {/*        {tasksForRender.map((m, i) => {*/}
+                {/*            return <Task key={i} id={m.id} todolistID={todolist.id}/>*/}
+                {/*        })}*/}
+                {/*    </div>}*/}
+            <div style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
+                {tasksForRender.map((m, i) => {
+                    return <Task key={i} id={m.id} todolistID={todolist.id}/>
+                })}
+            </div>
+
 
             <div>
                 <Button
