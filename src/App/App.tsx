@@ -13,6 +13,7 @@ import styled from "styled-components";
 import TodolistsList from "../Features/Todolists/TodolistsList";
 import LinearBuffer from "../Features/Todolists/LinearBuffer /LinearBuffer";
 import {seaStatusTypes} from './SeaAppReducer';
+import Error from "../Components/Error";
 
 
 export const App = () => {
@@ -65,6 +66,7 @@ export const App = () => {
                     })}
                 </Grid>
             </Container>
+            <Error/>
         </AppCase>
     );
 }
