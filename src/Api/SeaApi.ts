@@ -85,10 +85,9 @@ export const tasksAPI = {
         await instance.delete<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}`)
     },
     async changeTask(todolistID: string, taskID: string, model: UpdateTaskType) {
-        let res = await instance.put<SeaResponseType<{
+        return await instance.put<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, model)
-        return res
     }
 }
 

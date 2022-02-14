@@ -32,12 +32,14 @@ export const seaTasksActions = {
 
 export const getTasksTC = (todolistID: string): SeaThunkType => async (dispatch) => {
     dispatch(setSeaAppStatus('loading'))
+    dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
     try {
         let res = await tasksAPI.getTasks(todolistID)
         dispatch(seaTasksActions.setTasksFromServAC(todolistID, res.items))
         dispatch(setSeaAppStatus('succesed'))
+        dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
     } catch (e) {
-        console.log(e)
+        seaHandleNetwork(e, dispatch)
     }
 }
 export const addTaskTC = (todolistID: string, title: string): SeaThunkType => async (dispatch) => {

@@ -44,8 +44,8 @@ export const App = () => {
                     </Typography>
                     <Button color="inherit" onClick={getFromS}>Login</Button>
                 </ToolbarCase>
-                {seaStatus === 'loading' && <LinearBuffer/>}
             </AppBarCase>
+            {seaStatus === 'loading' && <LinearBuffer/>}
             <Container fixed>
                 <Grid container style={{padding: '20px', color: 'white'}}>
                     <AddForm addFn={addTodolist}/>

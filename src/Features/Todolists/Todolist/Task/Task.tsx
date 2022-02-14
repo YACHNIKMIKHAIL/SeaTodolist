@@ -31,26 +31,28 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         }, [dispatch, todolistID, actualTask.id])
 
         return (
-            seaTodolistStatus.todolistStatus === 'loading'
-                ? <CircularProgress style={{color: 'hotpink'}}/>
-                : <TaskCase
-                    $opacity={actualTask.status === TaskStatuses.Complited ? '0.8' : '1'}
-                    $color={actualTask.status === TaskStatuses.Complited ? 'white' : 'rgb(11,37,75)'}
-                    $fontWeight={actualTask.status === TaskStatuses.Complited ? 'normal' : 'bold'}
-                >
-                    < Checkbox
-                        checked={actualTask.status === TaskStatuses.Complited}
-                        onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
-                        style={{color: '#1F4B76'}}
-                    />
+            <TaskCase
+                $opacity={actualTask.status === TaskStatuses.Complited ? '0.8' : '1'}
+                $color={actualTask.status === TaskStatuses.Complited ? 'white' : 'rgb(11,37,75)'}
+                $fontWeight={actualTask.status === TaskStatuses.Complited ? 'normal' : 'bold'}
+            >
+                < Checkbox
+                    checked={actualTask.status === TaskStatuses.Complited}
+                    onChange={(e) => changeTaskStatus(e.currentTarget.checked)}
+                    style={{color: '#1F4B76'}}
+                    disabled={seaTodolistStatus.todolistStatus === 'loading'}
+                />
 
-                    <EditSpan title={actualTask.title} callback={changeTaskTitle}/>
-                    <IconButton aria-label="delete" onClick={removeTask}
-                        // disabled={seaStatus === 'loading'}
-                    >
-                        <Delete/>
-                    </IconButton>
-                </TaskCase>
+                {seaTodolistStatus.todolistStatus === 'loading'
+                    ? <CircularProgress style={{color: 'hotpink'}}/>
+                    : <EditSpan title={actualTask.title} callback={changeTaskTitle}/>}
+
+                <IconButton aria-label="delete" onClick={removeTask}
+                            disabled={seaTodolistStatus.todolistStatus === 'loading'}
+                >
+                    <Delete/>
+                </IconButton>
+            </TaskCase>
 
         );
     }
