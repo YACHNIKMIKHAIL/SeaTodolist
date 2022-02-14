@@ -1,5 +1,6 @@
 import {ItemType, TaskPriorities, tasksAPI, TaskStatuses, UpdateTaskType} from "../../../../Api/SeaApi";
 import {reducerType, SeaThunkType} from "../../../../App/store";
+import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 
 export enum tasksActions {
     ADD_TASK = 'ADD_TASK',
@@ -26,29 +27,24 @@ export const seaTasksActions = {
         item
     } as const)
 }
-// export const addTaskAC = (todolistID: string, item: ItemType) => ({type: tasksActions.ADD_TASK, todolistID, item} as const)
-// export const removeTaskAC = (todolistId: string, id: string) => ({type: tasksActions.REMOVE_TASK, id, todolistId} as const)
-// export const setTasksFromServAC = (todolistID: string, data: Array<ItemType>) => ({type: tasksActions.SET_TASKS_FROM_SERVER, todolistID, data} as const)
-// export const changeTaskAC = (todolistID: string, taskID: string, item: ItemType) =>({
-//     type: tasksActions.CHANGE_TASK,
-//     todolistID,
-//     taskID,
-//     item
-// } as const)
 
 export const getTasksTC = (todolistID: string): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
     try {
         let res = await tasksAPI.getTasks(todolistID)
         dispatch(seaTasksActions.setTasksFromServAC(todolistID, res.items))
+        dispatch(setSeaAppStatus('succesed'))
     } catch (e) {
         console.log(e)
     }
 }
 export const addTaskTC = (todolistID: string, title: string): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
     try {
         let res = await tasksAPI.addTask(todolistID, title)
         const {item} = res.data;
         dispatch(seaTasksActions.addTaskAC(todolistID, item))
+        dispatch(setSeaAppStatus('succesed'))
     } catch (e) {
         console.log(e)
     }
@@ -73,18 +69,21 @@ export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSe
         deadline: actualTaskParams.deadline,
         ...model
     }
-
+    dispatch(setSeaAppStatus('loading'))
     try {
         let res = await tasksAPI.changeTask(todolistID, taskID, apiModel)
         dispatch(seaTasksActions.changeTaskAC(todolistID, taskID, res))
+        dispatch(setSeaAppStatus('succesed'))
     } catch (e) {
         console.log(e)
     }
 }
 export const removeTaskTC = (todolistID: string, taskID: string): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
     try {
         await tasksAPI.removeTask(todolistID, taskID)
         dispatch(seaTasksActions.removeTaskAC(todolistID, taskID))
+        dispatch(setSeaAppStatus('succesed'))
     } catch (e) {
         console.log(e)
     }

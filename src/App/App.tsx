@@ -12,11 +12,13 @@ import {SeaTodolistsType} from "../Features/Todolists/Todolist/Reducers/Todolist
 import styled from "styled-components";
 import TodolistsList from "../Features/Todolists/TodolistsList";
 import LinearBuffer from "../Features/Todolists/LinearBuffer /LinearBuffer";
+import {seaStatusTypes} from './SeaAppReducer';
 
 
 export const App = () => {
     const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
     const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
+    const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
     const dispatch = useDispatch()
     const getFromS = () => {
         dispatch(getTodolistsTC())
@@ -41,7 +43,7 @@ export const App = () => {
                     </Typography>
                     <Button color="inherit" onClick={getFromS}>Login</Button>
                 </ToolbarCase>
-                <LinearBuffer/>
+                {seaStatus === 'loading' && <LinearBuffer/>}
             </AppBarCase>
             <Container fixed>
                 <Grid container style={{padding: '20px', color: 'white'}}>

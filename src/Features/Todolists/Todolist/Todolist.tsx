@@ -3,13 +3,15 @@ import AddForm from "../../../Components/AddForm";
 import EditSpan from "../../../Components/EditSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {changeTodolistsTC, removeTodolistsTC, seaTodolistActions} from "./Actions/TodolistsActions";
 import Task from "./Task/Task";
 import {addTaskTC, getTasksTC} from "./Actions/TasksActions";
 import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
+import {reducerType} from "../../../App/store";
+import {seaStatusTypes} from "../../../App/SeaAppReducer";
 
 
 type PropsType = {
@@ -18,7 +20,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
-
+        const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
             if (filter === todolist.filter) {
@@ -38,7 +40,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
         useEffect(() => {
             dispatch(getTasksTC(todolist.id))
-        }, [dispatch,todolist.id])
+        }, [dispatch, todolist.id])
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
@@ -50,7 +52,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         return <MainCase>
             <HCase>
                 <h3><EditSpan title={todolist.title} callback={changeTodolistTitle}/></h3>
-                <IconButton aria-label="delete" onClick={removeTodolist}>
+                <IconButton aria-label="delete" onClick={removeTodolist} disabled={seaStatus === 'loading'}>
                     <Delete/>
                 </IconButton>
             </HCase>

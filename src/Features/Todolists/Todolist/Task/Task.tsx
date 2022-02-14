@@ -7,6 +7,7 @@ import {reducerType} from "../../../../App/store";
 import {changeTaskTC, removeTaskTC} from "../Actions/TasksActions";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
+import {seaStatusTypes} from "../../../../App/SeaAppReducer";
 
 
 type TaskPropsType = {
@@ -14,6 +15,7 @@ type TaskPropsType = {
     todolistID: string
 }
 const Task = React.memo(({todolistID, id}: TaskPropsType) => {
+        const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
         const actualTask = useSelector<reducerType, ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
 
@@ -40,7 +42,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 />
 
                 <EditSpan title={actualTask.title} callback={changeTaskTitle}/>
-                <IconButton aria-label="delete" onClick={removeTask}>
+                <IconButton aria-label="delete" onClick={removeTask} disabled={seaStatus === 'loading'}>
                     <Delete/>
                 </IconButton>
             </TaskCase>

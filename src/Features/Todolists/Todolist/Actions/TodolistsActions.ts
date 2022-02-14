@@ -1,6 +1,7 @@
 import {FilterType} from "../Reducers/TodolistReducer";
 import {ApiTodolistType, todolistAPI} from "../../../../Api/SeaApi";
 import {SeaThunkType} from "../../../../App/store";
+import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 
 export enum TodolistActions {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
@@ -30,34 +31,48 @@ export const seaTodolistActions = {
 }
 
 
-export const getTodolistsTC = (): SeaThunkType => {
-    return (dispatch) => {
-        todolistAPI.getTodolists()
-            .then(data => dispatch(seaTodolistActions.setTodoFromServAC(data)))
-            .catch(err => console.log('err: ' + err))
+export const getTodolistsTC = (): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
+    try {
+        let sea = await todolistAPI.getTodolists()
+        dispatch(seaTodolistActions.setTodoFromServAC(sea))
+        dispatch(setSeaAppStatus('succesed'))
+    } catch (e) {
+
+    }
+
+}
+export const postTodolistsTC = (title: string): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
+    try {
+        let sea = await todolistAPI.postTodolists(title)
+        const {item} = sea.data;
+        dispatch(seaTodolistActions.addTodolistAC(item))
+        dispatch(setSeaAppStatus('succesed'))
+    } catch (e) {
+
     }
 }
-export const postTodolistsTC = (title: string): SeaThunkType => {
-    return (dispatch) => {
-        todolistAPI.postTodolists(title)
-            .then(data => {
-                const {item} = data.data;
-                dispatch(seaTodolistActions.addTodolistAC(item))
-            })
-            .catch(err => console.log('err: ' + err))
+
+export const removeTodolistsTC = (todolistID: string): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
+    try {
+        await todolistAPI.deleteTodolists(todolistID)
+        dispatch(seaTodolistActions.removeTodolistAC(todolistID))
+        dispatch(setSeaAppStatus('succesed'))
+    } catch (e) {
+
     }
 }
-export const removeTodolistsTC = (todolistID: string): SeaThunkType => {
-    return (dispatch) => {
-        todolistAPI.deleteTodolists(todolistID)
-            .then(() => dispatch(seaTodolistActions.removeTodolistAC(todolistID)))
-            .catch(err => console.log('err: ' + err))
+export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
+    try {
+        await todolistAPI.changeTodolists(todolistID, title)
+        dispatch(seaTodolistActions.changeTodolistTitleAC(todolistID, title))
+        dispatch(setSeaAppStatus('succesed'))
+    } catch (e) {
+
     }
-}
-export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkType => {
-    return (dispatch) => {
-        todolistAPI.changeTodolists(todolistID, title)
-            .then(() => dispatch(seaTodolistActions.changeTodolistTitleAC(todolistID, title)))
-            .catch(err => console.log('err: ' + err))
-    }
+
+
 }

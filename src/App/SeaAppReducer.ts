@@ -2,7 +2,7 @@ export type SeaAppInitStateType = {
     seaStatus: seaStatusTypes
     seaError: string | null
 }
-type seaStatusTypes = 'idle' | 'loading' | 'succesed' | 'failed'
+export type seaStatusTypes = 'idle' | 'loading' | 'succesed' | 'failed'
 
 const seaInitState: SeaAppInitStateType = {
     seaStatus: 'idle',
