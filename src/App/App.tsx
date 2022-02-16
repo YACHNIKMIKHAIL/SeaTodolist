@@ -14,6 +14,7 @@ import TodolistsList from "../Features/Todolists/TodolistsList";
 import {seaStatusTypes} from './SeaAppReducer';
 import Error from "../Components/Error";
 import {LinearProgress} from "@mui/material";
+import SeaLogin from "../Features/SeaLogin/SeaLogin";
 
 export const App = () => {
     const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
@@ -44,11 +45,10 @@ export const App = () => {
                     <Button color="inherit" onClick={getFromS}>Login</Button>
                 </ToolbarCase>
             </AppBarCase>
-
-            {seaStatus === 'loading' && <LinearProgress color="inherit" style={{color:'hotpink',height:'7px'}}/>}
+            <SeaLogin/>
+            {seaStatus === 'loading' && <LinearProgress color="inherit" style={{color: 'hotpink', height: '7px'}}/>}
             <Container fixed>
                 <Grid container style={{padding: '20px', color: 'white'}}>
-                    <AddForm addFn={addTodolist}/>
                 </Grid>
                 <Grid container spacing={5}>
                     {todolists.map((t, i) => {
