@@ -14,7 +14,7 @@ import styled from "styled-components";
 const SeaLogin = () => {
     return (
         <Grid container justify='center'>
-            <Grid item xs={3}>
+            <Grid item xs={5}>
                 <LoginCase>
                     <FormControl>
                         <FormLabel>

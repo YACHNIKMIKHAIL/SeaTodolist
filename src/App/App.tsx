@@ -1,24 +1,22 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import AddForm from "../Components/AddForm";
-import {Button, Container, Grid, IconButton, Typography} from '@material-ui/core';
+import {Button, Container, IconButton, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./store";
 import {getTodolistsTC, postTodolistsTC} from "../Features/Todolists/Todolist/Actions/TodolistsActions";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
-import {TasksStateType} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
-import {SeaTodolistsType} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
 import styled from "styled-components";
-import TodolistsList from "../Features/Todolists/TodolistsList";
 import {seaStatusTypes} from './SeaAppReducer';
 import Error from "../Components/Error";
 import {LinearProgress} from "@mui/material";
 import SeaLogin from "../Features/SeaLogin/SeaLogin";
+import {Route,Routes} from 'react-router-dom';
+import SeaMain from "../Features/Todolists/SeaMain";
 
 export const App = () => {
-    const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
-    const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
+    // const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
+    // const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
     const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
     const dispatch = useDispatch()
     const getFromS = () => {
@@ -45,26 +43,29 @@ export const App = () => {
                     <Button color="inherit" onClick={getFromS}>Login</Button>
                 </ToolbarCase>
             </AppBarCase>
-            <SeaLogin/>
             {seaStatus === 'loading' && <LinearProgress color="inherit" style={{color: 'hotpink', height: '7px'}}/>}
             <Container fixed>
-                <Grid container style={{padding: '20px', color: 'white'}}>
-                </Grid>
-                <Grid container spacing={5}>
-                    {todolists.map((t, i) => {
-                        let todoTasks = tasks[t.id]
-                        if (todoTasks === undefined) {
-                            todoTasks = []
-                        }
+                <Routes>
+                    <Route path={'/login'} element={<SeaLogin/>}/>
+                    <Route path={'/'} element={<SeaMain/>}/>
+                </Routes>
+                {/*<Grid container style={{padding: '20px', color: 'white'}}>*/}
 
-                        return <Grid item key={i}>
-                            <TodolistCase>
-                                <TodolistsList t={t} todoTasks={todoTasks}/>
-                            </TodolistCase>
-                        </Grid>;
+                {/*    <Grid container spacing={5}>*/}
+                {/*        {todolists.map((t, i) => {*/}
+                {/*            let todoTasks = tasks[t.id]*/}
+                {/*            if (todoTasks === undefined) {*/}
+                {/*                todoTasks = []*/}
+                {/*            }*/}
 
-                    })}
-                </Grid>
+                {/*            return <Grid item key={i}>*/}
+                {/*                <TodolistCase>*/}
+                {/*                    <TodolistsList t={t} todoTasks={todoTasks}/>*/}
+                {/*                </TodolistCase>*/}
+                {/*            </Grid>;*/}
+                {/*        })}*/}
+                {/*    </Grid>*/}
+                {/*</Grid>*/}
             </Container>
             <Error/>
         </AppCase>
