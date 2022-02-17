@@ -22,7 +22,7 @@ import {Navigate} from "react-router-dom";
 const SeaLogin = () => {
     const dispatch=useDispatch()
     const isLoggedInSea=useSelector<reducerType,boolean>(state=>state.auth.isLoginIn)
-debugger
+
     const formik = useFormik({
         validate: (values) => {
             if (!values.email) {

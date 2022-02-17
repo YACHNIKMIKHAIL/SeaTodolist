@@ -1,5 +1,5 @@
 import axios from "axios";
-import {initialLoginStateType, initialLoginType} from "../Features/SeaLogin/SeaAuthReducer";
+import {initialLoginType} from "../Features/SeaLogin/SeaAuthReducer";
 
 const instance = axios.create({
     withCredentials: true,
@@ -145,17 +145,20 @@ export type ApiTaskType = {
 
 export const seaAuthAPI = {
     async login(seaData: initialLoginType) {
-        let sea = await instance.post<SeaResponseType<{
+        return await instance.post<SeaResponseType<{
             userId?: number
         }>>(`/auth/login`, seaData)
-        return sea
+
     },
     async me() {
-        let me = await instance.get<SeaResponseType<{
+        return await instance.get<SeaResponseType<{
             id: number,
             login: string,
             email: string
         }>>(`/auth/me`)
-        return me
+
+    },
+    async logOut() {
+        return await instance.delete<SeaResponseType>(`/auth/login`)
     }
 }

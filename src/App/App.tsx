@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Button, Container, IconButton, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "./store";
-import {getTodolistsTC} from "../Features/Todolists/Todolist/Actions/TodolistsActions";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
 import {initializedSeaAppTC, seaStatusTypes} from './SeaAppReducer';
@@ -13,6 +12,7 @@ import {CircularProgress, LinearProgress} from "@mui/material";
 import SeaLogin from "../Features/SeaLogin/SeaLogin";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
+import {seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
 
 export const App = () => {
     // const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
@@ -22,9 +22,13 @@ export const App = () => {
     const myName = useSelector<reducerType, string | null>(state => state.auth.myName)
 
     const dispatch = useDispatch()
-    const getFromS = () => {
-        dispatch(getTodolistsTC())
-    }
+    const personalSeaFeature = useCallback(() => {
+        if (myName !== null) {
+            dispatch(seaLoginOutTC())
+        } else {
+            return
+        }
+    }, [dispatch,myName])
     // const addTodolist = useCallback((newTitle: string) => {
     //     dispatch(postTodolistsTC(newTitle))
     // }, [dispatch])
@@ -48,7 +52,8 @@ export const App = () => {
                     <Typography variant="h6">
                         SEA_TODOLIST
                     </Typography>
-                    <Button color="inherit" style={{color: 'hotpink'}} onClick={getFromS}>{myName !== null ? myName : 'Login'}</Button>
+                    <Button color="inherit" style={{color: 'hotpink'}}
+                            onClick={personalSeaFeature}>{myName !== null ? myName : 'Login'}</Button>
                 </ToolbarCase>
             </AppBarCase>
             {seaStatus === 'loading' && <LinearProgress color="inherit" style={{color: 'hotpink', height: '7px'}}/>}

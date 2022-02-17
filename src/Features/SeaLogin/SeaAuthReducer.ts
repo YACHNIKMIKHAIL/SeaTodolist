@@ -59,3 +59,18 @@ export const seaLoginTC = (seaData: initialLoginType): SeaThunkType => async (di
         seaHandleNetwork(e, dispatch)
     }
 }
+export const seaLoginOutTC = (): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
+    try {
+        let sea = await seaAuthAPI.logOut()
+        if (sea.data.resultCode === 0) {
+            dispatch(seaLoginActions.isLoginInAC(false))
+            dispatch(seaLoginActions.setMyNameAC(null))
+            dispatch(setSeaAppStatus('succesed'))
+        } else {
+            seaHandleServer(sea.data, dispatch)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+    }
+}
