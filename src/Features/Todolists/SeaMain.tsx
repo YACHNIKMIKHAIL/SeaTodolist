@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Grid} from "@material-ui/core";
 import TodolistsList from "./TodolistsList";
 import {TodolistCase} from "../../App/App";
@@ -6,20 +6,23 @@ import {useDispatch, useSelector} from "react-redux";
 import {reducerType} from "../../App/store";
 import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
 import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
-import {getTodolistsTC} from "./Todolist/Actions/TodolistsActions";
+import {getTodolistsTC, postTodolistsTC} from "./Todolist/Actions/TodolistsActions";
+import AddForm from "../../Components/AddForm";
 
 const SeaMain = () => {
     const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
     const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     debugger
-    //     dispatch(getTodolistsTC())
-    // }, [dispatch])
+    const addTodolist = useCallback((newTitle: string) => {
+        dispatch(postTodolistsTC(newTitle))
+    }, [dispatch])
+    useEffect(() => {
+        dispatch(getTodolistsTC())
+    }, [dispatch])
     return (
         <Grid container style={{padding: '20px', color: 'white'}}>
-
+            <AddForm addFn={addTodolist}/>
             <Grid container spacing={5}>
                 {todolists.map((t, i) => {
                     let todoTasks = tasks[t.id]

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {Button, Container, IconButton, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
@@ -11,8 +11,10 @@ import {seaStatusTypes} from './SeaAppReducer';
 import Error from "../Components/Error";
 import {LinearProgress} from "@mui/material";
 import SeaLogin from "../Features/SeaLogin/SeaLogin";
-import {Route,Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
+import EditSpan from "../Components/EditSpan";
+import AddForm from "../Components/AddForm";
 
 export const App = () => {
     // const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
@@ -22,13 +24,13 @@ export const App = () => {
     const getFromS = () => {
         dispatch(getTodolistsTC())
     }
-    const addTodolist = useCallback((newTitle: string) => {
-        dispatch(postTodolistsTC(newTitle))
-    }, [dispatch])
+    // const addTodolist = useCallback((newTitle: string) => {
+    //     dispatch(postTodolistsTC(newTitle))
+    // }, [dispatch])
 
-    useEffect(() => {
-        dispatch(getTodolistsTC())
-    }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(getTodolistsTC())
+    // }, [dispatch])
 
     return (
         <AppCase>
