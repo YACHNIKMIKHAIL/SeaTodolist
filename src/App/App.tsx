@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Button, Container, IconButton, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
@@ -7,7 +7,7 @@ import {reducerType} from "./store";
 import {getTodolistsTC, postTodolistsTC} from "../Features/Todolists/Todolist/Actions/TodolistsActions";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
-import {seaStatusTypes} from './SeaAppReducer';
+import {initializaSeaAppTC, seaStatusTypes} from './SeaAppReducer';
 import Error from "../Components/Error";
 import {CircularProgress, LinearProgress} from "@mui/material";
 import SeaLogin from "../Features/SeaLogin/SeaLogin";
@@ -29,51 +29,33 @@ export const App = () => {
     //     dispatch(postTodolistsTC(newTitle))
     // }, [dispatch])
 
-    // useEffect(() => {
-    //     dispatch(getTodolistsTC())
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(initializaSeaAppTC())
+    }, [dispatch])
     if (!isInitializedApp) {
-        return <div style={{width: '100%', height: '100vh', display: 'flex', justifyContent: "center",alignItems:'center'}}>
+        return <AppCase style={{width: '100%', height: '100vh', display: 'flex', justifyContent: "center",alignItems:'center'}}>
             <CircularProgress style={{color: 'hotpink'}} size={150}/>
-        </div>
+        </AppCase>
     }
     return (
         <AppCase>
-
-            <AppBarCase>
-                <ToolbarCase>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        SEA_TODOLIST
-                    </Typography>
-                    <Button color="inherit" onClick={getFromS}>Login</Button>
-                </ToolbarCase>
-            </AppBarCase>
+           <AppBarCase>
+            <ToolbarCase>
+                <IconButton edge="start" color="inherit" aria-label="menu">
+                    <Menu/>
+                </IconButton>
+                <Typography variant="h6">
+                    SEA_TODOLIST
+                </Typography>
+                <Button color="inherit" onClick={getFromS}>Login</Button>
+            </ToolbarCase>
+        </AppBarCase>
             {seaStatus === 'loading' && <LinearProgress color="inherit" style={{color: 'hotpink', height: '7px'}}/>}
             <Container fixed>
                 <Routes>
                     <Route path={'/login'} element={<SeaLogin/>}/>
                     <Route path={'/'} element={<SeaMain/>}/>
                 </Routes>
-                {/*<Grid container style={{padding: '20px', color: 'white'}}>*/}
-
-                {/*    <Grid container spacing={5}>*/}
-                {/*        {todolists.map((t, i) => {*/}
-                {/*            let todoTasks = tasks[t.id]*/}
-                {/*            if (todoTasks === undefined) {*/}
-                {/*                todoTasks = []*/}
-                {/*            }*/}
-
-                {/*            return <Grid item key={i}>*/}
-                {/*                <TodolistCase>*/}
-                {/*                    <TodolistsList t={t} todoTasks={todoTasks}/>*/}
-                {/*                </TodolistCase>*/}
-                {/*            </Grid>;*/}
-                {/*        })}*/}
-                {/*    </Grid>*/}
-                {/*</Grid>*/}
             </Container>
             <Error/>
         </AppCase>
