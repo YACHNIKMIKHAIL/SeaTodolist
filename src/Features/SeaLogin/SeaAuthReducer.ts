@@ -6,14 +6,25 @@ import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
 
 export type initialLoginStateType = {
     isLoginIn: boolean
+    myName:string|null
 }
 const initialLoginState = {
-    isLoginIn: false
+    isLoginIn: false,
+    myName:null
 }
+
+export enum loginActions {
+    SET_LOGIN_IN = 'SET_LOGIN_IN',
+    SET_MY_NAME='SET_MY_NAME'
+}
+
 export const seaAuthReducer = (state: initialLoginStateType = initialLoginState, action: seaLoginActionsType): initialLoginStateType => {
     switch (action.type) {
         case loginActions.SET_LOGIN_IN: {
             return {...state, isLoginIn: action.value}
+        }
+        case loginActions.SET_MY_NAME: {
+            return {...state, myName: action.name}
         }
 
         default:
@@ -23,16 +34,10 @@ export const seaAuthReducer = (state: initialLoginStateType = initialLoginState,
 export type seaLoginActionsType =
     ReturnType<seaReturnedLoginActionsType<typeof seaLoginActions>>
 
-
-export enum loginActions {
-    SET_LOGIN_IN = 'SET_LOGIN_IN',
-
-}
-
 export type seaReturnedLoginActionsType<S> = S extends { [key: string]: infer T } ? T : never
 export const seaLoginActions = {
     isLoginInAC: (value: boolean) => ({type: loginActions.SET_LOGIN_IN, value} as const),
-
+    setMyNameAC: (name: string|null) => ({type: loginActions.SET_MY_NAME, name} as const),
 }
 export type initialLoginType={
     email:string

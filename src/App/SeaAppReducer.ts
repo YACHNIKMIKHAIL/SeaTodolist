@@ -1,7 +1,7 @@
 import {SeaThunkType} from "./store";
 import {seaAuthAPI} from "../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
-import {initialLoginType, seaLoginActions} from "../Features/SeaLogin/SeaAuthReducer";
+import {seaLoginActions} from "../Features/SeaLogin/SeaAuthReducer";
 
 export type SeaAppInitStateType = {
     seaStatus: seaStatusTypes
@@ -15,6 +15,12 @@ const seaInitState: SeaAppInitStateType = {
     seaError: null,
     isInitialized: false
 }
+export enum SeaAppActions {
+    SET_SEA_STATUS = 'SET_SEA_STATUS',
+    SET_SEA_ERROR = 'SET_SEA_ERROR',
+    SET_IS_INITIALIZED = 'SET_IS_INITIALIZED'
+}
+
 export const seaAppResucer = (state = seaInitState, action: seaAppActionsType): SeaAppInitStateType => {
     switch (action.type) {
         case SeaAppActions.SET_SEA_STATUS: {
@@ -29,12 +35,6 @@ export const seaAppResucer = (state = seaInitState, action: seaAppActionsType): 
         default:
             return state
     }
-}
-
-export enum SeaAppActions {
-    SET_SEA_STATUS = 'SET_SEA_STATUS',
-    SET_SEA_ERROR = 'SET_SEA_ERROR',
-    SET_IS_INITIALIZED = 'SET_IS_INITIALIZED'
 }
 
 type setSeaAppStatusType = ReturnType<typeof setSeaAppStatus>
@@ -57,14 +57,19 @@ export const setSeaAppInitialized = (isInitial: boolean) => {
 }
 export type seaAppActionsType = setSeaAppStatusType | setSeaAppErrorType | setSeaAppInitializedType
 
-export const initializaSeaAppTC = (): SeaThunkType => async (dispatch) => {
+export const initializedSeaAppTC = (): SeaThunkType => async (dispatch) => {
     dispatch(setSeaAppStatus('loading'))
     try {
         let sea = await seaAuthAPI.me()
         if (sea.data.resultCode === 0) {
+            dispatch(seaLoginActions.isLoginInAC(true))
             dispatch(setSeaAppInitialized(true))
+            dispatch(seaLoginActions.setMyNameAC(sea.data.data.login))
             dispatch(setSeaAppStatus('succesed'))
         } else {
+            dispatch(seaLoginActions.isLoginInAC(false))
+            dispatch(setSeaAppInitialized(true))
+            dispatch(seaLoginActions.setMyNameAC(null))
             seaHandleServer(sea.data, dispatch)
         }
     } catch (e) {
