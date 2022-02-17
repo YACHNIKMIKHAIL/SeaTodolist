@@ -149,5 +149,13 @@ export const seaAuthAPI = {
             userId?: number
         }>>(`/auth/login`, seaData)
         return sea
+    },
+    async me() {
+        let me = await instance.get<SeaResponseType<{
+            id: number,
+            login: string,
+            email: string
+        }>>(`/auth/me`)
+        return me
     }
 }

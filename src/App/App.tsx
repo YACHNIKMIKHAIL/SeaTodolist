@@ -9,7 +9,7 @@ import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
 import {seaStatusTypes} from './SeaAppReducer';
 import Error from "../Components/Error";
-import {LinearProgress} from "@mui/material";
+import {CircularProgress, LinearProgress} from "@mui/material";
 import SeaLogin from "../Features/SeaLogin/SeaLogin";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
@@ -20,6 +20,7 @@ export const App = () => {
     // const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
     // const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
     const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
+    const isInitializedApp = useSelector<reducerType, boolean>(state => state.app.isInitialized)
     const dispatch = useDispatch()
     const getFromS = () => {
         dispatch(getTodolistsTC())
@@ -31,9 +32,14 @@ export const App = () => {
     // useEffect(() => {
     //     dispatch(getTodolistsTC())
     // }, [dispatch])
-
+    if (!isInitializedApp) {
+        return <div style={{width: '100%', height: '100vh', display: 'flex', justifyContent: "center",alignItems:'center'}}>
+            <CircularProgress style={{color: 'hotpink'}} size={150}/>
+        </div>
+    }
     return (
         <AppCase>
+
             <AppBarCase>
                 <ToolbarCase>
                     <IconButton edge="start" color="inherit" aria-label="menu">
