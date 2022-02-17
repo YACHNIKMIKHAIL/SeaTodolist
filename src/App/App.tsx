@@ -12,30 +12,18 @@ import {CircularProgress, LinearProgress} from "@mui/material";
 import SeaLogin from "../Features/SeaLogin/SeaLogin";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
-import {seaLoginActions, seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
+import {seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
 
 export const App = () => {
-    // const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
-    // const tasks = useSelector<reducerType, TasksStateType>(state => state.tasks)
     const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
     const isInitializedApp = useSelector<reducerType, boolean>(state => state.app.isInitialized)
-    const myName = useSelector<reducerType, string | null>(state => state.auth.myName)
+    const isLoginIn = useSelector<reducerType, boolean>(state => state.auth.isLoginIn)
+
 
     const dispatch = useDispatch()
-    const personalSeaFeature = useCallback(() => {
-        if (myName !== null) {
-            dispatch(seaLoginOutTC())
-        } else {
-            return
-        }
-    }, [dispatch,myName])
-
-    if(myName!==null){
-        dispatch(seaLoginActions.setMyNameAC(myName))
-    }
-    // const addTodolist = useCallback((newTitle: string) => {
-    //     dispatch(postTodolistsTC(newTitle))
-    // }, [dispatch])
+    const logout = useCallback(() => {
+        dispatch(seaLoginOutTC())
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(initializedSeaAppTC())
@@ -43,7 +31,8 @@ export const App = () => {
 
     if (!isInitializedApp) {
         return <AppCase
-            style={{width: '100%', height: '100vh', display: 'flex', justifyContent: "center", alignItems: 'center'}}>
+            style={{width: '100%', height: '100vh', display: 'flex', justifyContent: "center", alignItems: 'center'}}
+        >
             <CircularProgress style={{color: 'hotpink'}} size={150}/>
         </AppCase>
     }
@@ -57,13 +46,13 @@ export const App = () => {
                     <Typography variant="h6">
                         SEA_TODOLIST
                     </Typography>
-                    <Button color="inherit" style={{color: 'hotpink'}}
-                            onClick={personalSeaFeature}>{myName !== null ? myName : 'Login'}</Button>
+                    {isLoginIn ? <Button color="inherit" style={{color: 'hotpink'}}
+                                          onClick={logout}>seaLOGOUT</Button>
+                    :<></>}
                 </ToolbarCase>
             </AppBarCase>
             {seaStatus === 'loading' && <LinearProgress color="inherit" style={{color: 'hotpink', height: '7px'}}/>}
-            <Container fixed >
-                {/*style={{height:'90vh',border:'2px red solid',display:'flex',alignItems:'center'}}*/}
+            <Container fixed>
                 <Routes>
                     <Route path={'/login'} element={<SeaLogin/>}/>
                     <Route path={'/'} element={<SeaMain/>}/>

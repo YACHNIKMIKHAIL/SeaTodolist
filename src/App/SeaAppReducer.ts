@@ -64,12 +64,10 @@ export const initializedSeaAppTC = (): SeaThunkType => async (dispatch) => {
         if (sea.data.resultCode === 0) {
             dispatch(seaLoginActions.isLoginInAC(true))
             dispatch(setSeaAppInitialized(true))
-            dispatch(seaLoginActions.setMyNameAC(sea.data.data.login))
             dispatch(setSeaAppStatus('succesed'))
         } else {
             dispatch(seaLoginActions.isLoginInAC(false))
             dispatch(setSeaAppInitialized(true))
-            dispatch(seaLoginActions.setMyNameAC(null))
             seaHandleServer(sea.data, dispatch)
         }
     } catch (e) {

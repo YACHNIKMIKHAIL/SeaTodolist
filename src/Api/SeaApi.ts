@@ -50,38 +50,18 @@ export enum TaskPriorities {
 }
 
 export const tasksAPI = {
-    // getTasks(todolistID: string) {
-    //     return instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
-    //         .then(res => {
-    //             console.log(res)
-    //             return res.data
-    //         })
     async getTasks(todolistID: string) {
         let res = await instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
         return res.data
     },
-    // addTask(todolistID: string, title: string) {
-    //     return instance.post<SeaResponseType<{
-    //         item: ItemType
-    //     }>>(`/todo-lists/${todolistID}/tasks`, {title})
-    //         .then(res => {
-    //             console.log(res)
-    //             return res.data
-    //         })
-    // },
+
     async addTask(todolistID: string, title: string) {
         let res = await instance.post<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks`, {title})
         return res.data
     },
-    // removeTask(todolistID: string, taskID: string) {
-    //     return instance.delete<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}`)
-    //         .then(res => {
-    //             console.log(res)
-    //             return res.data
-    //         })
-    // }
+
     async removeTask(todolistID: string, taskID: string) {
         await instance.delete<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}`)
     },

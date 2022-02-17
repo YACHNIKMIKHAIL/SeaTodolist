@@ -17,11 +17,9 @@ import {reducerType} from "../../App/store";
 import {Navigate} from "react-router-dom";
 
 
-
-
 const SeaLogin = () => {
-    const dispatch=useDispatch()
-    const isLoggedInSea=useSelector<reducerType,boolean>(state=>state.auth.isLoginIn)
+    const dispatch = useDispatch()
+    const isLoggedInSea = useSelector<reducerType, boolean>(state => state.auth.isLoginIn)
 
     const formik = useFormik({
         validate: (values) => {
@@ -42,13 +40,13 @@ const SeaLogin = () => {
         }
     })
 
-    if(isLoggedInSea){
+    if (isLoggedInSea) {
         return <Navigate to={'/'}/>
     }
 
     return (
-        <Grid container justify='center' alignItems='center'>
-            <Grid item xs={5}>
+        <Grid container justify='center' style={{height: '90vh'}}>
+            <Grid item style={{margin: 'auto'}}>
                 <LoginCase>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
@@ -72,8 +70,9 @@ const SeaLogin = () => {
                                     <FormControlLabel
                                         label='RememberMe'
                                         control={<Checkbox
-                                            {...formik.getFieldProps('r ememberMe')}
-                                            checked={formik.values.rememberMe}/>}
+                                            {...formik.getFieldProps('rememberMe')}
+                                            checked={formik.values.rememberMe}
+                                        />}
                                     />
                                     <Button type={'submit'} variant='contained'
                                             disabled={(formik.errors.email && formik.errors.password) === null}

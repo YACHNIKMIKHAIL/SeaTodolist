@@ -6,25 +6,21 @@ import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
 
 export type initialLoginStateType = {
     isLoginIn: boolean
-    myName:string|null
+    myName: string | null
 }
 const initialLoginState = {
     isLoginIn: false,
-    myName:null
+    myName: null
 }
 
 export enum loginActions {
     SET_LOGIN_IN = 'SET_LOGIN_IN',
-    SET_MY_NAME='SET_MY_NAME'
 }
 
 export const seaAuthReducer = (state: initialLoginStateType = initialLoginState, action: seaLoginActionsType): initialLoginStateType => {
     switch (action.type) {
         case loginActions.SET_LOGIN_IN: {
             return {...state, isLoginIn: action.value}
-        }
-        case loginActions.SET_MY_NAME: {
-            return {...state, myName: action.name}
         }
 
         default:
@@ -37,17 +33,17 @@ export type seaLoginActionsType =
 export type seaReturnedLoginActionsType<S> = S extends { [key: string]: infer T } ? T : never
 export const seaLoginActions = {
     isLoginInAC: (value: boolean) => ({type: loginActions.SET_LOGIN_IN, value} as const),
-    setMyNameAC: (name: string|null) => ({type: loginActions.SET_MY_NAME, name} as const),
 }
-export type initialLoginType={
-    email:string
-    password:string
-    rememberMe:boolean
-    captcha?:string
+export type initialLoginType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
 export const seaLoginTC = (seaData: initialLoginType): SeaThunkType => async (dispatch) => {
     dispatch(setSeaAppStatus('loading'))
     try {
+        debugger
         let sea = await seaAuthAPI.login(seaData)
         if (sea.data.resultCode === 0) {
             dispatch(seaLoginActions.isLoginInAC(true))
@@ -65,7 +61,6 @@ export const seaLoginOutTC = (): SeaThunkType => async (dispatch) => {
         let sea = await seaAuthAPI.logOut()
         if (sea.data.resultCode === 0) {
             dispatch(seaLoginActions.isLoginInAC(false))
-            dispatch(seaLoginActions.setMyNameAC(null))
             dispatch(setSeaAppStatus('succesed'))
         } else {
             seaHandleServer(sea.data, dispatch)
