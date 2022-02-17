@@ -18,7 +18,6 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         const seaTaskLoading = useSelector<reducerType, boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
         const actualTask = useSelector<reducerType, ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
-        console.log(seaTaskLoading)
 
 
         const removeTask = useCallback(() => {

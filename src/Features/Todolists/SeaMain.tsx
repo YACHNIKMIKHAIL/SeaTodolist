@@ -28,9 +28,12 @@ const SeaMain = () => {
         return <Navigate to={'/login'}/>
     }
 
+
     return (
-        <Grid container style={{padding: '20px', color: 'white'}}>
-            <AddForm addFn={addTodolist}/>
+        <>
+            <Grid container style={{padding: '20px', color: 'white'}}>
+                <AddForm addFn={addTodolist}/>
+            </Grid>
             <Grid container spacing={5}>
                 {todolists.map((t, i) => {
                     let todoTasks = tasks[t.id]
@@ -45,7 +48,7 @@ const SeaMain = () => {
                     </Grid>;
                 })}
             </Grid>
-        </Grid>
+        </>
     );
 };
 

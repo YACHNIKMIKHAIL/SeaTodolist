@@ -12,7 +12,7 @@ import {CircularProgress, LinearProgress} from "@mui/material";
 import SeaLogin from "../Features/SeaLogin/SeaLogin";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
-import {seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
+import {seaLoginActions, seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
 
 export const App = () => {
     // const todolists = useSelector<reducerType, SeaTodolistsType[]>(state => state.todolists)
@@ -29,6 +29,10 @@ export const App = () => {
             return
         }
     }, [dispatch,myName])
+
+    if(myName!==null){
+        dispatch(seaLoginActions.setMyNameAC(myName))
+    }
     // const addTodolist = useCallback((newTitle: string) => {
     //     dispatch(postTodolistsTC(newTitle))
     // }, [dispatch])
@@ -36,6 +40,7 @@ export const App = () => {
     useEffect(() => {
         dispatch(initializedSeaAppTC())
     }, [dispatch])
+
     if (!isInitializedApp) {
         return <AppCase
             style={{width: '100%', height: '100vh', display: 'flex', justifyContent: "center", alignItems: 'center'}}>
@@ -57,7 +62,8 @@ export const App = () => {
                 </ToolbarCase>
             </AppBarCase>
             {seaStatus === 'loading' && <LinearProgress color="inherit" style={{color: 'hotpink', height: '7px'}}/>}
-            <Container fixed>
+            <Container fixed >
+                {/*style={{height:'90vh',border:'2px red solid',display:'flex',alignItems:'center'}}*/}
                 <Routes>
                     <Route path={'/login'} element={<SeaLogin/>}/>
                     <Route path={'/'} element={<SeaMain/>}/>
