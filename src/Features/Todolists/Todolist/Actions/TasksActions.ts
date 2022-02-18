@@ -95,6 +95,8 @@ export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSe
         } else {
             seaHandleServer(res.data, dispatch)
             dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'failed'))
+            dispatch(getTasksTC(todolistID))
+
         }
     } catch (e) {
         seaHandleNetwork(e, dispatch)

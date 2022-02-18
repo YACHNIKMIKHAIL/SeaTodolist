@@ -2,8 +2,8 @@ import React, {useCallback} from 'react';
 import EditSpan from "../../../../Components/EditSpan";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {useDispatch, useSelector} from "react-redux";
-import {reducerType} from "../../../../App/store";
+import {useDispatch} from "react-redux";
+import {useSeaSelector} from "../../../../App/store";
 import {changeTaskTC, removeTaskTC} from "../Actions/TasksActions";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
@@ -15,8 +15,8 @@ type TaskPropsType = {
     todolistID: string
 }
 const Task = React.memo(({todolistID, id}: TaskPropsType) => {
-        const seaTaskLoading = useSelector<reducerType, boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
-        const actualTask = useSelector<reducerType, ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
+        const seaTaskLoading = useSeaSelector<boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
+        const actualTask = useSeaSelector<ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
 
 

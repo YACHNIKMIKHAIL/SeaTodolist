@@ -2,8 +2,8 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Button, Container, IconButton, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import {useDispatch, useSelector} from "react-redux";
-import {reducerType} from "./store";
+import {useDispatch} from "react-redux";
+import {useSeaSelector} from "./store";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
 import {initializedSeaAppTC, seaStatusTypes} from './SeaAppReducer';
@@ -15,9 +15,9 @@ import SeaMain from "../Features/Todolists/SeaMain";
 import {seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
 
 export const App = () => {
-    const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
-    const isInitializedApp = useSelector<reducerType, boolean>(state => state.app.isInitialized)
-    const isLoginIn = useSelector<reducerType, boolean>(state => state.auth.isLoginIn)
+    const seaStatus = useSeaSelector<seaStatusTypes>(state => state.app.seaStatus)
+    const isInitializedApp = useSeaSelector<boolean>(state => state.app.isInitialized)
+    const isLoginIn = useSeaSelector<boolean>(state => state.auth.isLoginIn)
 
 
     const dispatch = useDispatch()
