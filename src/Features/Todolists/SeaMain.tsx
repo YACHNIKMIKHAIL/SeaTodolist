@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-import {Grid} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
 import {TodolistCase} from "../../App/App";
 import {useDispatch} from "react-redux";

@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect} from 'react';
 import AddForm from "../../../Components/AddForm";
 import EditSpan from "../../../Components/EditSpan";
-import {Button, IconButton} from "@material-ui/core";
-import {Delete} from "@material-ui/icons";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import {changeTodolistsTC, removeTodolistsTC, seaTodolistActions} from "./Actions/TodolistsActions";
 import Task from "./Task/Task";

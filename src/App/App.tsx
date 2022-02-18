@@ -1,14 +1,18 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {Button, Container, IconButton, Typography} from '@material-ui/core';
-import {Menu} from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/icons/Menu';
 import {useDispatch} from "react-redux";
 import {useSeaSelector} from "./store";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
 import {initializedSeaAppTC, seaStatusTypes} from './SeaAppReducer';
 import Error from "../Components/Error";
-import {CircularProgress, LinearProgress} from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import SeaLogin from "../Features/SeaLogin/SeaLogin";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
