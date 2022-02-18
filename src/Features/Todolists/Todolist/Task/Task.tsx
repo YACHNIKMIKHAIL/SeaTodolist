@@ -44,7 +44,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 />
 
                 {seaTaskLoading
-                    ? <CircularProgress style={{color: 'hotpink'}} size={25}/>
+                    ? <CircularProgress thickness={7} style={{color: 'hotpink'}} size={25}/>
                     : <EditSpan title={actualTask.title} callback={changeTaskTitle}/>}
 
                 <IconButton aria-label="delete" onClick={removeTask}

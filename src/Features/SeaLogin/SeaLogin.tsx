@@ -41,7 +41,7 @@ const SeaLogin = () => {
     })
 
     if (isLoggedInSea) {
-        return <Navigate to={'/'}/>
+        return <Navigate to={'/SeaTodolist'}/>
     }
 
     return (

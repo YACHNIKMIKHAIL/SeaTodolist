@@ -43,7 +43,6 @@ export type initialLoginType = {
 export const seaLoginTC = (seaData: initialLoginType): SeaThunkType => async (dispatch) => {
     dispatch(setSeaAppStatus('loading'))
     try {
-        debugger
         let sea = await seaAuthAPI.login(seaData)
         if (sea.data.resultCode === 0) {
             dispatch(seaLoginActions.isLoginInAC(true))

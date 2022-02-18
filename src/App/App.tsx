@@ -33,7 +33,7 @@ export const App = () => {
         return <AppCase
             style={{width: '100%', height: '100vh', display: 'flex', justifyContent: "center", alignItems: 'center'}}
         >
-            <CircularProgress style={{color: 'hotpink'}} size={150}/>
+            <CircularProgress style={{color: 'hotpink'}} size={150} thickness={6}/>
         </AppCase>
     }
     return (
@@ -47,15 +47,15 @@ export const App = () => {
                         SEA_TODOLIST
                     </Typography>
                     {isLoginIn ? <Button color="inherit" style={{color: 'hotpink'}}
-                                          onClick={logout}>seaLOGOUT</Button>
-                    :<></>}
+                                         onClick={logout}>sea_OUT</Button>
+                        : <></>}
                 </ToolbarCase>
             </AppBarCase>
             {seaStatus === 'loading' && <LinearProgress color="inherit" style={{color: 'hotpink', height: '7px'}}/>}
             <Container fixed>
                 <Routes>
                     <Route path={'/login'} element={<SeaLogin/>}/>
-                    <Route path={'/'} element={<SeaMain/>}/>
+                    <Route path={'/SeaTodolist'} element={<SeaMain/>}/>
                 </Routes>
             </Container>
             <Error/>

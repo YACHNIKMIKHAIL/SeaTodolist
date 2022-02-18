@@ -29,11 +29,11 @@ export const todolistReducer = (state: SeaTodolistsType[] = initialTodolists, ac
     }
 }
 
+export type FilterType = 'all' | 'complited' | 'active'
+
+
 export type seaTodolistActionsType =
     ReturnType<seaReturnedTodolistActionsTypes<typeof seaTodolistActions>>
-
-
-export type FilterType = 'all' | 'complited' | 'active'
 export type SeaTodolistsType = ApiTodolistType & {
     filter: FilterType, todolistStatus: seaStatusTypes
 }

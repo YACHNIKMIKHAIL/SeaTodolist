@@ -43,9 +43,10 @@ export const getTodolistsTC = (): SeaThunkType => async (dispatch) => {
     try {
         let sea = await todolistAPI.getTodolists()
         dispatch(seaTodolistActions.setTodoFromServAC(sea))
-        dispatch(setSeaAppStatus('succesed'))
     } catch (e) {
         seaHandleNetwork(e, dispatch)
+    } finally {
+        dispatch(setSeaAppStatus('succesed'))
     }
 
 }
@@ -56,12 +57,13 @@ export const postTodolistsTC = (title: string): SeaThunkType => async (dispatch)
         if (sea.resultCode === 0) {
             const {item} = sea.data;
             dispatch(seaTodolistActions.addTodolistAC(item))
-            dispatch(setSeaAppStatus('succesed'))
         } else {
             seaHandleServer(sea, dispatch)
         }
     } catch (e) {
         seaHandleNetwork(e, dispatch)
+    } finally {
+        dispatch(setSeaAppStatus('succesed'))
     }
 }
 
@@ -71,9 +73,10 @@ export const removeTodolistsTC = (todolistID: string): SeaThunkType => async (di
     try {
         await todolistAPI.deleteTodolists(todolistID)
         dispatch(seaTodolistActions.removeTodolistAC(todolistID))
-        dispatch(setSeaAppStatus('succesed'))
     } catch (e) {
         seaHandleNetwork(e, dispatch)
+    } finally {
+        dispatch(setSeaAppStatus('succesed'))
     }
 }
 export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkType => async (dispatch) => {
@@ -83,12 +86,13 @@ export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkTy
         let sea = await todolistAPI.changeTodolists(todolistID, title)
         if (sea.data.resultCode === 0) {
             dispatch(seaTodolistActions.changeTodolistTitleAC(todolistID, title))
-            dispatch(setSeaAppStatus('succesed'))
-            dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
         } else {
             seaHandleServer(sea.data, dispatch)
         }
     } catch (e) {
         seaHandleNetwork(e, dispatch)
+    } finally {
+        dispatch(setSeaAppStatus('succesed'))
+        dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
     }
 }
