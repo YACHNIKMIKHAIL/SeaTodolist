@@ -35,13 +35,13 @@ const SeaMain = () => {
                 <AddForm addFn={addTodolist}/>
             </Grid>
             <Grid container spacing={5}>
-                {todolists.map((t, i) => {
+                {todolists.map((t) => {
                     let todoTasks = tasks[t.id]
                     if (todoTasks === undefined) {
                         todoTasks = []
                     }
 
-                    return <Grid item key={i}>
+                    return <Grid item key={t.order}>
                         <TodolistCase>
                             <TodolistsList t={t} todoTasks={todoTasks}/>
                         </TodolistCase>

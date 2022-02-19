@@ -38,7 +38,7 @@ export const getTasksTC = (todolistID: string): SeaThunkType => async (dispatch)
     dispatch(setSeaAppStatus('loading'))
     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
     try {
-        let res = await tasksAPI.getTasks(todolistID)
+         let res = await tasksAPI.getTasks(todolistID)
         dispatch(seaTasksActions.setTasksFromServAC(todolistID, res.items))
     } catch (e) {
         seaHandleNetwork(e, dispatch)

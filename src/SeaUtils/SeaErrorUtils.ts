@@ -1,6 +1,7 @@
 import {seaAppActionsType, setSeaAppError, setSeaAppStatus} from "../App/SeaAppReducer";
 import {SeaResponseType} from "../Api/SeaApi";
 import {Dispatch} from "redux";
+import {AxiosError} from "axios";
 
 
 export const seaHandleServer = <T>(data: SeaResponseType<T>, dispatch: Dispatch<seaAppActionsType>) => {
