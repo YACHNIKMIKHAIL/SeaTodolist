@@ -45,6 +45,13 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: seaTas
                 } : m)
             }
         }
+        case TodolistActions.SET_FROM_SERVER: {
+            const copyState = {...state}
+            action.data.forEach(tl => {
+                copyState[tl.id] = []
+            })
+            return copyState
+        }
         default:
             return state
     }

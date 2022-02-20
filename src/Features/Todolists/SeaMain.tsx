@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
 import {TodolistCase} from "../../App/App";
@@ -11,11 +11,11 @@ import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 
 const SeaMain = () => {
-    const todolists = useSeaSelector< SeaTodolistsType[]>(state => state.todolists)
-    const tasks = useSeaSelector< TasksStateType>(state => state.tasks)
-    const isLoggedInSea = useSeaSelector< boolean>(state => state.auth.isLoginIn)
+    const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
+    const tasks = useSeaSelector<TasksStateType>(state => state.tasks)
+    const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
     const dispatch = useDispatch()
-
+    
     const addTodolist = useCallback((newTitle: string) => {
         dispatch(postTodolistsTC(newTitle))
     }, [dispatch])
@@ -35,13 +35,13 @@ const SeaMain = () => {
                 <AddForm addFn={addTodolist}/>
             </Grid>
             <Grid container spacing={5}>
-                {todolists.map((t) => {
+                {todolists.map((t, i) => {
                     let todoTasks = tasks[t.id]
                     if (todoTasks === undefined) {
                         todoTasks = []
                     }
 
-                    return <Grid item key={t.order}>
+                    return <Grid item key={i}>
                         <TodolistCase>
                             <TodolistsList t={t} todoTasks={todoTasks}/>
                         </TodolistCase>
