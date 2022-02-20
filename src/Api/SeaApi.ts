@@ -32,7 +32,7 @@ export const todolistAPI = {
         return instance.put<SeaResponseType>(`/todo-lists/${todolistID}`, {title})
 
     },
-    reorderTodolists(todolistID: string, putAfterItemId: string) {
+    reorderTodolists(todolistID: string, putAfterItemId: string|null) {
         return instance.put<SeaResponseType>(`/todo-lists/${todolistID}/reorder`, {putAfterItemId:putAfterItemId})
 
     }

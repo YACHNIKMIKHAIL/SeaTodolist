@@ -97,10 +97,11 @@ export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkTy
     }
 }
 
-export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string): SeaThunkType => async (dispatch) => {
+export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string|null): SeaThunkType => async (dispatch) => {
     dispatch(setSeaAppStatus('loading'))
     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
     try {
+        debugger
         let sea = await todolistAPI.reorderTodolists(todolistID, putAfterItemId)
         if (sea.data.resultCode === 0) {
             dispatch(getTodolistsTC())
