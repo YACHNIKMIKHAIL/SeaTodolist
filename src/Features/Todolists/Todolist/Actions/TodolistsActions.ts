@@ -1,4 +1,4 @@
-import {FilterType} from "../Reducers/TodolistReducer";
+import {FilterType, SeaTodolistsType} from "../Reducers/TodolistReducer";
 import {ApiTodolistType, todolistAPI} from "../../../../Api/SeaApi";
 import {SeaThunkType} from "../../../../App/store";
 import {seaStatusTypes, setSeaAppStatus} from "../../../../App/SeaAppReducer";
@@ -34,7 +34,7 @@ export const seaTodolistActions = {
         type: TodolistActions.CHANGE_TODOLIST_STATUS,
         todolistId,
         status
-    } as const)
+    } as const),
 }
 
 
@@ -86,6 +86,24 @@ export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkTy
         let sea = await todolistAPI.changeTodolists(todolistID, title)
         if (sea.data.resultCode === 0) {
             dispatch(seaTodolistActions.changeTodolistTitleAC(todolistID, title))
+        } else {
+            seaHandleServer(sea.data, dispatch)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+    } finally {
+        dispatch(setSeaAppStatus('succesed'))
+        dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
+    }
+}
+
+export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
+    dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
+    try {
+        let sea = await todolistAPI.reorderTodolists(todolistID, putAfterItemId)
+        if (sea.data.resultCode === 0) {
+            dispatch(getTodolistsTC())
         } else {
             seaHandleServer(sea.data, dispatch)
         }
