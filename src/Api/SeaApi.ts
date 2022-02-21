@@ -75,7 +75,6 @@ export const tasksAPI = {
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, model)
     },
     reorderTask(todolistID: string, taskID: string, putAfterItemId: string | null) {
-        debugger
         return instance.put<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}/reorder`, {putAfterItemId: putAfterItemId})
 
     }

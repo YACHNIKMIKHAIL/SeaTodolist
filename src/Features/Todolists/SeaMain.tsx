@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
-import {TodolistCase} from "../../App/App";
 import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../App/store";
 import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
@@ -9,6 +8,7 @@ import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
 import {getTodolistsTC, postTodolistsTC, reorderTodolistsTC} from "./Todolist/Actions/TodolistsActions";
 import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
+import styled from "styled-components";
 
 const SeaMain = () => {
         const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
@@ -17,6 +17,7 @@ const SeaMain = () => {
         const dispatch = useDispatch()
 
         const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
+        const [todolistBackground, setTodolistBackground] = useState<string>('#8AA8D2')
 
         const addTodolist = useCallback((newTitle: string) => {
             dispatch(postTodolistsTC(newTitle))
@@ -32,9 +33,10 @@ const SeaMain = () => {
 
 
         const onDragTodolistStartHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
+            setTodolistBackground(todolist.id)
         }
         const onDragTodolistLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
-
+            setTodolistBackground('#8AA8D2')
         }
         const onDragTodolistEndHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             dispatch(reorderTodolistsTC(todolist.id, dropTodolistId))
@@ -44,6 +46,7 @@ const SeaMain = () => {
         }
         const onDropTodolistHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             e.preventDefault()
+            setTodolistBackground('')
             const index = todolists.find((list, index) => {
                 if (list.id === todolist.id) return index
             })
@@ -66,6 +69,8 @@ const SeaMain = () => {
 
                         return <Grid item key={i}>
                             <TodolistCase
+                                $backgroundColor={'#8AA8D2'}
+                                $borderColor={todolistBackground === t.id ? 'hotpink' : '#8AA8D2'}
                                 draggable
                                 onDragStart={(e) => onDragTodolistStartHandler(e, t)}
                                 onDragLeave={(e) => onDragTodolistLeaveHandler(e)}
@@ -84,3 +89,12 @@ const SeaMain = () => {
 ;
 
 export default SeaMain;
+
+const TodolistCase = styled.div<{ $backgroundColor: string, $borderColor: string }>`
+  padding: 10px;
+  //background-color: #8AA8D2;
+  border: 5px solid ${props => props.$borderColor};
+  background-color: ${props => props.$backgroundColor};
+  opacity: 0.95;
+  border-radius: 10px
+`

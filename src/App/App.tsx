@@ -24,6 +24,7 @@ export const App = () => {
     const isLoginIn = useSeaSelector<boolean>(state => state.auth.isLoginIn)
 
 
+
     const dispatch = useDispatch()
     const logout = useCallback(() => {
         dispatch(seaLoginOutTC())
@@ -82,9 +83,4 @@ export const ToolbarCase = styled.div`
   justify-content: space-between;
   align-items: center;
 `
-export const TodolistCase = styled.div`
-  padding: 10px;
-  background-color: #8AA8D2;
-  opacity: 0.95;
-  border-radius: 10px
-`
+

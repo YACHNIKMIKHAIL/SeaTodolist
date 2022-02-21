@@ -23,6 +23,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
         const tasks = useSeaSelector<ItemType[]>(state => state.tasks[todolist.id])
         const [dropTaskId, setDropTaskId] = useState<string | null>(null)
+        const [taskBackground, setTaskBackground] = useState<string>('')
 
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
@@ -55,20 +56,21 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
 
         const onDragTaskStartHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
-
+            setTaskBackground(task.id)
         }
         const onDragTaskLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
-
+            setTaskBackground('#8AA8D2')
         }
         const onDragTaskEndHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
             dispatch(reorderTaskTC(todolist.id, task.id, dropTaskId))
         }
         const onDragTaskOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
             e.preventDefault()
+            // setTaskBackground('#8AA8D2')
         }
         const onDropTaskHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
             e.preventDefault()
-            debugger
+            setTaskBackground('')
             const index = tasks.find((t, index) => {
                 if (t.id === task.id) return index
             })
@@ -88,13 +90,15 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             <AddForm addFn={addTask}/>
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 {tasksForRender.map((m, i) => {
-                    return <div draggable
+                    return <div key={i}
+                                draggable
                                 onDragStart={(e) => onDragTaskStartHandler(e, m)}
                                 onDragLeave={(e) => onDragTaskLeaveHandler(e)}
                                 onDragEnd={(e) => onDragTaskEndHandler(e, m)}
                                 onDragOver={(e) => onDragTaskOverHandler(e)}
                                 onDrop={(e) => onDropTaskHandler(e, m)}>
-                        <Task key={i} id={m.id} todolistID={todolist.id}/>
+                        <Task id={m.id} todolistID={todolist.id}
+                              taskBackground={taskBackground === m.id ? 'hotpink' : '#8AA8D2'}/>
                     </div>
                 })}
             </div>

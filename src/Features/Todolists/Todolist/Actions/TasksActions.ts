@@ -121,6 +121,7 @@ export const removeTaskTC = (todolistID: string, taskID: string): SeaThunkType =
 }
 export const reorderTaskTC = (todolistID: string, taskID: string, putAfterItemId: string | null): SeaThunkType => async (dispatch) => {
     dispatch(setSeaAppStatus('loading'))
+    dispatch(seaTasksActions.loadTask(todolistID, taskID, true))
     try {
         let res = await tasksAPI.reorderTask(todolistID, taskID, putAfterItemId)
         if (res.data.resultCode === 0) {

@@ -1,23 +1,22 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import EditSpan from "../../../../Components/EditSpan";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../../../App/store";
-import {changeTaskTC, removeTaskTC, reorderTaskTC} from "../Actions/TasksActions";
+import {changeTaskTC, removeTaskTC} from "../Actions/TasksActions";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
-import {SeaTodolistsType} from "../Reducers/TodolistReducer";
-import {reorderTodolistsTC} from "../Actions/TodolistsActions";
 
 
 type TaskPropsType = {
     id: string
     todolistID: string
+    taskBackground:string
 }
-const Task = React.memo(({todolistID, id}: TaskPropsType) => {
+const Task = React.memo(({todolistID, id,taskBackground}: TaskPropsType) => {
         const seaTaskLoading = useSeaSelector<boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
         const actualTask = useSeaSelector<ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
@@ -37,6 +36,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
                 $opacity={actualTask.status === TaskStatuses.Complited ? '0.8' : '1'}
                 $color={actualTask.status === TaskStatuses.Complited ? 'white' : 'rgb(11,37,75)'}
                 $fontWeight={actualTask.status === TaskStatuses.Complited ? 'normal' : 'bold'}
+                $backgroundColor={taskBackground}
             >
                 < Checkbox
                     checked={actualTask.status === TaskStatuses.Complited}
@@ -61,7 +61,7 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
 )
 export default Task;
 
-export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeight: string }>`
+export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeight: string,$backgroundColor:string }>`
   color: ${props => props.$color};
   opacity: ${props => props.$opacity};
   font-weight: ${props => props.$fontWeight};
@@ -69,5 +69,7 @@ export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeig
   justify-content: space-between;
   align-items: center;
   padding: 5px;
+  background-color: ${props=>props.$backgroundColor};
+  border-radius: 10px;
   //margin: 10px;
 `
