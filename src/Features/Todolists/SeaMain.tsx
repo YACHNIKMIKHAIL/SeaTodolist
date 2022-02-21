@@ -11,113 +11,86 @@ import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 
 const SeaMain = () => {
-    const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
-    const tasks = useSeaSelector<TasksStateType>(state => state.tasks)
-    const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
-    const dispatch = useDispatch()
+        const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
+        const tasks = useSeaSelector<TasksStateType>(state => state.tasks)
+        const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
+        const dispatch = useDispatch()
 
-    const [list, setList] = useState<SeaTodolistsType[]>(todolists)
-    const [dradTodolist, setDradTodolist] = useState<SeaTodolistsType | null>(null)
+        const [lists, setLists] = useState<SeaTodolistsType[]>(todolists)
+        const [dragTodolist, setDragTodolist] = useState<SeaTodolistsType>({} as SeaTodolistsType)
+        const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
 
-    const addTodolist = useCallback((newTitle: string) => {
-        dispatch(postTodolistsTC(newTitle))
-    }, [dispatch])
+        const addTodolist = useCallback((newTitle: string) => {
+            dispatch(postTodolistsTC(newTitle))
+        }, [dispatch])
 
-    useEffect(() => {
-        dispatch(getTodolistsTC())
-    }, [dispatch])
+        useEffect(() => {
+            dispatch(getTodolistsTC())
+        }, [dispatch])
 
-    if (!isLoggedInSea) {
-        return <Navigate to={'/login'}/>
-    }
-
-
-    const sortTodolist = (a: SeaTodolistsType, b: SeaTodolistsType) => {
-        if (a.order > b.order) {
-            return 1
-        } else {
-            return -1
+        if (!isLoggedInSea) {
+            return <Navigate to={'/login'}/>
         }
-    }
 
-
-    //@ts-ignore
-    const onDragStartHandler = (e: DragEvent<HTMLDivElement>, todolist: TodolistType) => {
-        // console.log('grad', todolist)
-        setDradTodolist(todolist)
-    }
-    //@ts-ignore
-    const onDragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
-
-    }
-    //@ts-ignore
-    const onDragEndHandler = (e: DragEvent<HTMLDivElement>) => {
-        alert('done!')
-    }
-    //@ts-ignore
-    const onDragOverHandler = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault()
-    }
-    //@ts-ignore
-    const onDropHandler = (e: DragEvent<HTMLDivElement>, todolist: TodolistType) => {
-        debugger
-        e.preventDefault()
-        // console.log('grad', todolist)
-        setList(list.map(m => {
-            if (dradTodolist) {
-                if (m.id === todolist.id) {
-                    return {...m, order: dradTodolist.order}
-                }
-            }
-            if (dradTodolist)
-                if (m.id === dradTodolist.id) {
-                    return {...m, order: todolist.order}
-                }
-            return m
-        }))
-        let afterId = findId(todolist.id, list)
-        dispatch(reorderTodolistsTC(todolist.id, afterId = null))
-
-    }
-    const findId = (id: string, l: SeaTodolistsType[]) => {
-        debugger
-        for (let i = 0; i < l.length; i++) {
-            if (l[i].id === id) {
-                return (l[i - 1].id)
-            } else {
-                return null
-            }
+        //@ts-ignore
+        const onDragStartHandler = (e: DragEvent<HTMLDivElement>, todolist: TodolistType) => {
+            console.log('onDragStartHandler => setDragTodolist', todolist)
+            setDragTodolist(todolist)
         }
+        //@ts-ignore
+        const onDragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
+
+        }
+        //@ts-ignore
+        const onDragEndHandler = (e: DragEvent<HTMLDivElement>, todolist: TodolistType) => {
+            dispatch(reorderTodolistsTC(todolist.id, dropTodolistId))
+        }
+        //@ts-ignore
+        const onDragOverHandler = (e: DragEvent<HTMLDivElement>) => {
+            e.preventDefault()
+            console.log('onDragOverHandler')
+        }
+        //@ts-ignore
+        const onDropHandler = (e: DragEvent<HTMLDivElement>, todolist: TodolistType) => {
+            e.preventDefault()
+            console.log('onDropHandler', todolist)
+            const index = todolists.find((list, index) => {
+                if (list.id === todolist.id) return index
+            })
+            console.log(index)
+            if (index) setDropTodolistId(todolist.id)
+            else setDropTodolistId(null)
+        }
+
+        return (
+            <>
+                <Grid container style={{padding: '20px', color: 'white'}}>
+                    <AddForm addFn={addTodolist}/>
+                </Grid>
+                <Grid container spacing={5}>
+                    {todolists.map((t, i) => {
+                        let todoTasks = tasks[t.id]
+                        if (todoTasks === undefined) {
+                            todoTasks = []
+                        }
+
+                        return <Grid item key={i}>
+                            <TodolistCase
+                                draggable={true}
+                                onDragStart={(e) => onDragStartHandler(e, t)}
+                                onDragLeave={(e) => onDragLeaveHandler(e)}
+                                onDragEnd={(e) => onDragEndHandler(e, t)}
+                                onDragOver={(e) => onDragOverHandler(e)}
+                                onDrop={(e) => onDropHandler(e, t)}
+                            >
+                                <TodolistsList t={t} todoTasks={todoTasks}/>
+                            </TodolistCase>
+                        </Grid>;
+                    })}
+                </Grid>
+            </>
+        );
     }
-
-    return (
-        <>
-            <Grid container style={{padding: '20px', color: 'white'}}>
-                <AddForm addFn={addTodolist}/>
-            </Grid>
-            <Grid container spacing={5}>
-                {todolists.sort(sortTodolist).map((t, i) => {
-                    let todoTasks = tasks[t.id]
-                    if (todoTasks === undefined) {
-                        todoTasks = []
-                    }
-
-                    return <Grid item key={i}>
-                        <TodolistCase
-                            draggable={true}
-                            onDragStart={(e) => onDragStartHandler(e, t)}
-                            onDragLeave={(e) => onDragLeaveHandler(e)}
-                            onDragEnd={(e) => onDragEndHandler(e)}
-                            onDragOver={(e) => onDragOverHandler(e)}
-                            onDrop={(e) => onDropHandler(e, t)}
-                        >
-                            <TodolistsList t={t} todoTasks={todoTasks}/>
-                        </TodolistCase>
-                    </Grid>;
-                })}
-            </Grid>
-        </>
-    );
-};
+;
 
 export default SeaMain;

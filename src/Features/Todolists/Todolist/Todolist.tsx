@@ -21,7 +21,7 @@ type PropsType = {
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
-    console.log(`title ${seaTodolist.title} order ${seaTodolist.order}`)
+
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
             if (filter === todolist.filter) {
