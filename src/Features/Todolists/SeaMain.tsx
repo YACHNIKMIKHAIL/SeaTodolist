@@ -16,8 +16,6 @@ const SeaMain = () => {
         const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
         const dispatch = useDispatch()
 
-        const [lists, setLists] = useState<SeaTodolistsType[]>(todolists)
-        const [dragTodolist, setDragTodolist] = useState<SeaTodolistsType>({} as SeaTodolistsType)
         const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
 
         const addTodolist = useCallback((newTitle: string) => {
@@ -32,32 +30,25 @@ const SeaMain = () => {
             return <Navigate to={'/login'}/>
         }
 
-        //@ts-ignore
-        const onDragStartHandler = (e: DragEvent<HTMLDivElement>, todolist: TodolistType) => {
-            console.log('onDragStartHandler => setDragTodolist', todolist)
-            setDragTodolist(todolist)
+
+        const onDragStartHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
         }
-        //@ts-ignore
-        const onDragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
+        const onDragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
 
         }
-        //@ts-ignore
-        const onDragEndHandler = (e: DragEvent<HTMLDivElement>, todolist: TodolistType) => {
+        const onDragEndHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             dispatch(reorderTodolistsTC(todolist.id, dropTodolistId))
         }
-        //@ts-ignore
-        const onDragOverHandler = (e: DragEvent<HTMLDivElement>) => {
+        const onDragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
             e.preventDefault()
             console.log('onDragOverHandler')
         }
-        //@ts-ignore
-        const onDropHandler = (e: DragEvent<HTMLDivElement>, todolist: TodolistType) => {
+        const onDropHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             e.preventDefault()
             console.log('onDropHandler', todolist)
             const index = todolists.find((list, index) => {
                 if (list.id === todolist.id) return index
             })
-            console.log(index)
             if (index) setDropTodolistId(todolist.id)
             else setDropTodolistId(null)
         }
