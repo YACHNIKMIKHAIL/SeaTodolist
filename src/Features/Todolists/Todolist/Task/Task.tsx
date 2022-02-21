@@ -1,14 +1,16 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import EditSpan from "../../../../Components/EditSpan";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../../../App/store";
-import {changeTaskTC, removeTaskTC} from "../Actions/TasksActions";
+import {changeTaskTC, removeTaskTC, reorderTaskTC} from "../Actions/TasksActions";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
+import {SeaTodolistsType} from "../Reducers/TodolistReducer";
+import {reorderTodolistsTC} from "../Actions/TodolistsActions";
 
 
 type TaskPropsType = {
@@ -19,7 +21,6 @@ const Task = React.memo(({todolistID, id}: TaskPropsType) => {
         const seaTaskLoading = useSeaSelector<boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
         const actualTask = useSeaSelector<ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
-
 
         const removeTask = useCallback(() => {
             dispatch(removeTaskTC(todolistID, id))

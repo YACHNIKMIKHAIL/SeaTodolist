@@ -32,8 +32,8 @@ export const todolistAPI = {
         return instance.put<SeaResponseType>(`/todo-lists/${todolistID}`, {title})
 
     },
-    reorderTodolists(todolistID: string, putAfterItemId: string|null) {
-        return instance.put<SeaResponseType>(`/todo-lists/${todolistID}/reorder`, {putAfterItemId:putAfterItemId})
+    reorderTodolists(todolistID: string, putAfterItemId: string | null) {
+        return instance.put<SeaResponseType>(`/todo-lists/${todolistID}/reorder`, {putAfterItemId: putAfterItemId})
 
     }
 }
@@ -73,6 +73,11 @@ export const tasksAPI = {
         return await instance.put<SeaResponseType<{
             item: ItemType
         }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, model)
+    },
+    reorderTask(todolistID: string, taskID: string, putAfterItemId: string | null) {
+        debugger
+        return instance.put<SeaResponseType>(`/todo-lists/${todolistID}/tasks/${taskID}/reorder`, {putAfterItemId: putAfterItemId})
+
     }
 }
 

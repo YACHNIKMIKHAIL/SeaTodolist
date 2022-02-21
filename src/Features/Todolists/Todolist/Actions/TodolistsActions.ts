@@ -3,6 +3,7 @@ import {ApiTodolistType, todolistAPI} from "../../../../Api/SeaApi";
 import {SeaThunkType} from "../../../../App/store";
 import {seaStatusTypes, setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
+import {getTasksTC} from "./TasksActions";
 
 export enum TodolistActions {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
@@ -104,6 +105,7 @@ export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string | 
         let sea = await todolistAPI.reorderTodolists(todolistID, putAfterItemId)
         if (sea.data.resultCode === 0) {
             dispatch(getTodolistsTC())
+            dispatch(getTasksTC(todolistID))
         } else {
             seaHandleServer(sea.data, dispatch)
         }

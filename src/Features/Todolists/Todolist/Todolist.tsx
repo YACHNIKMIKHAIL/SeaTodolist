@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import AddForm from "../../../Components/AddForm";
 import EditSpan from "../../../Components/EditSpan";
 import Button from "@material-ui/core/Button";
@@ -7,7 +7,7 @@ import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import {changeTodolistsTC, removeTodolistsTC, seaTodolistActions} from "./Actions/TodolistsActions";
 import Task from "./Task/Task";
-import {addTaskTC, getTasksTC} from "./Actions/TasksActions";
+import {addTaskTC, getTasksTC, reorderTaskTC} from "./Actions/TasksActions";
 import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
@@ -21,6 +21,8 @@ type PropsType = {
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
+        const tasks = useSeaSelector<ItemType[]>(state => state.tasks[todolist.id])
+        const [dropTaskId, setDropTaskId] = useState<string | null>(null)
 
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
@@ -50,6 +52,31 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         if (todolist.filter === 'active') {
             tasksForRender = todoTasks.filter(f => f.status === TaskStatuses.New)
         }
+
+
+        const onDragTaskStartHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
+
+        }
+        const onDragTaskLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+
+        }
+        const onDragTaskEndHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
+            dispatch(reorderTaskTC(todolist.id, task.id, dropTaskId))
+        }
+        const onDragTaskOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+            e.preventDefault()
+        }
+        const onDropTaskHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
+            e.preventDefault()
+            debugger
+            const index = tasks.find((t, index) => {
+                if (t.id === task.id) return index
+            })
+            // console.log(index)
+            if (index) setDropTaskId(task.id)
+            else setDropTaskId(null)
+        }
+
         return <MainCase>
             <HCase>
                 <h3><EditSpan title={todolist.title} callback={changeTodolistTitle}/></h3>
@@ -61,7 +88,14 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             <AddForm addFn={addTask}/>
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 {tasksForRender.map((m, i) => {
-                    return <Task key={i} id={m.id} todolistID={todolist.id}/>
+                    return <div draggable
+                                onDragStart={(e) => onDragTaskStartHandler(e, m)}
+                                onDragLeave={(e) => onDragTaskLeaveHandler(e)}
+                                onDragEnd={(e) => onDragTaskEndHandler(e, m)}
+                                onDragOver={(e) => onDragTaskOverHandler(e)}
+                                onDrop={(e) => onDropTaskHandler(e, m)}>
+                        <Task key={i} id={m.id} todolistID={todolist.id}/>
+                    </div>
                 })}
             </div>
 

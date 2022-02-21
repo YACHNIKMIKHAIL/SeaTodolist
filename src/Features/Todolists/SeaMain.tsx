@@ -31,24 +31,23 @@ const SeaMain = () => {
         }
 
 
-        const onDragStartHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
+        const onDragTodolistStartHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
         }
-        const onDragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+        const onDragTodolistLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
 
         }
-        const onDragEndHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
+        const onDragTodolistEndHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             dispatch(reorderTodolistsTC(todolist.id, dropTodolistId))
         }
-        const onDragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+        const onDragTodolistOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
             e.preventDefault()
-            console.log('onDragOverHandler')
         }
-        const onDropHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
+        const onDropTodolistHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             e.preventDefault()
-            console.log('onDropHandler', todolist)
             const index = todolists.find((list, index) => {
                 if (list.id === todolist.id) return index
             })
+            // console.log(index)
             if (index) setDropTodolistId(todolist.id)
             else setDropTodolistId(null)
         }
@@ -67,12 +66,12 @@ const SeaMain = () => {
 
                         return <Grid item key={i}>
                             <TodolistCase
-                                draggable={true}
-                                onDragStart={(e) => onDragStartHandler(e, t)}
-                                onDragLeave={(e) => onDragLeaveHandler(e)}
-                                onDragEnd={(e) => onDragEndHandler(e, t)}
-                                onDragOver={(e) => onDragOverHandler(e)}
-                                onDrop={(e) => onDropHandler(e, t)}
+                                draggable
+                                onDragStart={(e) => onDragTodolistStartHandler(e, t)}
+                                onDragLeave={(e) => onDragTodolistLeaveHandler(e)}
+                                onDragEnd={(e) => onDragTodolistEndHandler(e, t)}
+                                onDragOver={(e) => onDragTodolistOverHandler(e)}
+                                onDrop={(e) => onDropTodolistHandler(e, t)}
                             >
                                 <TodolistsList t={t} todoTasks={todoTasks}/>
                             </TodolistCase>

@@ -38,7 +38,7 @@ export const getTasksTC = (todolistID: string): SeaThunkType => async (dispatch)
     dispatch(setSeaAppStatus('loading'))
     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
     try {
-         let res = await tasksAPI.getTasks(todolistID)
+        let res = await tasksAPI.getTasks(todolistID)
         dispatch(seaTasksActions.setTasksFromServAC(todolistID, res.items))
     } catch (e) {
         seaHandleNetwork(e, dispatch)
@@ -117,5 +117,20 @@ export const removeTaskTC = (todolistID: string, taskID: string): SeaThunkType =
     } finally {
         dispatch(setSeaAppStatus('succesed'))
         dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
+    }
+}
+export const reorderTaskTC = (todolistID: string, taskID: string, putAfterItemId: string | null): SeaThunkType => async (dispatch) => {
+    dispatch(setSeaAppStatus('loading'))
+    try {
+        let res = await tasksAPI.reorderTask(todolistID, taskID, putAfterItemId)
+        if (res.data.resultCode === 0) {
+            dispatch(getTasksTC(todolistID))
+        } else {
+            seaHandleServer(res.data, dispatch)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+    } finally {
+        dispatch(setSeaAppStatus('succesed'))
     }
 }
