@@ -14,9 +14,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 type TaskPropsType = {
     id: string
     todolistID: string
-    taskBackground:string
+    taskBackground: string
 }
-const Task = React.memo(({todolistID, id,taskBackground}: TaskPropsType) => {
+const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
         const seaTaskLoading = useSeaSelector<boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
         const actualTask = useSeaSelector<ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
         const dispatch = useDispatch()
@@ -61,7 +61,7 @@ const Task = React.memo(({todolistID, id,taskBackground}: TaskPropsType) => {
 )
 export default Task;
 
-export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeight: string,$backgroundColor:string }>`
+export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeight: string, $backgroundColor: string }>`
   color: ${props => props.$color};
   opacity: ${props => props.$opacity};
   font-weight: ${props => props.$fontWeight};
@@ -69,7 +69,7 @@ export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeig
   justify-content: space-between;
   align-items: center;
   padding: 5px;
-  background-color: ${props=>props.$backgroundColor};
+  background-color: ${props => props.$backgroundColor};
   border-radius: 10px;
   //margin: 10px;
 `

@@ -7,10 +7,10 @@ type TodolistsListPropsType={
     t:SeaTodolistsType
     todoTasks:ItemType[]
 }
-const TodolistsList = ({t,todoTasks}:TodolistsListPropsType) => {
+const TodolistsList = React.memo(({t,todoTasks}:TodolistsListPropsType) => {
     return  <Todolist todolist={t}
                       todoTasks={todoTasks}
     />
-};
+});
 
 export default TodolistsList;

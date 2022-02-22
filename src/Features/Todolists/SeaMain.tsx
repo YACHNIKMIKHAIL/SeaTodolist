@@ -24,6 +24,7 @@ const SeaMain = () => {
         }, [dispatch])
 
         useEffect(() => {
+            console.log('getTodolistsTC')
             dispatch(getTodolistsTC())
         }, [dispatch])
 
@@ -33,24 +34,28 @@ const SeaMain = () => {
 
 
         const onDragTodolistStartHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
+            e.stopPropagation()
             setTodolistBackground(todolist.id)
         }
         const onDragTodolistLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+            e.stopPropagation()
             setTodolistBackground('#8AA8D2')
         }
         const onDragTodolistEndHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
+            e.stopPropagation()
             dispatch(reorderTodolistsTC(todolist.id, dropTodolistId))
         }
         const onDragTodolistOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+            e.stopPropagation()
             e.preventDefault()
         }
         const onDropTodolistHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
+            e.stopPropagation()
             e.preventDefault()
             setTodolistBackground('')
             const index = todolists.find((list, index) => {
                 if (list.id === todolist.id) return index
             })
-            // console.log(index)
             if (index) setDropTodolistId(todolist.id)
             else setDropTodolistId(null)
         }

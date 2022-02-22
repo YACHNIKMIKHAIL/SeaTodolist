@@ -12,6 +12,7 @@ import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {useSeaSelector} from "../../../App/store";
+import {TasksStateType} from "./Reducers/TaskReducer";
 
 
 type PropsType = {
@@ -21,9 +22,9 @@ type PropsType = {
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
-        const tasks = useSeaSelector<ItemType[]>(state => state.tasks[todolist.id])
         const [dropTaskId, setDropTaskId] = useState<string | null>(null)
         const [taskBackground, setTaskBackground] = useState<string>('')
+        console.log(todolist.title, ' his taks ', todoTasks)
 
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
@@ -43,6 +44,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }, [dispatch, todolist.id])
 
         useEffect(() => {
+            console.log('getTasksTC')
             dispatch(getTasksTC(todolist.id))
         }, [dispatch, todolist.id])
 
@@ -56,25 +58,28 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
 
         const onDragTaskStartHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
+            e.stopPropagation()
             setTaskBackground(task.id)
         }
         const onDragTaskLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+            e.stopPropagation()
             setTaskBackground('#8AA8D2')
         }
         const onDragTaskEndHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
+            e.stopPropagation()
             dispatch(reorderTaskTC(todolist.id, task.id, dropTaskId))
         }
         const onDragTaskOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+            e.stopPropagation()
             e.preventDefault()
-            // setTaskBackground('#8AA8D2')
         }
         const onDropTaskHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
+            e.stopPropagation()
             e.preventDefault()
             setTaskBackground('')
-            const index = tasks.find((t, index) => {
+            const index = todoTasks.find((t, index) => {
                 if (t.id === task.id) return index
             })
-            // console.log(index)
             if (index) setDropTaskId(task.id)
             else setDropTaskId(null)
         }
