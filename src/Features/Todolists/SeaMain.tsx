@@ -24,7 +24,6 @@ const SeaMain = () => {
         }, [dispatch])
 
         useEffect(() => {
-            console.log('getTodolistsTC')
             dispatch(getTodolistsTC())
         }, [dispatch])
 

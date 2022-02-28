@@ -24,7 +24,6 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
         const [dropTaskId, setDropTaskId] = useState<string | null>(null)
         const [taskBackground, setTaskBackground] = useState<string>('')
-        console.log(todolist.title, ' his taks ', todoTasks)
 
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
@@ -44,7 +43,6 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }, [dispatch, todolist.id])
 
         useEffect(() => {
-            console.log('getTasksTC')
             dispatch(getTasksTC(todolist.id))
         }, [dispatch, todolist.id])
 
