@@ -1,8 +1,8 @@
-import {setSeaAppStatus} from "../../App/SeaAppReducer";
-import {SeaThunkType} from "../../App/store";
 import {initialLoginType, seaAuthAPI} from "../../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {setSeaAppStatus} from "../../App/SeaAppReducer";
+import {Dispatch} from "redux";
 
 
 export type initialLoginStateType = {
@@ -14,9 +14,9 @@ const initialLoginState = {
     myName: null
 }
 
-export enum loginActions {
-    SET_LOGIN_IN = 'SET_LOGIN_IN',
-}
+// export enum loginActions {
+//     SET_LOGIN_IN = 'SET_LOGIN_IN',
+// }
 
 const slice = createSlice({
     name: 'seaAuth',
@@ -37,13 +37,13 @@ export type seaLoginActionsType =
 //     isLoginInAC: (value: boolean) => ({type: loginActions.SET_LOGIN_IN, value} as const),
 // }
 
-export const seaLoginTC = (seaData: initialLoginType): SeaThunkType => async (dispatch) => {
-    dispatch(setSeaAppStatus('loading'))
+export const seaLoginTC = (seaData: initialLoginType) => async (dispatch: Dispatch) => {
+    dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await seaAuthAPI.login(seaData)
         if (sea.data.resultCode === 0) {
-            dispatch(slice.actions.isLoginInAC({ value: true }))
-            dispatch(setSeaAppStatus('succesed'))
+            dispatch(slice.actions.isLoginInAC({value: true}))
+            dispatch(setSeaAppStatus({status: 'succesed'}))
         } else {
             seaHandleServer(sea.data, dispatch)
         }
@@ -51,13 +51,13 @@ export const seaLoginTC = (seaData: initialLoginType): SeaThunkType => async (di
         seaHandleNetwork(e, dispatch)
     }
 }
-export const seaLoginOutTC = (): SeaThunkType => async (dispatch) => {
-    dispatch(setSeaAppStatus('loading'))
+export const seaLoginOutTC = () => async (dispatch: Dispatch) => {
+    dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await seaAuthAPI.logOut()
         if (sea.data.resultCode === 0) {
-            dispatch(slice.actions.isLoginInAC({ value: false }))
-            dispatch(setSeaAppStatus('succesed'))
+            dispatch(slice.actions.isLoginInAC({value: false}))
+            dispatch(setSeaAppStatus({status: 'succesed'}))
         } else {
             seaHandleServer(sea.data, dispatch)
         }

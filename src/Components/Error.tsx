@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useDispatch, useSelector} from "react-redux";
@@ -21,11 +19,11 @@ export default function Error() {
         if (reason === 'clickaway') {
             return;
         }
-        dispatch(setSeaAppError(null))
+        dispatch(setSeaAppError({error: null}))
     };
 
     return (
-        <Snackbar open={errorMessage !== null} autoHideDuration={3000} onClose={handleClose} >
+        <Snackbar open={errorMessage !== null} autoHideDuration={3000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
                 {errorMessage}
             </Alert>

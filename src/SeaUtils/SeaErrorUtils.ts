@@ -1,18 +1,17 @@
-import {seaAppActionsType, setSeaAppError, setSeaAppStatus} from "../App/SeaAppReducer";
+import {setSeaAppError, setSeaAppStatus} from "../App/SeaAppReducer";
 import {SeaResponseType} from "../Api/SeaApi";
 import {Dispatch} from "redux";
-import {AxiosError} from "axios";
 
 
-export const seaHandleServer = <T>(data: SeaResponseType<T>, dispatch: Dispatch<seaAppActionsType>) => {
+export const seaHandleServer = <T>(data: SeaResponseType<T>, dispatch: Dispatch) => {
     if (data.messages.length) {
-        dispatch(setSeaAppError(data.messages[0]))
+        dispatch(setSeaAppError({error: data.messages[0]}))
     } else {
-        dispatch(setSeaAppError('Some sea trouble was happend!'))
+        dispatch(setSeaAppError({error: 'Some sea trouble was happend!'}))
     }
-    dispatch(setSeaAppStatus('failed'))
+    dispatch(setSeaAppStatus({status: 'failed'}))
 }
-export const seaHandleNetwork = (err: any, dispatch: Dispatch<seaAppActionsType>) => {
-    dispatch(setSeaAppError(err.message ? err.message : 'Some sea trouble was happend!'))
-    dispatch(setSeaAppStatus('failed'))
+export const seaHandleNetwork = (err: any, dispatch: Dispatch) => {
+    dispatch(setSeaAppError({error: err.message ? err.message : 'Some sea trouble was happend!'}))
+    dispatch(setSeaAppStatus({status: 'failed'}))
 }

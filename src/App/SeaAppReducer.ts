@@ -1,7 +1,8 @@
-import {SeaThunkType} from "./store";
 import {seaAuthAPI} from "../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
 import {isLoginInAC} from "../Features/SeaLogin/SeaAuthReducer";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {Dispatch} from "redux";
 
 
 export type SeaAppInitStateType = {
@@ -17,59 +18,76 @@ const seaInitState: SeaAppInitStateType = {
     isInitialized: false
 }
 
-export enum SeaAppActions {
-    SET_SEA_STATUS = 'SET_SEA_STATUS',
-    SET_SEA_ERROR = 'SET_SEA_ERROR',
-    SET_IS_INITIALIZED = 'SET_IS_INITIALIZED'
-}
+// export enum SeaAppActions {
+//     SET_SEA_STATUS = 'SET_SEA_STATUS',
+//     SET_SEA_ERROR = 'SET_SEA_ERROR',
+//     SET_IS_INITIALIZED = 'SET_IS_INITIALIZED'
+// }
 
-export const seaAppResucer = (state = seaInitState, action: seaAppActionsType): SeaAppInitStateType => {
-    switch (action.type) {
-        case SeaAppActions.SET_SEA_STATUS: {
-            return {...state, seaStatus: action.status}
-        }
-        case SeaAppActions.SET_SEA_ERROR: {
-            return {...state, seaError: action.error}
-        }
-        case SeaAppActions.SET_IS_INITIALIZED: {
-            return {...state, isInitialized: action.isInitial}
-        }
-        default:
-            return state
+const slice = createSlice({
+    name: 'seaApp',
+    initialState: seaInitState,
+    reducers: {
+        setSeaAppStatus(state, action: PayloadAction<{ status: seaStatusTypes }>) {
+            state.seaStatus = action.payload.status
+        },
+        setSeaAppError(state, action: PayloadAction<{ error: string | null }>) {
+            state.seaError = action.payload.error
+        },
+        setSeaAppInitialized(state, action: PayloadAction<{ isInitial: boolean }>) {
+            state.isInitialized = action.payload.isInitial
+        },
     }
-}
+})
+export const seaAppResucer = slice.reducer
+export const {setSeaAppStatus, setSeaAppError, setSeaAppInitialized} = slice.actions
+//     (state = seaInitState, action: seaAppActionsType): SeaAppInitStateType => {
+//     switch (action.type) {
+//         case SeaAppActions.SET_SEA_STATUS: {
+//             return {...state, seaStatus: action.status}
+//         }
+//         case SeaAppActions.SET_SEA_ERROR: {
+//             return {...state, seaError: action.error}
+//         }
+//         case SeaAppActions.SET_IS_INITIALIZED: {
+//             return {...state, isInitialized: action.isInitial}
+//         }
+//         default:
+//             return state
+//     }
+// }
 
-type setSeaAppStatusType = ReturnType<typeof setSeaAppStatus>
-export const setSeaAppStatus = (status: seaStatusTypes) => {
-    return {
-        type: SeaAppActions.SET_SEA_STATUS, status
-    } as const
-}
-type setSeaAppErrorType = ReturnType<typeof setSeaAppError>
-export const setSeaAppError = (error: string | null) => {
-    return {
-        type: SeaAppActions.SET_SEA_ERROR, error
-    } as const
-}
-type setSeaAppInitializedType = ReturnType<typeof setSeaAppInitialized>
-export const setSeaAppInitialized = (isInitial: boolean) => {
-    return {
-        type: SeaAppActions.SET_IS_INITIALIZED, isInitial
-    } as const
-}
-export type seaAppActionsType = setSeaAppStatusType | setSeaAppErrorType | setSeaAppInitializedType
+// type setSeaAppStatusType = ReturnType<typeof setSeaAppStatus>
+// export const setSeaAppStatus = (status: seaStatusTypes) => {
+//     return {
+//         type: SeaAppActions.SET_SEA_STATUS, status
+//     } as const
+// }
+// type setSeaAppErrorType = ReturnType<typeof setSeaAppError>
+// export const setSeaAppError = (error: string | null) => {
+//     return {
+//         type: SeaAppActions.SET_SEA_ERROR, error
+//     } as const
+// }
+// type setSeaAppInitializedType = ReturnType<typeof setSeaAppInitialized>
+// export const setSeaAppInitialized = (isInitial: boolean) => {
+//     return {
+//         type: SeaAppActions.SET_IS_INITIALIZED, isInitial
+//     } as const
+// }
+// export type seaAppActionsType = setSeaAppStatusType | setSeaAppErrorType | setSeaAppInitializedType
 
-export const initializedSeaAppTC = (): SeaThunkType => async (dispatch) => {
-    dispatch(setSeaAppStatus('loading'))
+export const initializedSeaAppTC = () => async (dispatch: Dispatch) => {
+    dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await seaAuthAPI.me()
         if (sea.data.resultCode === 0) {
             dispatch(isLoginInAC({value: true}))
-            dispatch(setSeaAppInitialized(true))
-            dispatch(setSeaAppStatus('succesed'))
+            dispatch(setSeaAppInitialized({isInitial: true}))
+            dispatch(setSeaAppStatus({status: 'succesed'}))
         } else {
             dispatch(isLoginInAC({value: false}))
-            dispatch(setSeaAppInitialized(true))
+            dispatch(setSeaAppInitialized({isInitial: true}))
             seaHandleServer(sea.data, dispatch)
         }
     } catch (e) {
