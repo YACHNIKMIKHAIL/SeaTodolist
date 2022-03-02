@@ -1,5 +1,4 @@
 import axios from "axios";
-import {initialLoginType} from "../Features/SeaLogin/SeaAuthReducer";
 
 const instance = axios.create({
     withCredentials: true,
@@ -149,4 +148,11 @@ export const seaAuthAPI = {
     async logOut() {
         return await instance.delete<SeaResponseType>(`/auth/login`)
     }
+}
+
+export type initialLoginType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
