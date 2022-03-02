@@ -2,7 +2,7 @@ import {setSeaAppStatus} from "../../App/SeaAppReducer";
 import {SeaThunkType} from "../../App/store";
 import {initialLoginType, seaAuthAPI} from "../../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
 export type initialLoginStateType = {
@@ -22,13 +22,13 @@ const slice = createSlice({
     name: 'seaAuth',
     initialState: initialLoginState,
     reducers: {
-        isLoginInAC(state, action: any) {
-            state.isLoginIn = action.value
+        isLoginInAC(state, action: PayloadAction<{ value: boolean }>) {
+            state.isLoginIn = action.payload.value
         }
     }
 })
 export const seaAuthReducer = slice.reducer
-
+export const {isLoginInAC} = slice.actions
 export type seaLoginActionsType =
     ReturnType<typeof slice.actions.isLoginInAC>
 
@@ -42,7 +42,7 @@ export const seaLoginTC = (seaData: initialLoginType): SeaThunkType => async (di
     try {
         let sea = await seaAuthAPI.login(seaData)
         if (sea.data.resultCode === 0) {
-            dispatch(slice.actions.isLoginInAC(true))
+            dispatch(slice.actions.isLoginInAC({ value: true }))
             dispatch(setSeaAppStatus('succesed'))
         } else {
             seaHandleServer(sea.data, dispatch)
@@ -56,7 +56,7 @@ export const seaLoginOutTC = (): SeaThunkType => async (dispatch) => {
     try {
         let sea = await seaAuthAPI.logOut()
         if (sea.data.resultCode === 0) {
-            dispatch(slice.actions.isLoginInAC(false))
+            dispatch(slice.actions.isLoginInAC({ value: false }))
             dispatch(setSeaAppStatus('succesed'))
         } else {
             seaHandleServer(sea.data, dispatch)

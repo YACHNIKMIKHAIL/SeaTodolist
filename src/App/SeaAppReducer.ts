@@ -1,7 +1,8 @@
 import {SeaThunkType} from "./store";
 import {seaAuthAPI} from "../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
-import {seaLoginActions} from "../Features/SeaLogin/SeaAuthReducer";
+import {isLoginInAC} from "../Features/SeaLogin/SeaAuthReducer";
+
 
 export type SeaAppInitStateType = {
     seaStatus: seaStatusTypes
@@ -15,6 +16,7 @@ const seaInitState: SeaAppInitStateType = {
     seaError: null,
     isInitialized: false
 }
+
 export enum SeaAppActions {
     SET_SEA_STATUS = 'SET_SEA_STATUS',
     SET_SEA_ERROR = 'SET_SEA_ERROR',
@@ -62,11 +64,11 @@ export const initializedSeaAppTC = (): SeaThunkType => async (dispatch) => {
     try {
         let sea = await seaAuthAPI.me()
         if (sea.data.resultCode === 0) {
-            dispatch(seaLoginActions.isLoginInAC(true))
+            dispatch(isLoginInAC({value: true}))
             dispatch(setSeaAppInitialized(true))
             dispatch(setSeaAppStatus('succesed'))
         } else {
-            dispatch(seaLoginActions.isLoginInAC(false))
+            dispatch(isLoginInAC({value: false}))
             dispatch(setSeaAppInitialized(true))
             seaHandleServer(sea.data, dispatch)
         }
