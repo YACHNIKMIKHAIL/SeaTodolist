@@ -1,8 +1,8 @@
-import {seaTodolistActions, seaReturnedTodolistActionsTypes, TodolistActions} from "../Actions/TodolistsActions";
 import {initialTodolists} from "../../../../State/initailsStates";
 import {ApiTodolistType} from "../../../../Api/SeaApi";
 import {seaStatusTypes} from "../../../../App/SeaAppReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {seaReturnedTodolistActionsTypes} from "../Actions/TodolistsActions";
 
 
 const slice = createSlice({
@@ -10,22 +10,32 @@ const slice = createSlice({
     initialState: initialTodolists,
     reducers: {
         removeTodolistAC(state, action: PayloadAction<{ todolistId: string }>) {
-            state.filter(f => f.id !== action.payload.todolistId)
+            // return state.filter(f => f.id !== action.payload.todolistId)
+            const index = state.findIndex(f => f.id === action.payload.todolistId)
+            if (index > -1) {
+                state.splice(index, 1)
+            }
         },
         addTodolistAC(state, action: PayloadAction<{ item: ApiTodolistType }>) {
-            [{...action.item, filter: 'all', todolistStatus: 'idle'}, ...state]
+            state.push({...action.payload.item, filter: 'all', todolistStatus: 'idle'})
         },
         changeTodolistTitleAC(state, action: PayloadAction<{ todolistId: string, newTitle: string }>) {
-            state.map(m => m.id === action.payload.todolistId ? {...m, title: action.payload.newTitle} : m)
+            // return state.map(m => m.id === action.payload.todolistId ? {...m, title: action.payload.newTitle} : m)
+            const index = state.findIndex(f => f.id === action.payload.todolistId)
+            state[index].title = action.payload.newTitle
         },
         changeTodolistFilterAC(state, action: PayloadAction<{ todolistId: string, filter: FilterType }>) {
-            state.map(m => m.id === action.payload.todolistId ? {...m, filter: action.payload.filter} : m)
+            // return state.map(m => m.id === action.payload.todolistId ? {...m, filter: action.payload.filter} : m)
+            const index = state.findIndex(f => f.id === action.payload.todolistId)
+            state[index].filter = action.payload.filter
         },
         setTodoFromServAC(state, action: PayloadAction<{ data: ApiTodolistType[] }>) {
-            action.payload.data.map(m => ({...m, filter: 'all', todolistStatus: 'idle'}))
+            return action.payload.data.map(m => ({...m, filter: 'all', todolistStatus: 'idle'}))
         },
         changeTodolistStatusAC(state, action: PayloadAction<{ todolistId: string, status: seaStatusTypes }>) {
-            state.map(m => m.id === action.payload.todolistId ? {...m, todolistStatus: action.payload.status} : m)
+            // return state.map(m => m.id === action.payload.todolistId ? {...m, todolistStatus: action.payload.status} : m)
+            const index = state.findIndex(f => f.id === action.payload.todolistId)
+            state[index].todolistStatus = action.payload.status
         },
     }
 })
@@ -68,8 +78,8 @@ export const {
 export type FilterType = 'all' | 'complited' | 'active'
 
 
-export type seaTodolistActionsType =
-    ReturnType<seaReturnedTodolistActionsTypes<typeof seaTodolistActions>>
+ // export type seaTodolistActionsType =
+ //     ReturnType<seaReturnedTodolistActionsTypes<typeof seaTodolistActions>>
 export type SeaTodolistsType = ApiTodolistType & {
     filter: FilterType, todolistStatus: seaStatusTypes
 }

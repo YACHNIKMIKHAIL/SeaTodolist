@@ -1,22 +1,22 @@
 import {seaReturnedTasksActionsType, seaTasksActions, tasksActions} from "../Actions/TasksActions";
-import {seaReturnedTodolistActionsTypes, seaTodolistActions, TodolistActions} from "../Actions/TodolistsActions";
 import {initialTasks} from "../../../../State/initailsStates";
 import {ItemType} from "../../../../Api/SeaApi";
+import {addTodolistAC, removeTodolistAC, setTodoFromServAC} from "./TodolistReducer";
 
-export const taskReducer = (state: TasksStateType = initialTasks, action: seaTasksActionsType): TasksStateType => {
+export const taskReducer = (state: TasksStateType = initialTasks, action: any): TasksStateType => {
     switch (action.type) {
-        case TodolistActions.ADD_TODOLIST: {
-            return {[action.item.id]: [], ...state}
+        case addTodolistAC.name: {
+            return {[action.payload.item.id]: [], ...state}
         }
-        case TodolistActions.REMOVE_TODOLIST: {
+        case removeTodolistAC.name: {
             let taskCopy = {...state}
-            delete taskCopy[action.todolistId]
+            delete taskCopy[action.payload.todolistId]
             return taskCopy
         }
         case tasksActions.ADD_TASK: {
             return {
                 ...state,
-                [action.todolistID]: [{...action.item,loading:false}, ...state[action.todolistID]]
+                [action.todolistID]: [{...action.item, loading: false}, ...state[action.todolistID]]
             }
         }
         case tasksActions.REMOVE_TASK: {
@@ -45,9 +45,9 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: seaTas
                 } : m)
             }
         }
-        case TodolistActions.SET_FROM_SERVER: {
+        case setTodoFromServAC.name: {
             const copyState = {...state}
-            action.data.forEach(tl => {
+            action.payload.data.forEach((tl:any) => {
                 copyState[tl.id] = []
             })
             return copyState
@@ -57,7 +57,8 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: seaTas
     }
 }
 export type seaTasksActionsType =
-    ReturnType<seaReturnedTodolistActionsTypes<typeof seaTodolistActions>>
+    ReturnType<typeof setTodoFromServAC>
+    | ReturnType<typeof addTodolistAC>
     | ReturnType<seaReturnedTasksActionsType<typeof seaTasksActions>>
 
 
