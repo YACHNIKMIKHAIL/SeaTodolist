@@ -17,7 +17,7 @@ const slice = createSlice({
             }
         },
         addTodolistAC(state, action: PayloadAction<{ item: ApiTodolistType }>) {
-            state.push({...action.payload.item, filter: 'all', todolistStatus: 'idle'})
+            state.unshift({...action.payload.item, filter: 'all', todolistStatus: 'idle'})
         },
         changeTodolistTitleAC(state, action: PayloadAction<{ todolistId: string, newTitle: string }>) {
             // return state.map(m => m.id === action.payload.todolistId ? {...m, title: action.payload.newTitle} : m)
@@ -78,8 +78,8 @@ export const {
 export type FilterType = 'all' | 'complited' | 'active'
 
 
- // export type seaTodolistActionsType =
- //     ReturnType<seaReturnedTodolistActionsTypes<typeof seaTodolistActions>>
+// export type seaTodolistActionsType =
+//     ReturnType<seaReturnedTodolistActionsTypes<typeof seaTodolistActions>>
 export type SeaTodolistsType = ApiTodolistType & {
     filter: FilterType, todolistStatus: seaStatusTypes
 }
