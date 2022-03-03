@@ -1,7 +1,7 @@
 import {seaReturnedTasksActionsType, seaTasksActions} from "../Actions/TasksActions";
 import {initialTasks} from "../../../../State/initailsStates";
-import {ItemType} from "../../../../Api/SeaApi";
-import {addTodolistAC, setTodoFromServAC} from "./TodolistReducer";
+import {ApiTodolistType, ItemType} from "../../../../Api/SeaApi";
+import {addTodolistAC, removeTodolistAC, setTodoFromServAC} from "./TodolistReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const slice = createSlice({
@@ -20,16 +20,42 @@ const slice = createSlice({
                 }
             },
             setTasksFromServAC(state, action: PayloadAction<{ todolistID: string, data: Array<ItemType> }>) {
- 
+                state[action.payload.todolistID] = action.payload.data
             },
             changeTaskAC(state, action: PayloadAction<{ todolistID: string, taskID: string, item: ItemType }>) {
-
+                const task = state[action.payload.todolistID]
+                const index = task.findIndex(i => i.id === action.payload.taskID)
+                if (index > -1) {
+                    task[index] = {...task[index], ...action.payload.item}
+                }
             },
             loadTask(state, action: PayloadAction<{ todolistID: string, taskID: string, loading: boolean }>) {
-
+                const task = state[action.payload.todolistID]
+                const index = task.findIndex(i => i.id === action.payload.taskID)
+                if (index > -1) {
+                    task[index].loading = action.payload.loading
+                }
             },
         },
-        extraReducers: {}
+        extraReducers: (builder) => {
+            builder.addCase(addTodolistAC, (state, action) => {
+
+            });
+            builder.addCase(removeTodolistAC, (state, action) => {
+
+            });
+            builder.addCase(setTodoFromServAC, (state, action) => {
+
+            })
+        }
+        //     {
+        //     [addTodolistAC.type]: (state, action: PayloadAction<{ item: ApiTodolistType }>) => {
+        //     },
+        //     [removeTodolistAC.type]: (state, action: PayloadAction<{ todolistId: string }>) => {
+        //     },
+        //     [setTodoFromServAC.type]: (state, action: PayloadAction<{ data: ApiTodolistType[] }>) => {
+        //     }
+        // }
     }
 )
 
