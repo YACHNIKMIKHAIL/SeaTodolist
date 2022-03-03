@@ -5,10 +5,10 @@ import {addTodolistAC, removeTodolistAC, setTodoFromServAC} from "./TodolistRedu
 
 export const taskReducer = (state: TasksStateType = initialTasks, action: any): TasksStateType => {
     switch (action.type) {
-        case addTodolistAC.name: {
+        case addTodolistAC.type: {
             return {[action.payload.item.id]: [], ...state}
         }
-        case removeTodolistAC.name: {
+        case removeTodolistAC.type: {
             let taskCopy = {...state}
             delete taskCopy[action.payload.todolistId]
             return taskCopy
@@ -45,7 +45,7 @@ export const taskReducer = (state: TasksStateType = initialTasks, action: any): 
                 } : m)
             }
         }
-        case setTodoFromServAC.name: {
+        case setTodoFromServAC.type: {
             const copyState = {...state}
             action.payload.data.forEach((tl:any) => {
                 copyState[tl.id] = []
