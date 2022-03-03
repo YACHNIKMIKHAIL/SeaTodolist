@@ -1,7 +1,6 @@
 import {v1} from "uuid";
-import {seaTasksActions} from "../Actions/TasksActions";
-import {taskReducer, TasksStateType} from "./TaskReducer";
-import {ItemType} from "../../../../Api/SeaApi";
+import {addTaskAC, changeTaskAC, loadTask, removeTaskAC, taskReducer, TasksStateType} from "./TaskReducer";
+import {TaskPriorities, TaskStatuses} from "../../../../Api/SeaApi";
 import {addTodolistAC, removeTodolistAC, SeaTodolistsType} from "./TodolistReducer";
 
 let todolistID1: string
@@ -36,11 +35,13 @@ beforeEach(() => {
 })
 
 test('correct todolist should be added', () => {
-    let endState = taskReducer(startState, addTodolistAC({item:{
-        id: 'hbdcuhbc',
-        title: 'New todolist',
-        filter: 'all'
-    } as SeaTodolistsType}))
+    let endState = taskReducer(startState, addTodolistAC({
+        item: {
+            id: 'hbdcuhbc',
+            title: 'New todolist',
+            filter: 'all'
+        } as SeaTodolistsType
+    }))
 
     expect(endState[todolistID1].length).toBe(3)
 })
@@ -52,11 +53,22 @@ test('correct todolist should be removed', () => {
     expect(endState[todolistID1].length).toBe(3)
 })
 test('correct task should be added', () => {
-    let endState = taskReducer(startState, seaTasksActions.addTaskAC(todolistID3, {
-        id: v1(),
-        title: 'bla-bla',
-        status: 1
-    } as ItemType))
+    let endState = taskReducer(startState, addTaskAC({
+        todolistID: todolistID3, item:
+            {
+                id: 'string',
+                title: 'bla-bla',
+                description: 'string',
+                todoListId: 'string',
+                order: 4,
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Low,
+                startDate: 'string',
+                deadline: 'string',
+                addedDate: 'string',
+                loading: false
+            }
+    }))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
@@ -65,11 +77,22 @@ test('correct task should be added', () => {
     expect(endState[todolistID3][0].title).toBe('bla-bla')
 })
 test('correct task status should be changed', () => {
-    let endState = taskReducer(startState, seaTasksActions.changeTaskAC(todolistID3, taskID, {
-        id: v1(),
-        title: 'hcahbdc',
-        status: 2
-    } as ItemType))
+    let endState = taskReducer(startState, changeTaskAC({
+        todolistID: todolistID3, taskID: taskID,
+        item: {
+            id: v1(),
+            title: 'hcahbdc',
+            description: 'string',
+            todoListId: 'string',
+            order: 4,
+            status: TaskStatuses.Complited,
+            priority: TaskPriorities.Low,
+            startDate: 'string',
+            deadline: 'string',
+            addedDate: 'string',
+            loading: false
+        }
+    }))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
@@ -79,11 +102,22 @@ test('correct task status should be changed', () => {
     expect(endState[todolistID3][2].status).toBe(1)
 })
 test('correct task title should be changed', () => {
-    let endState = taskReducer(startState, seaTasksActions.changeTaskAC(todolistID3, taskID, {
-        id: v1(),
-        title: 'hcahbdc',
-        status: 0
-    } as ItemType))
+    let endState = taskReducer(startState, changeTaskAC({
+        todolistID: todolistID3, taskID: taskID,
+        item: {
+            id: v1(),
+            title: 'hcahbdc',
+            description: 'string',
+            todoListId: 'string',
+            order: 4,
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: 'string',
+            deadline: 'string',
+            addedDate: 'string',
+            loading: false
+        }
+    }))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
@@ -93,7 +127,7 @@ test('correct task title should be changed', () => {
     expect(endState[todolistID3][2].status).toBe(1)
 })
 test('correct task should be removed', () => {
-    let endState = taskReducer(startState, seaTasksActions.removeTaskAC(todolistID3, taskID))
+    let endState = taskReducer(startState, removeTaskAC({todolistId: todolistID3, id: taskID}))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
@@ -103,7 +137,7 @@ test('correct task should be removed', () => {
     expect(endState[todolistID3][1].title).toBe("Crank")
 })
 test('correct task should be loaded', () => {
-    let endState = taskReducer(startState, seaTasksActions.loadTask(todolistID3, taskID,true))
+    let endState = taskReducer(startState, loadTask({todolistID: todolistID3, taskID: taskID, loading: true}))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)

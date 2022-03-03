@@ -1,6 +1,5 @@
-import {seaReturnedTasksActionsType, seaTasksActions} from "../Actions/TasksActions";
 import {initialTasks} from "../../../../State/initailsStates";
-import {ApiTodolistType, ItemType} from "../../../../Api/SeaApi";
+import {ItemType} from "../../../../Api/SeaApi";
 import {addTodolistAC, removeTodolistAC, setTodoFromServAC} from "./TodolistReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
@@ -39,13 +38,15 @@ const slice = createSlice({
         },
         extraReducers: (builder) => {
             builder.addCase(addTodolistAC, (state, action) => {
-
+                state[action.payload.item.id] = []
             });
             builder.addCase(removeTodolistAC, (state, action) => {
-
+                delete state[action.payload.todolistId]
             });
             builder.addCase(setTodoFromServAC, (state, action) => {
-
+                action.payload.data.forEach((tl: any) => {
+                    state[tl.id] = []
+                })
             })
         }
         //     {
@@ -113,11 +114,11 @@ switch (action.type) {
     default:
         return state
 }
-}*/
-export type seaTasksActionsType =
-    ReturnType<typeof setTodoFromServAC>
-    | ReturnType<typeof addTodolistAC>
-    | ReturnType<seaReturnedTasksActionsType<typeof seaTasksActions>>
+// }*/
+// export type seaTasksActionsType =
+//     ReturnType<typeof setTodoFromServAC>
+//     | ReturnType<typeof addTodolistAC>
+//     | ReturnType<seaReturnedTasksActionsType<typeof seaTasksActions>>
 
 
 export type TasksStateType = { [key: string]: Array<ItemType> }
