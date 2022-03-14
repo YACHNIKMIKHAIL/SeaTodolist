@@ -5,10 +5,11 @@ import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../../../App/store";
-import {changeTaskTC, removeTaskTC} from "../Actions/TasksActions";
+import {changeTaskTC} from "../Actions/TasksActions";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
+import {removeTaskTC} from "../Reducers/TaskReducer";
 
 
 type TaskPropsType = {
@@ -22,7 +23,7 @@ const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
         const dispatch = useDispatch()
 
         const removeTask = useCallback(() => {
-            dispatch(removeTaskTC(todolistID, id))
+            dispatch(removeTaskTC({todolistID, taskID:id}))
         }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((num: boolean) => {
             dispatch(changeTaskTC(todolistID, id, {status: num ? TaskStatuses.Complited : TaskStatuses.New}))

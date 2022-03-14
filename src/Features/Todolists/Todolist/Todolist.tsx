@@ -7,12 +7,12 @@ import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import {changeTodolistsTC, removeTodolistsTC} from "./Actions/TodolistsActions";
 import Task from "./Task/Task";
-import {addTaskTC, getTasksTC, reorderTaskTC} from "./Actions/TasksActions";
 import {changeTodolistFilterAC, FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {useSeaSelector} from "../../../App/store";
-import {TasksStateType} from "./Reducers/TaskReducer";
+import {getTasksTC} from "./Reducers/TaskReducer";
+import {reorderTaskTC} from "./Actions/TasksActions";
 
 
 type PropsType = {
@@ -36,8 +36,8 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             dispatch(removeTodolistsTC(todolist.id))
         }, [dispatch, todolist.id])
         const addTask = useCallback((newTitle: string) => {
-            dispatch(addTaskTC(todolist.id, newTitle))
-        }, [dispatch, todolist.id])
+            // dispatch(addTaskTC(todolist.id, newTitle))
+        }, [todolist.id])
         const changeTodolistTitle = useCallback((newTitle: string) => {
             dispatch(changeTodolistsTC(todolist.id, newTitle))
         }, [dispatch, todolist.id])

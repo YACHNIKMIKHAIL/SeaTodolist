@@ -1,15 +1,15 @@
 import {
-    addTodolistAC, changeTodolistStatusAC,
+    addTodolistAC,
+    changeTodolistStatusAC,
     changeTodolistTitleAC,
-    FilterType,
     removeTodolistAC,
     setTodoFromServAC
 } from "../Reducers/TodolistReducer";
-import {ApiTodolistType, todolistAPI} from "../../../../Api/SeaApi";
-import {seaStatusTypes, setSeaAppStatus} from "../../../../App/SeaAppReducer";
+import {todolistAPI} from "../../../../Api/SeaApi";
+import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
-import {getTasksTC} from "./TasksActions";
 import {Dispatch} from "redux";
+import {getTasksTC} from "../Reducers/TaskReducer";
 //
 // export enum TodolistActions {
 //     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
