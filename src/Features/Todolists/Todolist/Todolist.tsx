@@ -11,7 +11,7 @@ import {changeTodolistFilterAC, FilterType, SeaTodolistsType} from "./Reducers/T
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {useSeaSelector} from "../../../App/store";
-import {getTasksTC} from "./Reducers/TaskReducer";
+import {addTaskTC, getTasksTC} from "./Reducers/TaskReducer";
 import {reorderTaskTC} from "./Actions/TasksActions";
 
 
@@ -36,8 +36,8 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             dispatch(removeTodolistsTC(todolist.id))
         }, [dispatch, todolist.id])
         const addTask = useCallback((newTitle: string) => {
-            // dispatch(addTaskTC(todolist.id, newTitle))
-        }, [todolist.id])
+            dispatch(addTaskTC({todolistID: todolist.id, title: newTitle}))
+        }, [todolist.id, dispatch])
         const changeTodolistTitle = useCallback((newTitle: string) => {
             dispatch(changeTodolistsTC(todolist.id, newTitle))
         }, [dispatch, todolist.id])
