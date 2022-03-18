@@ -72,5 +72,4 @@ export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeig
   padding: 5px;
   background-color: ${props => props.$backgroundColor};
   border-radius: 10px;
-  //margin: 10px;
 `

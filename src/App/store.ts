@@ -4,7 +4,7 @@ import {taskReducer} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
 import seaThunk, {ThunkAction} from "redux-thunk";
 import {seaAppResucer} from "./SeaAppReducer";
 import {seaAuthReducer, seaLoginActionsType} from "../Features/SeaLogin/SeaAuthReducer";
-import {TypedUseSelectorHook, useSelector} from "react-redux";
+import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
 
 const seaReducer = combineReducers({
@@ -16,7 +16,6 @@ const seaReducer = combineReducers({
 
 export type reducerType = ReturnType<typeof seaReducer>
 export type seaActionsType = seaLoginActionsType
-// export const store = createStore(reducer, applyMiddleware(thunk))
 export const store = configureStore({
     reducer: seaReducer,
     middleware: (getDefaultMiddleware) =>
@@ -33,3 +32,6 @@ export type SeaThunkType<ReturnType = void> = ThunkAction<ReturnType,
     seaActionsType>
 // @ts-ignore
 window.store = store
+
+type SeaDispatchType = typeof store.dispatch
+export const useSeaDispatch = () => useDispatch<SeaDispatchType>()

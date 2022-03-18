@@ -132,9 +132,6 @@ test('correct task should be removed', () => {
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
     expect(endState[todolistID1].length).toBe(3)
-    // expect(endState[todolistID3].length).toBe(2)
-    // expect(endState[todolistID3][0].title).toBe("Helmet")
-    // expect(endState[todolistID3][1].title).toBe("Crank")
 })
 test('correct task should be loaded', () => {
     let endState = taskReducer(startState, loadTask({todolistID: todolistID3, taskID: taskID, loading: true}))

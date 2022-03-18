@@ -11,9 +11,9 @@ import {
 import React from 'react';
 import styled from "styled-components";
 import {FormikHelpers, useFormik} from "formik";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {seaLoginTC} from "./SeaAuthReducer";
-import {reducerType} from "../../App/store";
+import {reducerType, useSeaDispatch} from "../../App/store";
 import {Navigate} from "react-router-dom";
 
 type FormValuesType = {
@@ -22,7 +22,7 @@ type FormValuesType = {
     rememberMe: boolean
 }
 const SeaLogin = () => {
-    const dispatch = useDispatch()
+    const dispatch = useSeaDispatch()
     const isLoggedInSea = useSelector<reducerType, boolean>(state => state.auth.isLoginIn)
 
     const formik = useFormik({
@@ -39,8 +39,14 @@ const SeaLogin = () => {
             password: '',
             rememberMe: false,
         },
-        onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
-            const log = await dispatch(seaLoginTC(values))
+        onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
+            const action = await dispatch(seaLoginTC(values))
+            if (seaLoginTC.rejected.match(action)) {
+                if (action.payload?.fieldsErrors?.length) {
+                    const error = action.payload?.fieldsErrors[0]
+                    formikHelpers.setFieldError(error.field, error.error)
+                }
+            }
         }
     })
 

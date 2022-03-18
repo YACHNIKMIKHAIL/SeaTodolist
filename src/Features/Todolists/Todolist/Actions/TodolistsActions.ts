@@ -23,27 +23,6 @@ import {getTasksTC} from "../Reducers/TaskReducer";
 
 export type seaReturnedTodolistActionsTypes<T> = T extends { [key: string]: infer A } ? A : never
 
-// export const seaTodolistActions = {
-//     removeTodolistAC: (todolistId: string) => ({type: TodolistActions.REMOVE_TODOLIST, todolistId} as const),
-//     addTodolistAC: (item: ApiTodolistType) => ({type: TodolistActions.ADD_TODOLIST, item} as const),
-//     changeTodolistTitleAC: (todolistId: string, newTitle: string) => ({
-//         type: TodolistActions.CHANGE_TODOLIST_TITLE,
-//         todolistId,
-//         newTitle
-//     } as const),
-//     changeTodolistFilterAC: (todolistId: string, filter: FilterType) => ({
-//         type: TodolistActions.CHANGE_TODOLIST_FILTER,
-//         todolistId,
-//         filter
-//     } as const),
-//     setTodoFromServAC: (data: ApiTodolistType[]) => ({type: TodolistActions.SET_FROM_SERVER, data} as const),
-//     changeTodolistStatusAC: (todolistId: string, status: seaStatusTypes) => ({
-//         type: TodolistActions.CHANGE_TODOLIST_STATUS,
-//         todolistId,
-//         status
-//     } as const),
-// }
-
 
 export const getTodolistsTC = () => async (dispatch: Dispatch<any>) => {
     dispatch(setSeaAppStatus({status: 'loading'}))

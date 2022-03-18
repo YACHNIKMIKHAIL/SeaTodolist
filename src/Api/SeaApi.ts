@@ -98,10 +98,11 @@ export type PostTodolistType = {
     fieldsErrors: [],
     resultCode: number
 }
-export type SeaResponseType<D = {}> = {
+export type FielErrorType={ field: string, error: string }
+ export type SeaResponseType<D = {}> = {
     data: D
     messages: string[]
-    fieldsErrors: string[]
+    fieldsErrors?: Array<FielErrorType>
     resultCode: number
 }
 export type UpdateTaskType = {
