@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {addTaskAC, changeTaskAC, loadTask, removeTaskTC, taskReducer, TasksStateType} from "./TaskReducer";
+import {addTaskTC, changeTaskAC, loadTask, removeTaskTC, taskReducer, TasksStateType} from "./TaskReducer";
 import {TaskPriorities, TaskStatuses} from "../../../../Api/SeaApi";
 import {addTodolistAC, removeTodolistAC, SeaTodolistsType} from "./TodolistReducer";
 
@@ -53,22 +53,22 @@ test('correct todolist should be removed', () => {
     expect(endState[todolistID1].length).toBe(3)
 })
 test('correct task should be added', () => {
-    let endState = taskReducer(startState, addTaskAC({
-        todolistID: todolistID3, item:
-            {
-                id: 'string',
-                title: 'bla-bla',
-                description: 'string',
-                todoListId: 'string',
-                order: 4,
-                status: TaskStatuses.New,
-                priority: TaskPriorities.Low,
-                startDate: 'string',
-                deadline: 'string',
-                addedDate: 'string',
-                loading: false
-            }
-    }))
+    const task = {
+        id: 'string',
+        title: 'bla-bla',
+        description: 'string',
+        todoListId: 'string',
+        order: 4,
+        status: TaskStatuses.New,
+        priority: TaskPriorities.Low,
+        startDate: 'string',
+        deadline: 'string',
+        addedDate: 'string',
+        loading: false
+    }
+    let endState = taskReducer(startState, addTaskTC.fulfilled(task
+        , 'requestId',
+        {title: task.title, todolistID: task.todoListId}))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
@@ -127,7 +127,10 @@ test('correct task title should be changed', () => {
     expect(endState[todolistID3][2].status).toBe(1)
 })
 test('correct task should be removed', () => {
-    let endState = taskReducer(startState, removeTaskTC.fulfilled({todolistID: todolistID3, taskID: taskID},'requestId',{todolistID: todolistID3, taskID: taskID}))
+    let endState = taskReducer(startState, removeTaskTC.fulfilled({
+        todolistID: todolistID3,
+        taskID: taskID
+    }, 'requestId', {todolistID: todolistID3, taskID: taskID}))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)

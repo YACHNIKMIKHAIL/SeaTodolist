@@ -1,11 +1,12 @@
 import {initialTasks} from "../../../../State/initailsStates";
-import {ItemType, tasksAPI} from "../../../../Api/SeaApi";
-import {addTodolistAC, removeTodolistAC, setTodoFromServAC} from "./TodolistReducer";
+import {ItemType, tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
+import {addTodolistAC, changeTodolistStatusAC, removeTodolistAC, setTodoFromServAC} from "./TodolistReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {tasksActions} from "../Actions/TasksActions";
+import {tasksActions, UpdateSeaTaskType} from "../Actions/TasksActions";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {AxiosError} from "axios";
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
+import {reducerType} from "../../../../App/store";
 
 export const getTasksTC = createAsyncThunk(tasksActions.SET_TASKS_FROM_SERVER, async (todolistID: string, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
@@ -18,6 +19,8 @@ export const getTasksTC = createAsyncThunk(tasksActions.SET_TASKS_FROM_SERVER, a
 export const removeTaskTC = createAsyncThunk(tasksActions.REMOVE_TASK, async (seaParam: { todolistID: string, taskID: string }, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     await tasksAPI.removeTask(seaParam.todolistID, seaParam.taskID)
+    thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
+
     return {todolistID: seaParam.todolistID, taskID: seaParam.taskID}
 })
 
@@ -44,6 +47,50 @@ export const addTaskTC = createAsyncThunk(tasksActions.ADD_TASK, async (seaParam
     }
 
 })
+export const changeTaskTC = createAsyncThunk(tasksActions.CHANGE_TASK, async (seaParam: { todolistID: string, taskID: string, model: UpdateSeaTaskType }, {
+    dispatch,
+    rejectWithValue,
+    getState
+}) => {
+    const state = getState() as reducerType
+    const actualTaskParams = state.tasks[seaParam.todolistID].filter(f => f.id === seaParam.taskID)[0]
+    if (!actualTaskParams) {
+        return rejectWithValue('task is undefined!')
+    }
+    const apiModel: UpdateTaskType = {
+        title: actualTaskParams.title,
+        description: actualTaskParams.description,
+        status: actualTaskParams.status,
+        priority: actualTaskParams.priority,
+        startDate: actualTaskParams.startDate,
+        deadline: actualTaskParams.deadline,
+        ...seaParam.model
+    }
+    dispatch(setSeaAppStatus({status: 'loading'}))
+    dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'loading'}))
+    dispatch(loadTask({todolistID: seaParam.todolistID, taskID: seaParam.taskID, loading: true}))
+    try {
+        let res = await tasksAPI.changeTask(seaParam.todolistID, seaParam.taskID, apiModel)
+        const {item} = res.data.data
+        if (res.data.resultCode === 0) {
+            dispatch(changeTaskAC({todolistID: seaParam.todolistID, taskID: seaParam.taskID, item: item}))
+            dispatch(loadTask({todolistID: seaParam.todolistID, taskID: seaParam.taskID, loading: false}))
+        } else {
+            seaHandleServer(res.data, dispatch)
+            dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'failed'}))
+            dispatch(getTasksTC(seaParam.todolistID))
+            return rejectWithValue({})
+        }
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+        return rejectWithValue({})
+
+    } finally {
+        dispatch(setSeaAppStatus({status: 'succesed'}))
+        dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'succesed'}))
+    }
+})
+
 const slice = createSlice({
         name: 'task',
         initialState: initialTasks,
