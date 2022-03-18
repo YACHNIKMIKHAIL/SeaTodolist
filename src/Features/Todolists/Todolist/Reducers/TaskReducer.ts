@@ -7,34 +7,30 @@ import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {Dispatch} from "redux";
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
 
-export const getTasksTC = createAsyncThunk(tasksActions.SET_TASKS_FROM_SERVER, (todolistID: string, thunkAPI) => {
+export const getTasksTC = createAsyncThunk(tasksActions.SET_TASKS_FROM_SERVER, async (todolistID: string, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
-    return tasksAPI.getTasks(todolistID)
-        .then((res) => {
-            const tasks = res.items
-            thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
-            return {tasks, todolistID}
-        })
-
-    // thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
-    // thunkAPI.dispatch(changeTodolistStatusAC({todolistId: todolistID, status: 'loading'}))
-    // try {
-    //     let res = await tasksAPI.getTasks(todolistID)
-    //     thunkAPI.dispatch(setTasksFromServAC({todolistID: todolistID, data: res.items}))
-    //     return {res.items, todolistID}
-    // } catch (e) {
-    //     seaHandleNetwork(e, thunkAPI.dispatch)
-    // } finally {
-    //     thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
-    //     thunkAPI.dispatch(changeTodolistStatusAC({todolistId: todolistID, status: 'succesed'}))
-    // }
+    const sea = await tasksAPI.getTasks(todolistID)
+    const tasks = sea.items
+    thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
+    return {tasks, todolistID}
 })
-export const removeTaskTC = createAsyncThunk(tasksActions.REMOVE_TASK, (seaParam: { todolistID: string, taskID: string }, thunkAPI) => {
+
+// thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
+// thunkAPI.dispatch(changeTodolistStatusAC({todolistId: todolistID, status: 'loading'}))
+// try {
+//     let res = await tasksAPI.getTasks(todolistID)
+//     thunkAPI.dispatch(setTasksFromServAC({todolistID: todolistID, data: res.items}))
+//     return {res.items, todolistID}
+// } catch (e) {
+//     seaHandleNetwork(e, thunkAPI.dispatch)
+// } finally {
+//     thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
+//     thunkAPI.dispatch(changeTodolistStatusAC({todolistId: todolistID, status: 'succesed'}))
+// }
+export const removeTaskTC = createAsyncThunk(tasksActions.REMOVE_TASK, async (seaParam: { todolistID: string, taskID: string }, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
-    return tasksAPI.removeTask(seaParam.todolistID, seaParam.taskID)
-        .then(() => {
-            return {todolistID: seaParam.todolistID, taskID: seaParam.taskID}
-        })
+    await tasksAPI.removeTask(seaParam.todolistID, seaParam.taskID)
+    return {todolistID: seaParam.todolistID, taskID: seaParam.taskID}
 })
 
 export const addTaskTC = createAsyncThunk(tasksActions.ADD_TASK, (seaParam: { todolistID: string, title: string }, thunkAPI) => {

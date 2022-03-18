@@ -10,13 +10,17 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import styled from "styled-components";
-import {useFormik} from "formik";
+import {FormikHelpers, useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {seaLoginTC} from "./SeaAuthReducer";
 import {reducerType} from "../../App/store";
 import {Navigate} from "react-router-dom";
 
-
+type FormValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
 const SeaLogin = () => {
     const dispatch = useDispatch()
     const isLoggedInSea = useSelector<reducerType, boolean>(state => state.auth.isLoginIn)
@@ -35,8 +39,8 @@ const SeaLogin = () => {
             password: '',
             rememberMe: false,
         },
-        onSubmit: values => {
-            dispatch(seaLoginTC(values))
+        onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
+            const log = await dispatch(seaLoginTC(values))
         }
     })
 
