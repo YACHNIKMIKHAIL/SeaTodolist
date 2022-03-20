@@ -73,8 +73,9 @@ export const changeTaskTC = createAsyncThunk(tasksActions.CHANGE_TASK, async (se
         let res = await tasksAPI.changeTask(seaParam.todolistID, seaParam.taskID, apiModel)
         const {item} = res.data.data
         if (res.data.resultCode === 0) {
-            dispatch(changeTaskAC({todolistID: seaParam.todolistID, taskID: seaParam.taskID, item: item}))
-            dispatch(loadTask({todolistID: seaParam.todolistID, taskID: seaParam.taskID, loading: false}))
+            // dispatch(changeTaskAC({todolistID: seaParam.todolistID, taskID: seaParam.taskID, item: item}))
+            // dispatch(loadTask({todolistID: seaParam.todolistID, taskID: seaParam.taskID, loading: false}))
+            return seaParam
         } else {
             seaHandleServer(res.data, dispatch)
             dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'failed'}))
@@ -95,13 +96,6 @@ const slice = createSlice({
         name: 'task',
         initialState: initialTasks,
         reducers: {
-            changeTaskAC(state, action: PayloadAction<{ todolistID: string, taskID: string, item: ItemType }>) {
-                const task = state[action.payload.todolistID]
-                const index = task.findIndex(i => i.id === action.payload.taskID)
-                if (index > -1) {
-                    task[index] = {...task[index], ...action.payload.item}
-                }
-            },
             loadTask(state, action: PayloadAction<{ todolistID: string, taskID: string, loading: boolean }>) {
                 const task = state[action.payload.todolistID]
                 const index = task.findIndex(i => i.id === action.payload.taskID)
@@ -134,12 +128,19 @@ const slice = createSlice({
             });
             builder.addCase(addTaskTC.fulfilled, (state, action) => {
                 state[action.payload.todoListId].unshift(action.payload)
+            });
+            builder.addCase(changeTaskTC.fulfilled, (state, action) => {
+                const task = state[action.payload.todolistID]
+                const index = task.findIndex(i => i.id === action.payload.taskID)
+                if (index > -1) {
+                    task[index] = {...task[index], ...action.payload.model}
+                }
             })
         }
     }
 )
 
 export const taskReducer = slice.reducer
-export const {changeTaskAC, loadTask} = slice.actions
+export const {loadTask} = slice.actions
 
 export type TasksStateType = { [key: string]: Array<ItemType> }

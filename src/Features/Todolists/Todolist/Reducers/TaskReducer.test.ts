@@ -1,7 +1,8 @@
 import {v1} from "uuid";
-import {addTaskTC, changeTaskAC, loadTask, removeTaskTC, taskReducer, TasksStateType} from "./TaskReducer";
+import {addTaskTC, changeTaskTC, loadTask, removeTaskTC, taskReducer, TasksStateType} from "./TaskReducer";
 import {TaskPriorities, TaskStatuses} from "../../../../Api/SeaApi";
 import {addTodolistAC, removeTodolistAC, SeaTodolistsType} from "./TodolistReducer";
+import {UpdateSeaTaskType} from "../Actions/TasksActions";
 
 let todolistID1: string
 let todolistID2: string
@@ -77,22 +78,19 @@ test('correct task should be added', () => {
     expect(endState[todolistID3][0].title).toBe('bla-bla')
 })
 test('correct task status should be changed', () => {
-    let endState = taskReducer(startState, changeTaskAC({
+    type xType={ todolistID: string; taskID: string; model: UpdateSeaTaskType}
+    const newVar:xType = {
         todolistID: todolistID3, taskID: taskID,
-        item: {
-            id: v1(),
+        model: {
             title: 'hcahbdc',
             description: 'string',
-            todoListId: 'string',
-            order: 4,
             status: TaskStatuses.Complited,
             priority: TaskPriorities.Low,
             startDate: 'string',
             deadline: 'string',
-            addedDate: 'string',
-            loading: false
-        }
-    }))
+        } as UpdateSeaTaskType
+    };
+    let endState = taskReducer(startState, changeTaskTC.fulfilled(newVar, 'requestId', newVar))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
@@ -102,22 +100,20 @@ test('correct task status should be changed', () => {
     expect(endState[todolistID3][2].status).toBe(1)
 })
 test('correct task title should be changed', () => {
-    let endState = taskReducer(startState, changeTaskAC({
+    type xType={ todolistID: string; taskID: string; model: UpdateSeaTaskType}
+    const newVar:xType = {
         todolistID: todolistID3, taskID: taskID,
-        item: {
-            id: v1(),
+        model: {
             title: 'hcahbdc',
             description: 'string',
-            todoListId: 'string',
-            order: 4,
-            status: TaskStatuses.New,
+            status: TaskStatuses.Complited,
             priority: TaskPriorities.Low,
             startDate: 'string',
             deadline: 'string',
-            addedDate: 'string',
-            loading: false
-        }
-    }))
+        } as UpdateSeaTaskType
+    };
+
+    let endState = taskReducer(startState, changeTaskTC.fulfilled(newVar,'requestId', newVar))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
