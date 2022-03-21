@@ -22,10 +22,15 @@ export const getTasksTC = createAsyncThunk(tasksActions.SET_TASKS_FROM_SERVER, a
 
 export const removeTaskTC = createAsyncThunk(tasksActions.REMOVE_TASK, async (seaParam: { todolistID: string, taskID: string }, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
-    await tasksAPI.removeTask(seaParam.todolistID, seaParam.taskID)
-    thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
-
-    return {todolistID: seaParam.todolistID, taskID: seaParam.taskID}
+    debugger
+    try {
+        await tasksAPI.removeTask(seaParam.todolistID, seaParam.taskID)
+        return {todolistID: seaParam.todolistID, taskID: seaParam.taskID}
+    } catch (e) {
+        return thunkAPI.rejectWithValue(null)
+    } finally {
+        thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
+    }
 })
 
 export const addTaskTC = createAsyncThunk(tasksActions.ADD_TASK, async (seaParam: { todolistID: string, title: string }, {
@@ -79,7 +84,7 @@ export const changeTaskTC = createAsyncThunk(tasksActions.CHANGE_TASK, async (se
         if (res.data.resultCode === 0) {
             // dispatch(changeTaskAC({todolistID: seaParam.todolistID, taskID: seaParam.taskID, item: item}))
             // dispatch(loadTask({todolistID: seaParam.todolistID, taskID: seaParam.taskID, loading: false}))
-            return {seaParam,item:item}
+            return {seaParam, item: item}
         } else {
             seaHandleServer(res.data, dispatch)
             dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'failed'}))
@@ -125,11 +130,15 @@ const slice = createSlice({
                 state[action.payload.todolistID] = action.payload.tasks
             });
             builder.addCase(removeTaskTC.fulfilled, (state, action) => {
+                debugger
                 const task = state[action.payload.todolistID]
                 const index = task.findIndex(i => i.id === action.payload.taskID)
-                if (index > -1) {
-                    task.slice(index, 1)
+                 if (index > -1) {
+                     //delete task[index]
+                     task.splice(index, 1)
                 }
+
+                // state[action.payload.todolistID].filter(f=>f.id!==action.payload.taskID)
             });
             builder.addCase(addTaskTC.fulfilled, (state, action) => {
                 state[action.payload.todoListId].unshift(action.payload)

@@ -22,6 +22,7 @@ const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
         const dispatch = useDispatch()
 
         const removeTask = useCallback(() => {
+            debugger
             dispatch(removeTaskTC({todolistID, taskID: id}))
         }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((num: boolean) => {
@@ -30,7 +31,7 @@ const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
                 taskID: actualTask.id,
                 model: {status: num ? TaskStatuses.Complited : TaskStatuses.New}
             }))
-        }, [dispatch, todolistID, id])
+        }, [dispatch, todolistID,actualTask.id])
         const changeTaskTitle = useCallback((title: string) => {
             dispatch(changeTaskTC({todolistID, taskID: actualTask.id, model: {title}}))
         }, [dispatch, todolistID, actualTask.id])
