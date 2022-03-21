@@ -1,6 +1,10 @@
 import {initialTasks} from "../../../../State/initailsStates";
 import {ItemType, tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
-import {addTodolistAC, changeTodolistStatusAC, removeTodolistAC, setTodoFromServAC} from "./TodolistReducer";
+import {
+    changeTodolistStatusAC,
+    getTodolistsTC,
+    postTodolistsTC, removeTodolistsTC
+} from "./TodolistReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {tasksActions, UpdateSeaTaskType} from "../Actions/TasksActions";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
@@ -75,7 +79,7 @@ export const changeTaskTC = createAsyncThunk(tasksActions.CHANGE_TASK, async (se
         if (res.data.resultCode === 0) {
             // dispatch(changeTaskAC({todolistID: seaParam.todolistID, taskID: seaParam.taskID, item: item}))
             // dispatch(loadTask({todolistID: seaParam.todolistID, taskID: seaParam.taskID, loading: false}))
-            return seaParam
+            return {seaParam,item:item}
         } else {
             seaHandleServer(res.data, dispatch)
             dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'failed'}))
@@ -87,6 +91,7 @@ export const changeTaskTC = createAsyncThunk(tasksActions.CHANGE_TASK, async (se
         return rejectWithValue({})
 
     } finally {
+        dispatch(loadTask({todolistID: seaParam.todolistID, taskID: seaParam.taskID, loading: false}))
         dispatch(setSeaAppStatus({status: 'succesed'}))
         dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'succesed'}))
     }
@@ -105,13 +110,13 @@ const slice = createSlice({
             },
         },
         extraReducers: (builder) => {
-            builder.addCase(addTodolistAC, (state, action) => {
+            builder.addCase(postTodolistsTC.fulfilled, (state, action) => {
                 state[action.payload.item.id] = []
             });
-            builder.addCase(removeTodolistAC, (state, action) => {
+            builder.addCase(removeTodolistsTC.fulfilled, (state, action) => {
                 delete state[action.payload.todolistId]
             });
-            builder.addCase(setTodoFromServAC, (state, action) => {
+            builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
                 action.payload.data.forEach((tl: any) => {
                     state[tl.id] = []
                 })
@@ -130,10 +135,10 @@ const slice = createSlice({
                 state[action.payload.todoListId].unshift(action.payload)
             });
             builder.addCase(changeTaskTC.fulfilled, (state, action) => {
-                const task = state[action.payload.todolistID]
-                const index = task.findIndex(i => i.id === action.payload.taskID)
+                const task = state[action.payload.seaParam.todolistID]
+                const index = task.findIndex(i => i.id === action.payload.seaParam.taskID)
                 if (index > -1) {
-                    task[index] = {...task[index], ...action.payload.model}
+                    task[index] = {...task[index], ...action.payload.item}
                 }
             })
         }

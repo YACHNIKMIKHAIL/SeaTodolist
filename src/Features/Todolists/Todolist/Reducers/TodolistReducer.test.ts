@@ -1,10 +1,8 @@
 import {v1} from "uuid";
 import {
-    addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistStatusAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
+    changeTodolistStatusAC, changeTodolistsTC,
+    postTodolistsTC, removeTodolistsTC,
     SeaTodolistsType,
     todolistReducer
 } from "./TodolistReducer";
@@ -32,7 +30,7 @@ beforeEach(() => {
 })
 
 test('correct todolist should be removed', () => {
-    let endState = todolistReducer(startState, removeTodolistAC({todolistId: todolistID1}))
+    let endState = todolistReducer(startState, removeTodolistsTC.fulfilled({todolistId: todolistID1}, 'requestId', {todolistID: todolistID1}))
 
     expect(startState.length).toBe(4)
     expect(endState.length).toBe(3)
@@ -40,18 +38,22 @@ test('correct todolist should be removed', () => {
 })
 test('correct todolist should be added', () => {
 
-    let endState = todolistReducer(startState, addTodolistAC({
-        item:{} as ApiTodolistType
-}))
+    let endState = todolistReducer(startState, postTodolistsTC.fulfilled({
+        item: {} as ApiTodolistType
+    }, 'requestId', 'dcerd'))
 
     expect(startState.length).toBe(4)
     expect(endState.length).toBe(5)
 })
 test('correct todolist title should be changed', () => {
-    let endState = todolistReducer(startState, changeTodolistTitleAC({
-        todolistId: todolistID3,
-        newTitle: 'Changed todolist'
-    }))
+    let endState = todolistReducer(startState, changeTodolistsTC.fulfilled({
+            todolistId: todolistID3,
+            newTitle: 'Changed todolist'
+        }, 'requestId', {
+            todolistID: todolistID3,
+            title: 'Changed todolist'
+        }
+    ))
 
     expect(startState.length).toBe(4)
     expect(endState.length).toBe(4)

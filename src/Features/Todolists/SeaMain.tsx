@@ -3,9 +3,13 @@ import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
 import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../App/store";
-import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
+import {
+    getTodolistsTC,
+    postTodolistsTC,
+    reorderTodolistsTC,
+    SeaTodolistsType
+} from "./Todolist/Reducers/TodolistReducer";
 import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
-import {getTodolistsTC, postTodolistsTC, reorderTodolistsTC} from "./Todolist/Actions/TodolistsActions";
 import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";

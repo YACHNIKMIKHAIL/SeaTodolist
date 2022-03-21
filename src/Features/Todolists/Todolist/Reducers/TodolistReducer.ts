@@ -1,85 +1,151 @@
-import {initialTodolists} from "../../../../State/initailsStates";
-import {ApiTodolistType} from "../../../../Api/SeaApi";
-import {seaStatusTypes} from "../../../../App/SeaAppReducer";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {seaReturnedTodolistActionsTypes} from "../Actions/TodolistsActions";
+import {ApiTodolistType, todolistAPI} from "../../../../Api/SeaApi";
+import {seaStatusTypes, setSeaAppStatus} from "../../../../App/SeaAppReducer";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {Dispatch} from "redux";
+import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
+import {getTasksTC} from "./TaskReducer";
+import {TodolistActions} from "../Actions/TodolistsActions";
+
+export const getTodolistsTC = createAsyncThunk(TodolistActions.SET_FROM_SERVER, async (param, {
+    dispatch,
+    rejectWithValue
+}) => {
+    dispatch(setSeaAppStatus({status: 'loading'}))
+    try {
+        let sea = await todolistAPI.getTodolists()
+        return {data: sea}
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+        return rejectWithValue(null)
+    } finally {
+        dispatch(setSeaAppStatus({status: 'succesed'}))
+    }
+})
+export const postTodolistsTC = createAsyncThunk(TodolistActions.ADD_TODOLIST, async (title: string, {
+    dispatch,
+    rejectWithValue
+}) => {
+    dispatch(setSeaAppStatus({status: 'loading'}))
+    try {
+        let sea = await todolistAPI.postTodolists(title)
+        if (sea.resultCode === 0) {
+            const {item} = sea.data;
+            return {item: item}
+        } else {
+            seaHandleServer(sea, dispatch)
+            return rejectWithValue(null)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+        return rejectWithValue(null)
+    } finally {
+        dispatch(setSeaAppStatus({status: 'succesed'}))
+    }
+})
+export const removeTodolistsTC = createAsyncThunk(TodolistActions.REMOVE_TODOLIST, async (param: { todolistID: string }, {
+    dispatch,
+    rejectWithValue
+}) => {
+    dispatch(setSeaAppStatus({status: 'loading'}))
+    dispatch(changeTodolistStatusAC({todolistId: param.todolistID, status: 'loading'}))
+    try {
+        await todolistAPI.deleteTodolists(param.todolistID)
+        return {todolistId: param.todolistID}
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+        return rejectWithValue(null)
+    } finally {
+        dispatch(setSeaAppStatus({status: 'succesed'}))
+    }
+})
+export const changeTodolistsTC = createAsyncThunk(TodolistActions.CHANGE_TODOLIST, async (seaParam: { todolistID: string, title: string }, {
+    dispatch,
+    rejectWithValue
+}) => {
+    dispatch(setSeaAppStatus({status: 'loading'}))
+    dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'loading'}))
+    try {
+        let sea = await todolistAPI.changeTodolists(seaParam.todolistID, seaParam.title)
+        if (sea.data.resultCode === 0) {
+            return {todolistId: seaParam.todolistID, newTitle: seaParam.title}
+        } else {
+            seaHandleServer(sea.data, dispatch)
+            return rejectWithValue(null)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+        return rejectWithValue(null)
+
+    } finally {
+        dispatch(setSeaAppStatus({status: 'succesed'}))
+        dispatch(changeTodolistStatusAC({todolistId: seaParam.todolistID, status: 'succesed'}))
+    }
+})
+export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string | null) => async (dispatch: Dispatch<any>) => {
+    dispatch(setSeaAppStatus({status: 'loading'}))
+    dispatch(changeTodolistStatusAC({todolistId: todolistID, status: 'loading'}))
+    console.log('reorderTodolistsTC')
+    try {
+        let sea = await todolistAPI.reorderTodolists(todolistID, putAfterItemId)
+        if (sea.data.resultCode === 0) {
+            dispatch(getTodolistsTC())
+            dispatch(getTasksTC(todolistID))
+        } else {
+            seaHandleServer(sea.data, dispatch)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, dispatch)
+    } finally {
+        dispatch(setSeaAppStatus({status: 'succesed'}))
+        dispatch(changeTodolistStatusAC({todolistId: todolistID, status: 'succesed'}))
+    }
+}
 
 
 const slice = createSlice({
     name: 'todolist',
-    initialState: initialTodolists,
+    initialState: [] as SeaTodolistsType[],
     reducers: {
-        removeTodolistAC(state, action: PayloadAction<{ todolistId: string }>) {
-            // return state.filter(f => f.id !== action.payload.todolistId)
-            const index = state.findIndex(f => f.id === action.payload.todolistId)
-            if (index > -1) {
-                state.splice(index, 1)
-            }
-        },
-        addTodolistAC(state, action: PayloadAction<{ item: ApiTodolistType }>) {
-            state.unshift({...action.payload.item, filter: 'all', todolistStatus: 'idle'})
-        },
-        changeTodolistTitleAC(state, action: PayloadAction<{ todolistId: string, newTitle: string }>) {
-            // return state.map(m => m.id === action.payload.todolistId ? {...m, title: action.payload.newTitle} : m)
-            const index = state.findIndex(f => f.id === action.payload.todolistId)
-            state[index].title = action.payload.newTitle
-        },
         changeTodolistFilterAC(state, action: PayloadAction<{ todolistId: string, filter: FilterType }>) {
             // return state.map(m => m.id === action.payload.todolistId ? {...m, filter: action.payload.filter} : m)
             const index = state.findIndex(f => f.id === action.payload.todolistId)
             state[index].filter = action.payload.filter
-        },
-        setTodoFromServAC(state, action: PayloadAction<{ data: ApiTodolistType[] }>) {
-            return action.payload.data.map(m => ({...m, filter: 'all', todolistStatus: 'idle'}))
         },
         changeTodolistStatusAC(state, action: PayloadAction<{ todolistId: string, status: seaStatusTypes }>) {
             // return state.map(m => m.id === action.payload.todolistId ? {...m, todolistStatus: action.payload.status} : m)
             const index = state.findIndex(f => f.id === action.payload.todolistId)
             state[index].todolistStatus = action.payload.status
         },
-    }
+    },
+    extraReducers: (builder => {
+        builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
+            return action.payload.data.map(m => ({...m, filter: 'all', todolistStatus: 'idle'}))
+        })
+        builder.addCase(postTodolistsTC.fulfilled, (state, action) => {
+            state.unshift({...action.payload.item, filter: 'all', todolistStatus: 'idle'})
+        })
+        builder.addCase(removeTodolistsTC.fulfilled, (state, action) => {
+            // return state.filter(f => f.id !== action.payload.todolistId)
+            const index = state.findIndex(f => f.id === action.payload.todolistId)
+            if (index > -1) {
+                state.splice(index, 1)
+            }
+        })
+        builder.addCase(changeTodolistsTC.fulfilled, (state, action) => {
+            // return state.map(m => m.id === action.payload.todolistId ? {...m, title: action.payload.newTitle} : m)
+            const index = state.findIndex(f => f.id === action.payload.todolistId)
+            state[index].title = action.payload.newTitle
+        })
+    })
 })
 export const todolistReducer = slice.reducer
 export const {
-    removeTodolistAC,
-    addTodolistAC,
-    changeTodolistTitleAC,
     changeTodolistFilterAC,
-    setTodoFromServAC,
     changeTodolistStatusAC
 } = slice.actions
 
-//     (state: SeaTodolistsType[] = initialTodolists, action: seaTodolistActionsType): SeaTodolistsType[] => {
-//
-//     switch (action.type) {
-//         case TodolistActions.REMOVE_TODOLIST: {
-//             return state.filter(f => f.id !== action.todolistId)
-//         }
-//         case TodolistActions.ADD_TODOLIST: {
-//             return [{...action.item, filter: 'all',todolistStatus:'idle'}, ...state]
-//         }
-//         case TodolistActions.CHANGE_TODOLIST_TITLE: {
-//             return state.map(m => m.id === action.todolistId ? {...m, title: action.newTitle} : m)
-//         }
-//         case TodolistActions.CHANGE_TODOLIST_FILTER: {
-//             return state.map(m => m.id === action.todolistId ? {...m, filter: action.filter} : m)
-//         }
-//         case TodolistActions.SET_FROM_SERVER: {
-//             return action.data.map(m => ({...m, filter: 'all',todolistStatus:'idle'}))
-//         }
-//         case TodolistActions.CHANGE_TODOLIST_STATUS: {
-//             return state.map(m=>m.id===action.todolistId?{...m,todolistStatus:action.status}:m)
-//         }
-//         default:
-//             return state
-//     }
-// }
-
 export type FilterType = 'all' | 'complited' | 'active'
 
-
-// export type seaTodolistActionsType =
-//     ReturnType<seaReturnedTodolistActionsTypes<typeof seaTodolistActions>>
 export type SeaTodolistsType = ApiTodolistType & {
     filter: FilterType, todolistStatus: seaStatusTypes
 }
