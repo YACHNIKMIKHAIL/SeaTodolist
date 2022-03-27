@@ -51,7 +51,7 @@ const SeaLogin = () => {
     })
 
     if (isLoggedInSea) {
-        return <Navigate to={'/SeaTodolist'}/>
+        return <Navigate to={'/'}/>
     }
 
     return (
@@ -60,6 +60,16 @@ const SeaLogin = () => {
                 <LoginCase>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
+                            <FormLabel>
+                                <p>To log in get registered
+                                    <a href={'https://social-network.samuraijs.com/'}
+                                       target={'_blank'} style={{color:'hotpink'}}> here
+                                    </a>
+                                </p>
+                                <p>or use common test account credentials:</p>
+                                <p>Email: free@samuraijs.com</p>
+                                <p>Password: free</p>
+                            </FormLabel>
                             <FormLabel>
                                 <FormGroup>
                                     <TextField

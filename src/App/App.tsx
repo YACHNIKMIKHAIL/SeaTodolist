@@ -60,7 +60,7 @@ export const App = () => {
             <Container fixed>
                 <Routes>
                     <Route path={'/login'} element={<SeaLogin/>}/>
-                    <Route path={'/SeaTodolist'} element={<SeaMain/>}/>
+                    <Route path={'/'} element={<SeaMain/>}/>
                 </Routes>
             </Container>
             <Error/>
