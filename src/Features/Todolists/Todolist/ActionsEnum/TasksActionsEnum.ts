@@ -1,7 +1,7 @@
 import {TaskPriorities, TaskStatuses} from "../../../../Api/SeaApi";
 
 
-export enum tasksActions {
+export enum tasksActionsEnum {
     ADD_TASK = 'ADD_TASK',
     CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS',
     CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE',

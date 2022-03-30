@@ -1,10 +1,10 @@
 import {v1} from "uuid";
 import {ItemType, TaskPriorities, TaskStatuses} from "../../../../Api/SeaApi";
-import {UpdateSeaTaskType} from "../Actions/TasksActions";
+import {UpdateSeaTaskType} from "../ActionsEnum/TasksActionsEnum";
 import {loadTask, taskReducer, TasksStateType} from "./TaskReducer";
-import {postTodolistsTC, removeTodolistsTC} from "./TodolistsActions";
+import {postTodolists, removeTodolists} from "./TodolistsActions";
 import {SeaTodolistsType} from "./TodolistReducer";
-import {addTaskTC, changeTaskTC, removeTaskTC} from "./TasksActions";
+import {addTask, changeTask, removeTask} from "./TasksActions";
 
 let todolistID1: string
 let todolistID2: string
@@ -38,7 +38,7 @@ beforeEach(() => {
 })
 
 test('correct todolist should be added', () => {
-    let endState = taskReducer(startState, postTodolistsTC.fulfilled({
+    let endState = taskReducer(startState, postTodolists.fulfilled({
         item: {
             id: 'hbdcuhbc',
             title: 'New todolist',
@@ -49,7 +49,7 @@ test('correct todolist should be added', () => {
     expect(endState[todolistID1].length).toBe(3)
 })
 test('correct todolist should be removed', () => {
-    let endState = taskReducer(startState, removeTodolistsTC.fulfilled({todolistId: todolistID3},'requestId', {todolistID: todolistID3}))
+    let endState = taskReducer(startState, removeTodolists.fulfilled({todolistId: todolistID3},'requestId', {todolistID: todolistID3}))
 
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
@@ -69,7 +69,7 @@ test('correct task should be added', () => {
         addedDate: 'string',
         loading: false
     }
-    let endState = taskReducer(startState, addTaskTC.fulfilled(task
+    let endState = taskReducer(startState, addTask.fulfilled(task
         , 'requestId',
         {title: task.title, todolistID: task.todoListId}))
 
@@ -92,7 +92,7 @@ test('correct task status should be changed', () => {
             deadline: 'string',
         } as UpdateSeaTaskType
     };
-    let endState = taskReducer(startState, changeTaskTC.fulfilled({
+    let endState = taskReducer(startState, changeTask.fulfilled({
         seaParam: newVar,
         item: {} as ItemType
     }, 'requestId', newVar))
@@ -118,7 +118,7 @@ test('correct task title should be changed', () => {
         } as UpdateSeaTaskType
     };
 
-    let endState = taskReducer(startState, changeTaskTC.fulfilled({
+    let endState = taskReducer(startState, changeTask.fulfilled({
         seaParam: newVar,
         item: {} as ItemType
     }, 'requestId', newVar))
@@ -131,7 +131,7 @@ test('correct task title should be changed', () => {
     expect(endState[todolistID3][2].status).toBe(1)
 })
 test('correct task should be removed', () => {
-    let endState = taskReducer(startState, removeTaskTC.fulfilled({
+    let endState = taskReducer(startState, removeTask.fulfilled({
         todolistID: todolistID3,
         taskID: taskID
     }, 'requestId', {todolistID: todolistID3, taskID: taskID}))

@@ -9,26 +9,26 @@ import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";
 import {todolistsActions} from "./Todolist";
-import {postTodolistsTC} from "./Todolist/Reducers/TodolistsActions";
+import {postTodolists} from "./Todolist/Reducers/TodolistsActions";
 
 const SeaMain = () => {
         const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
         const tasks = useSeaSelector<TasksStateType>(state => state.tasks)
         const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
         const dispatch = useDispatch()
-        const {getTodolistsTC, reorderTodolistsTC} = useSeaAction(todolistsActions)
+        const {getTodolists, reorderTodolists} = useSeaAction(todolistsActions)
 
 
         const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
         const [todolistBackground, setTodolistBackground] = useState<string>('#8AA8D2')
 
         const addTodolist = useCallback((newTitle: string) => {
-            postTodolistsTC(newTitle)
+            postTodolists(newTitle)
         }, [])
 
         useEffect(() => {
-            getTodolistsTC()
-        }, [dispatch,getTodolistsTC])
+            getTodolists()
+        }, [dispatch, getTodolists])
 
         if (!isLoggedInSea) {
             return <Navigate to={'/login'}/>
@@ -45,7 +45,7 @@ const SeaMain = () => {
         }
         const onDragTodolistEndHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             e.stopPropagation()
-            dispatch(reorderTodolistsTC(todolist.id, dropTodolistId))
+            dispatch(reorderTodolists({todolistID: todolist.id, putAfterItemId: dropTodolistId}))
         }
         const onDragTodolistOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
             e.stopPropagation()

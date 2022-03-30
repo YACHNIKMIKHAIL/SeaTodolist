@@ -18,21 +18,21 @@ type TaskPropsType = {
 const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
         const seaTaskLoading = useSeaSelector<boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
         const actualTask = useSeaSelector<ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
-        const {removeTaskTC, changeTaskTC} = useSeaAction(tasksActions)
+        const {removeTask, changeTask} = useSeaAction(tasksActions)
 
-        const removeTask = useCallback(() => {
-            removeTaskTC({todolistID, taskID: id})
-        }, [ todolistID, id,removeTaskTC])
+        const removeTaskX = useCallback(() => {
+            removeTask({todolistID, taskID: id})
+        }, [ todolistID, id,removeTask])
         const changeTaskStatus = useCallback((num: boolean) => {
-            changeTaskTC({
+            changeTask({
                 todolistID,
                 taskID: actualTask.id,
                 model: {status: num ? TaskStatuses.Complited : TaskStatuses.New}
             })
-        }, [ todolistID, actualTask.id,changeTaskTC])
+        }, [ todolistID, actualTask.id,changeTask])
         const changeTaskTitle = useCallback((title: string) => {
-            changeTaskTC({todolistID, taskID: actualTask.id, model: {title}})
-        }, [ todolistID, actualTask.id,changeTaskTC])
+            changeTask({todolistID, taskID: actualTask.id, model: {title}})
+        }, [ todolistID, actualTask.id,changeTask])
 
         return (
             <TaskCase
@@ -52,7 +52,7 @@ const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
                     ? <CircularProgress thickness={7} style={{color: 'hotpink'}} size={25}/>
                     : <EditSpan title={actualTask.title} callback={changeTaskTitle}/>}
 
-                <IconButton aria-label="delete" onClick={removeTask}
+                <IconButton aria-label="delete" onClick={removeTaskX}
                             disabled={seaTaskLoading}
                 >
                     <Delete/>

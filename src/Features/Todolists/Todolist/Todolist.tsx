@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import Task from "./Task/Task";
-import {changeTodolistFilterAC, FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
+import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {useSeaAction, useSeaSelector} from "../../../App/store";
@@ -22,29 +22,29 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
         const [dropTaskId, setDropTaskId] = useState<string | null>(null)
         const [taskBackground, setTaskBackground] = useState<string>('')
-        const {getTasksTC, addTaskTC, reorderTaskTC} = useSeaAction(tasksActions)
-        const {changeTodolistsTC, removeTodolistsTC} = useSeaAction(todolistsActions)
+        const {getTasks, addTask, reorderTask} = useSeaAction(tasksActions)
+        const {changeTodolists, removeTodolists,changeTodolistFilter} = useSeaAction(todolistsActions)
 
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
             if (filter === todolist.filter) {
                 return
             }
-            dispatch(changeTodolistFilterAC({todolistId: todolist.id, filter: filter}))
+            changeTodolistFilter({todolistId: todolist.id, filter: filter})
         }
         const removeTodolist = useCallback(() => {
-            removeTodolistsTC({todolistID: todolist.id})
-        }, [ todolist.id,removeTodolistsTC])
-        const addTask = useCallback((newTitle: string) => {
-            addTaskTC({todolistID: todolist.id, title: newTitle})
-        }, [todolist.id,addTaskTC])
+            removeTodolists({todolistID: todolist.id})
+        }, [ todolist.id,removeTodolists])
+        const addTaskX = useCallback((newTitle: string) => {
+            addTask({todolistID: todolist.id, title: newTitle})
+        }, [todolist.id,addTask])
         const changeTodolistTitle = useCallback((newTitle: string) => {
-            changeTodolistsTC({todolistID: todolist.id, title: newTitle})
-        }, [ todolist.id,changeTodolistsTC])
+            changeTodolists({todolistID: todolist.id, title: newTitle})
+        }, [ todolist.id,changeTodolists])
 
         useEffect(() => {
-            getTasksTC(todolist.id)
-        }, [dispatch, todolist.id,getTasksTC])
+            getTasks(todolist.id)
+        }, [dispatch, todolist.id,getTasks])
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
@@ -65,7 +65,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }
         const onDragTaskEndHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
             e.stopPropagation()
-            reorderTaskTC({todolistID: todolist.id, taskID: task.id, putAfterItemId: dropTaskId})
+            reorderTask({todolistID: todolist.id, taskID: task.id, putAfterItemId: dropTaskId})
         }
         const onDragTaskOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
             e.stopPropagation()
@@ -92,7 +92,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                     <Delete/>
                 </IconButton>
             </HCase>
-            <AddForm addFn={addTask}/>
+            <AddForm addFn={addTaskX}/>
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 {tasksForRender.map((m, i) => {
                     return <div key={i}
