@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, TextField} from "@material-ui/core";
 import {useSelector} from "react-redux";
-import {reducerType} from "../App/store";
+import {seaReducerType} from "../App/store";
 import {seaStatusTypes} from "../App/SeaAppReducer";
 
 type AddFormPropsType = {
@@ -11,7 +11,7 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string>('')
 
-    const seaStatus = useSelector<reducerType, seaStatusTypes>(state => state.app.seaStatus)
+    const seaStatus = useSelector<seaReducerType, seaStatusTypes>(state => state.app.seaStatus)
 
 
     const addTaskHandler = () => {

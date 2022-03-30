@@ -2,7 +2,7 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useDispatch, useSelector} from "react-redux";
-import {reducerType} from "../App/store";
+import {seaReducerType} from "../App/store";
 import {setSeaAppError} from "../App/SeaAppReducer";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -13,7 +13,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export default function Error() {
-    const errorMessage = useSelector<reducerType, string | null>(state => state.app.seaError)
+    const errorMessage = useSelector<seaReducerType, string | null>(state => state.app.seaError)
     const dispatch = useDispatch()
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {

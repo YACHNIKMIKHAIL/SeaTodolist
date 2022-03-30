@@ -14,7 +14,7 @@ const seaReducer = combineReducers({
     auth: seaAuthReducer
 })
 
-export type reducerType = ReturnType<typeof seaReducer>
+export type seaReducerType = ReturnType<typeof seaReducer>
 export type seaActionsType = seaLoginActionsType
 export const store = configureStore({
     reducer: seaReducer,
@@ -25,9 +25,9 @@ export const store = configureStore({
             ),
 })
 
-export const useSeaSelector: TypedUseSelectorHook<reducerType> = useSelector
+export const useSeaSelector: TypedUseSelectorHook<seaReducerType> = useSelector
 export type SeaThunkType<ReturnType = void> = ThunkAction<ReturnType,
-    reducerType,
+    seaReducerType,
     unknown,
     seaActionsType>
 // @ts-ignore

@@ -5,11 +5,10 @@ import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/icons/Menu';
-import {useDispatch} from "react-redux";
-import {useSeaSelector} from "./store";
+import {useDispatch, useSelector} from "react-redux";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
-import {initializedSeaAppTC, seaStatusTypes} from './SeaAppReducer';
+import {initializedSeaAppTC} from './SeaAppReducer';
 import Error from "../Components/Error";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -17,11 +16,14 @@ import SeaLogin from "../Features/SeaLogin/SeaLogin";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
 import {seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
+import {authSelectors} from "../Features/SeaLogin";
+import {appSelectors} from "./index";
+
 
 export const App = () => {
-    const seaStatus = useSeaSelector<seaStatusTypes>(state => state.app.seaStatus)
-    const isInitializedApp = useSeaSelector<boolean>(state => state.app.isInitialized)
-    const isLoginIn = useSeaSelector<boolean>(state => state.auth.isLoginIn)
+    const seaStatus = useSelector(appSelectors.selectSeaStatus)
+    const isInitializedApp = useSelector(appSelectors.selectIsInitializedApp)
+    const isLoginIn = useSelector(authSelectors.selectIsLoginIn)
 
 
 

@@ -10,7 +10,7 @@ import {tasksActions, UpdateSeaTaskType} from "../Actions/TasksActions";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {AxiosError} from "axios";
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
-import {reducerType} from "../../../../App/store";
+import {seaReducerType} from "../../../../App/store";
 
 export const getTasksTC = createAsyncThunk(tasksActions.SET_TASKS_FROM_SERVER, async (todolistID: string, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
@@ -61,7 +61,7 @@ export const changeTaskTC = createAsyncThunk(tasksActions.CHANGE_TASK, async (se
     rejectWithValue,
     getState
 }) => {
-    const state = getState() as reducerType
+    const state = getState() as seaReducerType
     const actualTaskParams = state.tasks[seaParam.todolistID].filter(f => f.id === seaParam.taskID)[0]
     if (!actualTaskParams) {
         return rejectWithValue('task is undefined!')

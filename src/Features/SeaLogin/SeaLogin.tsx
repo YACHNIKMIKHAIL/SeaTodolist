@@ -13,8 +13,9 @@ import styled from "styled-components";
 import {FormikHelpers, useFormik} from "formik";
 import {useSelector} from "react-redux";
 import {seaLoginTC} from "./SeaAuthReducer";
-import {reducerType, useSeaDispatch} from "../../App/store";
+import {useSeaDispatch} from "../../App/store";
 import {Navigate} from "react-router-dom";
+import {authSelectors} from "./index";
 
 type FormValuesType = {
     email: string
@@ -23,7 +24,7 @@ type FormValuesType = {
 }
 const SeaLogin = () => {
     const dispatch = useSeaDispatch()
-    const isLoggedInSea = useSelector<reducerType, boolean>(state => state.auth.isLoginIn)
+    const isLoggedInSea = useSelector(authSelectors.selectIsLoginIn)
 
     const formik = useFormik({
         validate: (values) => {
@@ -56,14 +57,14 @@ const SeaLogin = () => {
 
     return (
         <Grid container justify='center' style={{height: '90vh'}}>
-            <Grid item  style={{margin: 'auto'}}>
+            <Grid item style={{margin: 'auto'}}>
                 <LoginCase>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
                             <FormLabel>
                                 <p>To log in get registered
-                                    <a href={'https://social-network.samuraijs.com/'}
-                                       target={'_blank'} style={{color:'hotpink'}}> here
+                                    <a href={"https://social-network.samuraijs.com/"}
+                                       target={"_blank"} style={{color: 'hotpink'}}> here
                                     </a>
                                 </p>
                                 <p>or use common test account credentials:</p>
