@@ -1,8 +1,5 @@
-import {TaskPriorities, tasksAPI, TaskStatuses} from "../../../../Api/SeaApi";
-import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
-import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
-import {Dispatch} from "redux";
-import {getTasksTC, loadTask} from "../Reducers/TaskReducer";
+import {TaskPriorities, TaskStatuses} from "../../../../Api/SeaApi";
+
 
 export enum tasksActions {
     ADD_TASK = 'ADD_TASK',
@@ -11,10 +8,12 @@ export enum tasksActions {
     REMOVE_TASK = 'REMOVE_TASK',
     SET_TASKS_FROM_SERVER = 'SET_TASKS_FROM_SERVER',
     CHANGE_TASK = 'CHANGE_TASK',
-    loadTask = 'loadTask'
+    loadTask = 'loadTask',
+    reorderTask = 'reorderTask',
 }
 
 export type seaReturnedTasksActionsType<S> = S extends { [key: string]: infer T } ? T : never
+
 
 export type UpdateSeaTaskType = {
     title?: string
@@ -59,19 +58,21 @@ export type UpdateSeaTaskType = {
 //     }
 // }
 
-export const reorderTaskTC = (todolistID: string, taskID: string, putAfterItemId: string | null) => async (dispatch: Dispatch<any>) => {
-    dispatch(setSeaAppStatus({status: 'loading'}))
-    dispatch(loadTask({todolistID: todolistID, taskID: taskID, loading: true}))
-    try {
-        let res = await tasksAPI.reorderTask(todolistID, taskID, putAfterItemId)
-        if (res.data.resultCode === 0) {
-            dispatch(getTasksTC(todolistID))
-        } else {
-            seaHandleServer(res.data, dispatch)
-        }
-    } catch (e) {
-        seaHandleNetwork(e, dispatch)
-    } finally {
-        dispatch(setSeaAppStatus({status: 'succesed'}))
-    }
-}
+
+
+// export const reorderTaskTC = (todolistID: string, taskID: string, putAfterItemId: string | null) => async (dispatch: Dispatch<any>) => {
+//     dispatch(setSeaAppStatus({status: 'loading'}))
+//     dispatch(loadTask({todolistID: todolistID, taskID: taskID, loading: true}))
+//     try {
+//         let res = await tasksAPI.reorderTask(todolistID, taskID, putAfterItemId)
+//         if (res.data.resultCode === 0) {
+//             dispatch(getTasksTC(todolistID))
+//         } else {
+//             seaHandleServer(res.data, dispatch)
+//         }
+//     } catch (e) {
+//         seaHandleNetwork(e, dispatch)
+//     } finally {
+//         dispatch(setSeaAppStatus({status: 'succesed'}))
+//     }
+// }

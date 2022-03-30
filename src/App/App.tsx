@@ -17,7 +17,7 @@ import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
 import {seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
 import {authSelectors} from "../Features/SeaLogin";
-import {appSelectors} from "./index";
+import {appSelectors} from "./";
 
 
 export const App = () => {

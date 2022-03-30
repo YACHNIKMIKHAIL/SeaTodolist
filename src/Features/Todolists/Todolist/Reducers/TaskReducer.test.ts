@@ -1,8 +1,10 @@
 import {v1} from "uuid";
-import {addTaskTC, changeTaskTC, loadTask, removeTaskTC, taskReducer, TasksStateType} from "./TaskReducer";
 import {ItemType, TaskPriorities, TaskStatuses} from "../../../../Api/SeaApi";
-import {postTodolistsTC, removeTodolistsTC, SeaTodolistsType} from "./TodolistReducer";
 import {UpdateSeaTaskType} from "../Actions/TasksActions";
+import {loadTask, taskReducer, TasksStateType} from "./TaskReducer";
+import {postTodolistsTC, removeTodolistsTC} from "./TodolistsActions";
+import {SeaTodolistsType} from "./TodolistReducer";
+import {addTaskTC, changeTaskTC, removeTaskTC} from "./TasksActions";
 
 let todolistID1: string
 let todolistID2: string

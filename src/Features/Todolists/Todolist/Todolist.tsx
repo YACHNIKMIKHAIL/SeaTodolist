@@ -6,18 +6,11 @@ import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import Task from "./Task/Task";
-import {
-    changeTodolistFilterAC,
-    changeTodolistsTC,
-    FilterType,
-    removeTodolistsTC,
-    SeaTodolistsType
-} from "./Reducers/TodolistReducer";
+import {changeTodolistFilterAC, FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
-import {useSeaSelector} from "../../../App/store";
-import {addTaskTC, getTasksTC} from "./Reducers/TaskReducer";
-import {reorderTaskTC} from "./Actions/TasksActions";
+import {useSeaAction, useSeaSelector} from "../../../App/store";
+import {tasksActions, todolistsActions} from "./index";
 
 
 type PropsType = {
@@ -29,7 +22,8 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
         const [dropTaskId, setDropTaskId] = useState<string | null>(null)
         const [taskBackground, setTaskBackground] = useState<string>('')
-        console.log(todoTasks)
+        const {getTasksTC, addTaskTC, reorderTaskTC} = useSeaAction(tasksActions)
+        const {changeTodolistsTC, removeTodolistsTC} = useSeaAction(todolistsActions)
 
         const dispatch = useDispatch()
         const changeFilter = (filter: FilterType) => {
@@ -39,18 +33,18 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             dispatch(changeTodolistFilterAC({todolistId: todolist.id, filter: filter}))
         }
         const removeTodolist = useCallback(() => {
-            dispatch(removeTodolistsTC({todolistID: todolist.id}))
-        }, [dispatch, todolist.id])
+            removeTodolistsTC({todolistID: todolist.id})
+        }, [ todolist.id,removeTodolistsTC])
         const addTask = useCallback((newTitle: string) => {
-            dispatch(addTaskTC({todolistID: todolist.id, title: newTitle}))
-        }, [todolist.id, dispatch])
+            addTaskTC({todolistID: todolist.id, title: newTitle})
+        }, [todolist.id,addTaskTC])
         const changeTodolistTitle = useCallback((newTitle: string) => {
-            dispatch(changeTodolistsTC({todolistID: todolist.id, title: newTitle}))
-        }, [dispatch, todolist.id])
+            changeTodolistsTC({todolistID: todolist.id, title: newTitle})
+        }, [ todolist.id,changeTodolistsTC])
 
         useEffect(() => {
-            dispatch(getTasksTC(todolist.id))
-        }, [dispatch, todolist.id])
+            getTasksTC(todolist.id)
+        }, [dispatch, todolist.id,getTasksTC])
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
@@ -71,7 +65,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }
         const onDragTaskEndHandler = (e: React.DragEvent<HTMLDivElement>, task: ItemType) => {
             e.stopPropagation()
-            dispatch(reorderTaskTC(todolist.id, task.id, dropTaskId))
+            reorderTaskTC({todolistID: todolist.id, taskID: task.id, putAfterItemId: dropTaskId})
         }
         const onDragTaskOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
             e.stopPropagation()
@@ -82,7 +76,9 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             e.preventDefault()
             setTaskBackground('')
             const index = todoTasks.find((t, index) => {
-                if (t.id === task.id) return index
+                if (t.id === task.id) {
+                    return index
+                }
             })
             if (index) setDropTaskId(task.id)
             else setDropTaskId(null)

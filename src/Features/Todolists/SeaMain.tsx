@@ -2,34 +2,33 @@ import React, {useCallback, useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
 import {useDispatch} from "react-redux";
-import {useSeaSelector} from "../../App/store";
-import {
-    getTodolistsTC,
-    postTodolistsTC,
-    reorderTodolistsTC,
-    SeaTodolistsType
-} from "./Todolist/Reducers/TodolistReducer";
+import {useSeaAction, useSeaSelector} from "../../App/store";
+import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
 import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
 import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";
+import {todolistsActions} from "./Todolist";
+import {postTodolistsTC} from "./Todolist/Reducers/TodolistsActions";
 
 const SeaMain = () => {
         const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
         const tasks = useSeaSelector<TasksStateType>(state => state.tasks)
         const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
         const dispatch = useDispatch()
+        const {getTodolistsTC, reorderTodolistsTC} = useSeaAction(todolistsActions)
+
 
         const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
         const [todolistBackground, setTodolistBackground] = useState<string>('#8AA8D2')
 
         const addTodolist = useCallback((newTitle: string) => {
-            dispatch(postTodolistsTC(newTitle))
-        }, [dispatch])
+            postTodolistsTC(newTitle)
+        }, [])
 
         useEffect(() => {
-            dispatch(getTodolistsTC())
-        }, [dispatch])
+            getTodolistsTC()
+        }, [dispatch,getTodolistsTC])
 
         if (!isLoggedInSea) {
             return <Navigate to={'/login'}/>
@@ -57,7 +56,9 @@ const SeaMain = () => {
             e.preventDefault()
             setTodolistBackground('')
             const index = todolists.find((list, index) => {
-                if (list.id === todolist.id) return index
+                if (list.id === todolist.id) {
+                    return index
+                }
             })
             if (index) setDropTodolistId(todolist.id)
             else setDropTodolistId(null)

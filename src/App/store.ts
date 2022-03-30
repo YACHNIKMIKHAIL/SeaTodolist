@@ -1,4 +1,4 @@
-import {combineReducers} from "redux";
+import {ActionCreatorsMapObject, bindActionCreators, combineReducers} from "redux";
 import {todolistReducer} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
 import {taskReducer} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
 import seaThunk, {ThunkAction} from "redux-thunk";
@@ -6,6 +6,7 @@ import {seaAppResucer} from "./SeaAppReducer";
 import {seaAuthReducer, seaLoginActionsType} from "../Features/SeaLogin/SeaAuthReducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
+import {useMemo} from "react";
 
 const seaReducer = combineReducers({
     todolists: todolistReducer,
@@ -35,3 +36,13 @@ window.store = store
 
 type SeaDispatchType = typeof store.dispatch
 export const useSeaDispatch = () => useDispatch<SeaDispatchType>()
+
+export function useSeaAction<T extends ActionCreatorsMapObject<any>>(actions: T) {
+    const dispatch = useSeaDispatch()
+
+    const boundAction = useMemo(() => {
+        return bindActionCreators(actions, dispatch)
+    }, [actions,dispatch])
+
+    return boundAction
+}

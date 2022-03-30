@@ -3,12 +3,11 @@ import EditSpan from "../../../../Components/EditSpan";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
-import {useDispatch} from "react-redux";
-import {useSeaSelector} from "../../../../App/store";
+import {useSeaAction, useSeaSelector} from "../../../../App/store";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
-import {changeTaskTC, removeTaskTC} from "../Reducers/TaskReducer";
+import {tasksActions} from "../index";
 
 
 type TaskPropsType = {
@@ -19,22 +18,21 @@ type TaskPropsType = {
 const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
         const seaTaskLoading = useSeaSelector<boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
         const actualTask = useSeaSelector<ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
-        const dispatch = useDispatch()
+        const {removeTaskTC, changeTaskTC} = useSeaAction(tasksActions)
 
         const removeTask = useCallback(() => {
-            debugger
-            dispatch(removeTaskTC({todolistID, taskID: id}))
-        }, [dispatch, todolistID, id])
+            removeTaskTC({todolistID, taskID: id})
+        }, [ todolistID, id,removeTaskTC])
         const changeTaskStatus = useCallback((num: boolean) => {
-            dispatch(changeTaskTC({
+            changeTaskTC({
                 todolistID,
                 taskID: actualTask.id,
                 model: {status: num ? TaskStatuses.Complited : TaskStatuses.New}
-            }))
-        }, [dispatch, todolistID,actualTask.id])
+            })
+        }, [ todolistID, actualTask.id,changeTaskTC])
         const changeTaskTitle = useCallback((title: string) => {
-            dispatch(changeTaskTC({todolistID, taskID: actualTask.id, model: {title}}))
-        }, [dispatch, todolistID, actualTask.id])
+            changeTaskTC({todolistID, taskID: actualTask.id, model: {title}})
+        }, [ todolistID, actualTask.id,changeTaskTC])
 
         return (
             <TaskCase
