@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
 import {useDispatch} from "react-redux";
@@ -8,23 +8,18 @@ import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
 import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";
-import {todolistsActions} from "./Todolist";
-import {postTodolists} from "./Todolist/Reducers/TodolistsActions";
+import {todolistsActions} from "./Todolist/todoTasksIndex";
 
 const SeaMain = () => {
         const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
         const tasks = useSeaSelector<TasksStateType>(state => state.tasks)
         const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
         const dispatch = useDispatch()
-        const {getTodolists, reorderTodolists} = useSeaAction(todolistsActions)
+        const {getTodolists, reorderTodolists,postTodolists} = useSeaAction(todolistsActions)
 
 
         const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
         const [todolistBackground, setTodolistBackground] = useState<string>('#8AA8D2')
-
-        const addTodolist = useCallback((newTitle: string) => {
-            postTodolists(newTitle)
-        }, [])
 
         useEffect(() => {
             getTodolists()
@@ -67,7 +62,7 @@ const SeaMain = () => {
         return (
             <>
                 <Grid container style={{padding: '20px', color: 'white'}}>
-                    <AddForm addFn={addTodolist}/>
+                    <AddForm addFn={postTodolists}/>
                 </Grid>
                 <Grid container spacing={5}>
                     {todolists.map((t, i) => {

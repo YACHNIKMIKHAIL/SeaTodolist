@@ -10,7 +10,7 @@ import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {useSeaAction, useSeaSelector} from "../../../App/store";
-import {tasksActions, todolistsActions} from "./index";
+import {tasksActions, todolistsActions} from "./todoTasksIndex";
 
 
 type PropsType = {
@@ -22,6 +22,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
         const [dropTaskId, setDropTaskId] = useState<string | null>(null)
         const [taskBackground, setTaskBackground] = useState<string>('')
+
         const {getTasks, addTask, reorderTask} = useSeaAction(tasksActions)
         const {changeTodolists, removeTodolists,changeTodolistFilter} = useSeaAction(todolistsActions)
 

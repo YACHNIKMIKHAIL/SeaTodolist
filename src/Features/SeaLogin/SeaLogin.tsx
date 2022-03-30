@@ -15,7 +15,7 @@ import {useSelector} from "react-redux";
 import {seaLoginTC} from "./SeaAuthReducer";
 import {useSeaDispatch} from "../../App/store";
 import {Navigate} from "react-router-dom";
-import {authSelectors} from "./index";
+import {authSelectors} from "./authIndex";
 
 type FormValuesType = {
     email: string

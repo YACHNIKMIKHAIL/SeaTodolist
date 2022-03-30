@@ -7,7 +7,7 @@ import {useSeaAction, useSeaSelector} from "../../../../App/store";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
-import {tasksActions} from "../index";
+import {tasksActions} from "../todoTasksIndex";
 
 
 type TaskPropsType = {
