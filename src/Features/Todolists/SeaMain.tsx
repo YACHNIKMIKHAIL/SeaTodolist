@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
-import {useDispatch} from "react-redux";
 import {useSeaAction, useSeaSelector} from "../../App/store";
 import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
 import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
@@ -14,8 +13,7 @@ const SeaMain = () => {
         const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
         const tasks = useSeaSelector<TasksStateType>(state => state.tasks)
         const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
-        const dispatch = useDispatch()
-        const {getTodolists, reorderTodolists,postTodolists} = useSeaAction(todolistsActions)
+        const {getTodolists, reorderTodolists, postTodolists} = useSeaAction(todolistsActions)
 
 
         const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
@@ -23,7 +21,7 @@ const SeaMain = () => {
 
         useEffect(() => {
             getTodolists()
-        }, [dispatch, getTodolists])
+        }, [getTodolists])
 
         if (!isLoggedInSea) {
             return <Navigate to={'/login'}/>
@@ -40,7 +38,7 @@ const SeaMain = () => {
         }
         const onDragTodolistEndHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             e.stopPropagation()
-            dispatch(reorderTodolists({todolistID: todolist.id, putAfterItemId: dropTodolistId}))
+            reorderTodolists({todolistID: todolist.id, putAfterItemId: dropTodolistId})
         }
         const onDragTodolistOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
             e.stopPropagation()

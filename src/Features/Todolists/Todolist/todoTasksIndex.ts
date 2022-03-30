@@ -9,5 +9,5 @@ const todolistsActions = {
 
 export {
     tasksActions,
-    todolistsActions
+    todolistsActions,
 }

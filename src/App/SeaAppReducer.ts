@@ -4,7 +4,6 @@ import {isLoginInAC} from "../Features/SeaLogin/SeaAuthReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 
-
 export type SeaAppInitStateType = {
     seaStatus: seaStatusTypes
     seaError: string | null
@@ -37,6 +36,9 @@ export const initializedSeaAppTC = createAsyncThunk(SeaAppActions.SET_IS_INITIAL
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }
 })
+export const asyncAppActions={
+    initializedSeaAppTC
+}
 const slice = createSlice({
     name: 'seaApp',
     initialState: {

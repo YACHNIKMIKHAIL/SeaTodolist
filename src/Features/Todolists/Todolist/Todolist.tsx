@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import AddForm from "../../../Components/AddForm";
 import EditSpan from "../../../Components/EditSpan";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import Task from "./Task/Task";
-import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
+import {SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {useSeaAction, useSeaSelector} from "../../../App/store";
 import {tasksActions, todolistsActions} from "./todoTasksIndex";
+import {FilteredButton} from "../../../Components/FilteredButton";
 
 
 type PropsType = {
@@ -24,28 +24,23 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const [taskBackground, setTaskBackground] = useState<string>('')
 
         const {getTasks, addTask, reorderTask} = useSeaAction(tasksActions)
-        const {changeTodolists, removeTodolists,changeTodolistFilter} = useSeaAction(todolistsActions)
+        const {changeTodolists, removeTodolists} = useSeaAction(todolistsActions)
 
         const dispatch = useDispatch()
-        const changeFilter = (filter: FilterType) => {
-            if (filter === todolist.filter) {
-                return
-            }
-            changeTodolistFilter({todolistId: todolist.id, filter: filter})
-        }
+
         const removeTodolist = useCallback(() => {
             removeTodolists({todolistID: todolist.id})
-        }, [ todolist.id,removeTodolists])
+        }, [todolist.id, removeTodolists])
         const addTaskX = useCallback((newTitle: string) => {
             addTask({todolistID: todolist.id, title: newTitle})
-        }, [todolist.id,addTask])
+        }, [todolist.id, addTask])
         const changeTodolistTitle = useCallback((newTitle: string) => {
             changeTodolists({todolistID: todolist.id, title: newTitle})
-        }, [ todolist.id,changeTodolists])
+        }, [todolist.id, changeTodolists])
 
         useEffect(() => {
             getTasks(todolist.id)
-        }, [dispatch, todolist.id,getTasks])
+        }, [dispatch, todolist.id, getTasks])
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
@@ -111,33 +106,9 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
 
             <div>
-                <Button
-                    variant={todolist.filter === 'all' ? "contained" : 'outlined'}
-                    style={todolist.filter === 'all' ? {
-                            backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
-                            fontWeight: 'bold'
-                        } :
-                        {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
-                    onClick={() => changeFilter('all')}
-                    defaultChecked>All</Button>
-                <Button
-                    variant={todolist.filter === 'active' ? "contained" : 'outlined'}
-                    style={todolist.filter === 'active' ? {
-                            backgroundColor: 'hotpink', opacity: '0.9', color: '#071421',
-                            fontWeight: 'bold'
-                        } :
-                        {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
-                    onClick={() => changeFilter('active')}>Active</Button>
-                <Button
-                    variant={todolist.filter === 'complited' ? "contained" : 'outlined'}
-                    style={todolist.filter === 'complited' ? {
-                            backgroundColor: 'hotpink',
-                            opacity: '0.9',
-                            color: '#071421',
-                            fontWeight: 'bold'
-                        } :
-                        {backgroundColor: '#1F4B76', opacity: '0.7', color: 'hotpink'}}
-                    onClick={() => changeFilter('complited')}>Complited</Button>
+                <FilteredButton todolistId={todolist.id} actualFilter={'all'}/>
+                <FilteredButton todolistId={todolist.id} actualFilter={'active'}/>
+                <FilteredButton todolistId={todolist.id} actualFilter={'complited'}/>
 
             </div>
         </MainCase>

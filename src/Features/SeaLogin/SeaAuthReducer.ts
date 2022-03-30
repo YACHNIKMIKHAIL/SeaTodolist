@@ -2,7 +2,6 @@ import {FielErrorType, initialLoginType, seaAuthAPI} from "../../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {setSeaAppStatus} from "../../App/SeaAppReducer";
-import {Dispatch} from "redux";
 import {AxiosError} from "axios";
 
 
@@ -59,8 +58,13 @@ export const seaLoginOutTC = createAsyncThunk(loginActions.SET_LOGIN_OUT, async 
         thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
     }
 })
+export const asyncActions={
+    seaLoginTC,
+    seaLoginOutTC
+}
 
-const slice = createSlice({
+
+export const slice = createSlice({
     name: 'seaAuth',
     initialState: {
         isLoginIn: false,

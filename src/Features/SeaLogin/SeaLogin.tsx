@@ -12,10 +12,9 @@ import React from 'react';
 import styled from "styled-components";
 import {FormikHelpers, useFormik} from "formik";
 import {useSelector} from "react-redux";
-import {seaLoginTC} from "./SeaAuthReducer";
-import {useSeaDispatch} from "../../App/store";
+import {useSeaAction, useSeaDispatch} from "../../App/store";
 import {Navigate} from "react-router-dom";
-import {authSelectors} from "./authIndex";
+import {asyncAuthActions, authSelectors} from "./authIndex";
 
 type FormValuesType = {
     email: string
@@ -23,8 +22,9 @@ type FormValuesType = {
     rememberMe: boolean
 }
 const SeaLogin = () => {
-    const dispatch = useSeaDispatch()
     const isLoggedInSea = useSelector(authSelectors.selectIsLoginIn)
+    const dispatch = useSeaDispatch()
+    const {seaLoginTC} = useSeaAction(asyncAuthActions)
 
     const formik = useFormik({
         validate: (values) => {
