@@ -3,7 +3,6 @@ import AddForm from "../../../Components/AddForm";
 import EditSpan from "../../../Components/EditSpan";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
-import {useDispatch} from "react-redux";
 import Task from "./Task/Task";
 import {SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
@@ -26,8 +25,6 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const {getTasks, addTask, reorderTask} = useSeaAction(tasksActions)
         const {changeTodolists, removeTodolists} = useSeaAction(todolistsActions)
 
-        const dispatch = useDispatch()
-
         const removeTodolist = useCallback(() => {
             removeTodolists({todolistID: todolist.id})
         }, [todolist.id, removeTodolists])
@@ -40,7 +37,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
         useEffect(() => {
             getTasks(todolist.id)
-        }, [dispatch, todolist.id, getTasks])
+        }, [todolist.id, getTasks])
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {
@@ -115,10 +112,16 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
     }
 )
 export const MainCase = styled.div`
-  color: #071421
+  color: #071421;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `
 export const HCase = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 230px;
+  flex-wrap: nowrap;
+  margin: 0 auto;
 `

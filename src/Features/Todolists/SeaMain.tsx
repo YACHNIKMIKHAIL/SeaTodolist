@@ -62,26 +62,26 @@ const SeaMain = () => {
                 <Grid container style={{padding: '20px', color: 'white'}}>
                     <AddForm addFn={postTodolists}/>
                 </Grid>
-                <Grid container spacing={5}>
+                <Grid container spacing={5} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
                     {todolists.map((t, i) => {
                         let todoTasks = tasks[t.id]
                         if (todoTasks === undefined) {
                             todoTasks = []
                         }
 
-                        return <Grid item key={i}>
-                            <TodolistCase
-                                $backgroundColor={'#8AA8D2'}
-                                $borderColor={todolistBackground === t.id ? 'hotpink' : '#8AA8D2'}
-                                draggable
-                                onDragStart={(e) => onDragTodolistStartHandler(e, t)}
-                                onDragLeave={(e) => onDragTodolistLeaveHandler(e)}
-                                onDragEnd={(e) => onDragTodolistEndHandler(e, t)}
-                                onDragOver={(e) => onDragTodolistOverHandler(e)}
-                                onDrop={(e) => onDropTodolistHandler(e, t)}
-                            >
-                                <TodolistsList t={t} todoTasks={todoTasks}/>
-                            </TodolistCase>
+                        return <Grid item key={i} >
+                                <TodolistCase
+                                    $backgroundColor={'#8AA8D2'}
+                                    $borderColor={todolistBackground === t.id ? 'hotpink' : '#8AA8D2'}
+                                    draggable
+                                    onDragStart={(e) => onDragTodolistStartHandler(e, t)}
+                                    onDragLeave={(e) => onDragTodolistLeaveHandler(e)}
+                                    onDragEnd={(e) => onDragTodolistEndHandler(e, t)}
+                                    onDragOver={(e) => onDragTodolistOverHandler(e)}
+                                    onDrop={(e) => onDropTodolistHandler(e, t)}
+                                >
+                                    <TodolistsList t={t} todoTasks={todoTasks}/>
+                                </TodolistCase>
                         </Grid>;
                     })}
                 </Grid>
@@ -94,9 +94,9 @@ export default SeaMain;
 
 const TodolistCase = styled.div<{ $backgroundColor: string, $borderColor: string }>`
   padding: 10px;
-  //background-color: #8AA8D2;
   border: 5px solid ${props => props.$borderColor};
   background-color: ${props => props.$backgroundColor};
   opacity: 0.95;
-  border-radius: 10px
+  border-radius: 10px;
+  width: 270px;
 `

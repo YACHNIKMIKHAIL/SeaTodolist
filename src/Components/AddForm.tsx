@@ -3,6 +3,7 @@ import {Button, TextField} from "@material-ui/core";
 import {useSelector} from "react-redux";
 import {seaReducerType} from "../App/store";
 import {seaStatusTypes} from "../App/SeaAppReducer";
+import styled from "styled-components";
 
 type AddFormPropsType = {
     addFn: (title: string) => void
@@ -37,7 +38,7 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     }
 
     return (
-        <div>
+        <AddFormCase>
             <TextField id="filled-basic" label="New challenge:" variant="filled"
                        value={title} onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
@@ -50,8 +51,13 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
 
             <Button variant="contained" onClick={addTaskHandler} disabled={seaStatus === 'loading'}
                     style={{height: '55px', backgroundColor: '#1F4B76', color: 'hotpink'}}>Add</Button>
-        </div>
+        </AddFormCase>
     );
 })
 
 export default AddForm;
+
+const AddFormCase = styled.div`
+  display: flex;
+  justify-content: space-around;
+`

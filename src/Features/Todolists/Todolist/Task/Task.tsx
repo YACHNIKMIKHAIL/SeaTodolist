@@ -23,6 +23,8 @@ const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
         const removeTaskX = useCallback(() => {
             removeTask({todolistID, taskID: id})
         }, [ todolistID, id,removeTask])
+
+
         const changeTaskStatus = useCallback((num: boolean) => {
             changeTask({
                 todolistID,
