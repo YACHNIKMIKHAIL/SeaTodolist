@@ -56,7 +56,7 @@ const SeaLogin = () => {
 
     return (
         <Grid container justify='center' style={{height: '90vh'}}>
-            <Grid item style={{margin: 'auto'}}>
+            <Grid item  style={{margin: 'auto'}}>
                 <LoginCase>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
