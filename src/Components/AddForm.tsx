@@ -17,15 +17,11 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
 
     const addTaskHandler = async () => {
         if (title.trim() !== '') {
-            if (title.trim().length < 20) {
-                try {
-                    await addFn(title.trim())
-                    setTitle('')
-                } catch (err:any) {
-                    setError(err)
-                }
-            } else {
-                setError('Title is too long!')
+            try {
+                await addFn(title.trim())
+                setTitle('')
+            } catch (err: any) {
+                setError(err.message)
             }
         } else {
             setError('Invalid title!')

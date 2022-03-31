@@ -34,9 +34,9 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             let thunk = tasksActions.addTask({todolistID: todolist.id, title: newTitle})
             const resultAction = await dispatch(thunk)
             if (tasksActions.addTask.rejected.match(resultAction)) {
-                if (resultAction.payload?.fieldsErrors?.length) {
-                    const errorMessage = resultAction.payload?.fieldsErrors[0]
-                    throw new Error(errorMessage.error)
+                if (resultAction.payload?.errors?.length) {
+                    const errorMessage = resultAction.payload?.errors[0]
+                    throw new Error(errorMessage)
                 } else {
                     throw new Error('Some error occured')
                 }

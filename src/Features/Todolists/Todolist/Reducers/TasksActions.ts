@@ -42,12 +42,12 @@ export const addTask = createAsyncThunk<ItemType, { todolistID: string, title: s
             dispatch(setSeaAppStatus({status: 'succesed'}))
             return sea.data.item
         } else {
-            seaHandleServer(sea, dispatch)
+            seaHandleServer(sea, dispatch, false)
             return rejectWithValue({errors: sea.messages, fieldsErrors: sea.fieldsErrors})
         }
     } catch (e: any) {
         const err: AxiosError = e
-        seaHandleNetwork(err, dispatch)
+        seaHandleNetwork(err, dispatch, false)
         return rejectWithValue({errors: [err.message], fieldsErrors: undefined})
     } finally {
 
