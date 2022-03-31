@@ -7,7 +7,7 @@ import Task from "./Task/Task";
 import {SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
-import {useSeaAction, useSeaSelector} from "../../../App/store";
+import {useSeaAction, useSeaDispatch, useSeaSelector} from "../../../App/store";
 import {tasksActions, todolistsActions} from "./todoTasksIndex";
 import {FilteredButton} from "../../../Components/FilteredButton";
 
@@ -24,13 +24,24 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
 
         const {getTasks, addTask, reorderTask} = useSeaAction(tasksActions)
         const {changeTodolists, removeTodolists} = useSeaAction(todolistsActions)
+        const dispatch = useSeaDispatch()
 
         const removeTodolist = useCallback(() => {
             removeTodolists({todolistID: todolist.id})
         }, [todolist.id, removeTodolists])
         const addTaskX = useCallback(async (newTitle: string) => {
-            addTask({todolistID: todolist.id, title: newTitle})
-        }, [todolist.id, addTask])
+            // addTask({todolistID: todolist.id, title: newTitle})
+            let thunk = tasksActions.addTask({todolistID: todolist.id, title: newTitle})
+            const resultAction = await dispatch(thunk)
+            if (tasksActions.addTask.rejected.match(resultAction)) {
+                if (resultAction.payload?.fieldsErrors?.length) {
+                    const errorMessage = resultAction.payload?.fieldsErrors[0]
+                    throw new Error(errorMessage.error)
+                } else {
+                    throw new Error('Some error occured')
+                }
+            }
+        }, [todolist.id, addTask, dispatch])
         const changeTodolistTitle = useCallback((newTitle: string) => {
             changeTodolists({todolistID: todolist.id, title: newTitle})
         }, [todolist.id, changeTodolists])
@@ -80,7 +91,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         return <MainCase>
             <IconButton aria-label="delete" onClick={removeTodolist}
                         disabled={seaTodolist.todolistStatus === 'loading'}
-                        style={{position: 'absolute', right: '-14px', top:'-14px'}}>
+                        style={{position: 'absolute', right: '-14px', top: '-14px'}}>
                 <Delete/>
             </IconButton>
             <HCase>
@@ -100,7 +111,8 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                               taskBackground={taskBackground === m?.id ? 'hotpink' : '#8AA8D2'}/>
                     </div>
                 })}
-                {!tasksForRender.length && <span style={{textAlign:'center',margin:'20px',fontSize:'20px',color:'#c7d5ea'}}>No tasks</span>}
+                {!tasksForRender.length &&
+                <span style={{textAlign: 'center', margin: '20px', fontSize: '20px', color: '#c7d5ea'}}>No tasks</span>}
             </div>
 
 

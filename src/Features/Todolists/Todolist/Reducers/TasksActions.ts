@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
-import {tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
+import {FielErrorType, ItemType, tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
 import {AxiosError} from "axios";
 import {seaReducerType} from "../../../../App/store";
@@ -28,7 +28,10 @@ export const removeTask = createAsyncThunk(tasksActionsEnum.REMOVE_TASK, async (
     }
 })
 
-export const addTask = createAsyncThunk(tasksActionsEnum.ADD_TASK, async (seaParam: { todolistID: string, title: string }, {
+export const addTask = createAsyncThunk<ItemType, { todolistID: string, title: string },
+    {
+        rejectValue: { errors?: string[], fieldsErrors?: FielErrorType[] }
+    }>(tasksActionsEnum.ADD_TASK, async (seaParam, {
     dispatch,
     rejectWithValue
 }) => {
@@ -40,12 +43,12 @@ export const addTask = createAsyncThunk(tasksActionsEnum.ADD_TASK, async (seaPar
             return sea.data.item
         } else {
             seaHandleServer(sea, dispatch)
-            return rejectWithValue(null)
+            return rejectWithValue({errors: sea.messages, fieldsErrors: sea.fieldsErrors})
         }
     } catch (e: any) {
         const err: AxiosError = e
         seaHandleNetwork(err, dispatch)
-        return rejectWithValue(null)
+        return rejectWithValue({errors: [err.message], fieldsErrors: undefined})
     } finally {
 
     }
