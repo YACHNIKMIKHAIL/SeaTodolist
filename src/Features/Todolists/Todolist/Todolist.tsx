@@ -78,12 +78,13 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }
 
         return <MainCase>
+            <IconButton aria-label="delete" onClick={removeTodolist}
+                        disabled={seaTodolist.todolistStatus === 'loading'}
+                        style={{position: 'absolute', right: '-14px', top:'-14px'}}>
+                <Delete/>
+            </IconButton>
             <HCase>
                 <h3><EditSpan title={todolist.title} callback={changeTodolistTitle}/></h3>
-                <IconButton aria-label="delete" onClick={removeTodolist}
-                            disabled={seaTodolist.todolistStatus === 'loading'}>
-                    <Delete/>
-                </IconButton>
             </HCase>
             <AddForm addFn={addTaskX}/>
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
@@ -99,6 +100,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                               taskBackground={taskBackground === m?.id ? 'hotpink' : '#8AA8D2'}/>
                     </div>
                 })}
+                {!tasksForRender.length && <span style={{textAlign:'center',margin:'20px',fontSize:'20px',color:'#c7d5ea'}}>No tasks</span>}
             </div>
 
 
@@ -116,12 +118,12 @@ export const MainCase = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
 `
 export const HCase = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 230px;
   flex-wrap: nowrap;
   margin: 0 auto;
 `
