@@ -5,6 +5,8 @@ import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUt
 import {changeTodolistStatus} from "./TodolistReducer";
 import {getTasks} from "./TasksActions";
 import {TodolistActions} from "../ActionsEnum/TodolistsActionsEnum";
+import {AxiosError} from "axios";
+import {ThunkErrorType} from "../../../../App/store";
 
 export const getTodolists = createAsyncThunk(TodolistActions.SET_FROM_SERVER, async (param, {
     dispatch,
@@ -21,7 +23,7 @@ export const getTodolists = createAsyncThunk(TodolistActions.SET_FROM_SERVER, as
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }
 })
-export const postTodolists = createAsyncThunk(TodolistActions.ADD_TODOLIST, async (title: string, {
+export const postTodolists = createAsyncThunk<{ item: { id: string; title: string; addedDate: string; order: number } }, string, ThunkErrorType>(TodolistActions.ADD_TODOLIST, async (title: string, {
     dispatch,
     rejectWithValue
 }) => {
@@ -32,12 +34,13 @@ export const postTodolists = createAsyncThunk(TodolistActions.ADD_TODOLIST, asyn
             const {item} = sea.data;
             return {item: item}
         } else {
-            seaHandleServer(sea, dispatch)
-            return rejectWithValue(null)
+            seaHandleServer(sea, dispatch, false)
+            return rejectWithValue({errors: sea.messages, fieldsErrors: sea.fieldsErrors})
         }
-    } catch (e) {
-        seaHandleNetwork(e, dispatch)
-        return rejectWithValue(null)
+    } catch (e: any) {
+        const err: AxiosError = e
+        seaHandleNetwork(err, dispatch, false)
+        return rejectWithValue({errors: [err.message], fieldsErrors: undefined})
     } finally {
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import AddForm from "../../../Components/AddForm";
+import AddForm, {AddFormSubmitHelperType} from "../../../Components/AddForm";
 import EditSpan from "../../../Components/EditSpan";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
@@ -22,26 +22,38 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         const [dropTaskId, setDropTaskId] = useState<string | null>(null)
         const [taskBackground, setTaskBackground] = useState<string>('')
 
-        const {getTasks, addTask, reorderTask} = useSeaAction(tasksActions)
+        const {getTasks, reorderTask} = useSeaAction(tasksActions)
         const {changeTodolists, removeTodolists} = useSeaAction(todolistsActions)
         const dispatch = useSeaDispatch()
 
         const removeTodolist = useCallback(() => {
             removeTodolists({todolistID: todolist.id})
         }, [todolist.id, removeTodolists])
-        const addTaskX = useCallback(async (newTitle: string) => {
+
+        const addTaskX = useCallback(async (title: string, helper: AddFormSubmitHelperType) => {
             // addTask({todolistID: todolist.id, title: newTitle})
-            let thunk = tasksActions.addTask({todolistID: todolist.id, title: newTitle})
+            let thunk = tasksActions.addTask({todolistID: todolist.id, title})
             const resultAction = await dispatch(thunk)
             if (tasksActions.addTask.rejected.match(resultAction)) {
                 if (resultAction.payload?.errors?.length) {
                     const errorMessage = resultAction.payload?.errors[0]
+                    if(helper) {
+                        helper.setError(errorMessage)
+                    }
                     throw new Error(errorMessage)
                 } else {
+                    if(helper) {
+                        helper.setError('Some error occured')
+                    }
                     throw new Error('Some error occured')
                 }
+            } else {
+                if(helper) {
+                    helper.setTitle('')
+                }
             }
-        }, [todolist.id, addTask, dispatch])
+        }, [todolist.id, dispatch])
+
         const changeTodolistTitle = useCallback((newTitle: string) => {
             changeTodolists({todolistID: todolist.id, title: newTitle})
         }, [todolist.id, changeTodolists])

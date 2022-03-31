@@ -1,8 +1,9 @@
-import {FielErrorType, initialLoginType, seaAuthAPI} from "../../Api/SeaApi";
+import {initialLoginType, seaAuthAPI} from "../../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {setSeaAppStatus} from "../../App/SeaAppReducer";
 import {AxiosError} from "axios";
+import {ThunkErrorType} from "../../App/store";
 
 
 export type initialLoginStateType = {
@@ -15,9 +16,7 @@ export enum loginActions {
     SET_LOGIN_OUT = 'SET_LOGIN_OUT',
 }
 
-export const seaLoginTC = createAsyncThunk<undefined, initialLoginType, {
-    rejectValue: { errors?: string[], fieldsErrors?: FielErrorType[] }
-}>(loginActions.SET_LOGIN_IN, async (seaData, thunkAPI) => {
+export const seaLoginTC = createAsyncThunk<undefined, initialLoginType, ThunkErrorType>(loginActions.SET_LOGIN_IN, async (seaData, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await seaAuthAPI.login(seaData)

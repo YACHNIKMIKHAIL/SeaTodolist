@@ -24,7 +24,7 @@ const EditSpan = React.memo(({title, callback}: EditSpanPropsType) => {
         ? <TextField id="outlined-basic" label={title} variant="outlined"
                      value={stateTitle} onChange={changeTitle}
                      autoFocus onBlur={desactivate}/>
-        : <span onDoubleClick={activate} style={{maxWidth:'170',overflowX:'scroll',border:'2px yellow dashed'}}
+        : <span onDoubleClick={activate} style={{maxWidth: '170', overflowX: 'scroll'}}
         >{title}</span>
 })
 

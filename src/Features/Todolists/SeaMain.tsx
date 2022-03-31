@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
-import {useSeaAction, useSeaSelector} from "../../App/store";
+import {useSeaAction, useSeaDispatch, useSeaSelector} from "../../App/store";
 import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
 import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
-import AddForm from "../../Components/AddForm";
+import AddForm, {AddFormSubmitHelperType} from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";
 import {todolistsActions} from "./Todolist/todoTasksIndex";
@@ -13,15 +13,35 @@ const SeaMain = () => {
         const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)
         const tasks = useSeaSelector<TasksStateType>(state => state.tasks)
         const isLoggedInSea = useSeaSelector<boolean>(state => state.auth.isLoginIn)
-        const {getTodolists, reorderTodolists, postTodolists} = useSeaAction(todolistsActions)
-
+        const {getTodolists, reorderTodolists} = useSeaAction(todolistsActions)
+        const dispatch = useSeaDispatch()
 
         const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
         const [todolistBackground, setTodolistBackground] = useState<string>('#8AA8D2')
 
-        const addTodolistX = useCallback(async (newTitle: string) => {
-            postTodolists(newTitle)
-        }, [postTodolists])
+        const addTodolistX = useCallback(async (title: string, helper: AddFormSubmitHelperType) => {
+            let thunk = todolistsActions.postTodolists(title)
+            const resultAction = await dispatch(thunk)
+            if (todolistsActions.postTodolists.rejected.match(resultAction)) {
+                if (resultAction.payload?.errors?.length) {
+                    const errorMessage = resultAction.payload?.errors[0]
+                    if (helper) {
+                        helper.setError(errorMessage)
+                    }
+                    throw new Error(errorMessage)
+                } else {
+                    if (helper) {
+                        helper.setError('Some error occured')
+                    }
+                    throw new Error('Some error occured')
+                }
+            } else {
+                if (helper) {
+                    helper.setTitle('')
+                }
+            }
+            // postTodolists(title)
+        }, [dispatch])
 
         useEffect(() => {
             getTodolists()

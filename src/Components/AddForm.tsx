@@ -5,8 +5,11 @@ import {seaReducerType} from "../App/store";
 import {seaStatusTypes} from "../App/SeaAppReducer";
 import styled from "styled-components";
 
+export type AddFormSubmitHelperType =
+    { setTitle: (title: string) => void, setError: (error: string) => void }
+    | undefined
 type AddFormPropsType = {
-    addFn: (title: string) => Promise<any>
+    addFn: (title: string, helper?: AddFormSubmitHelperType) => void
 }
 const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const [title, setTitle] = useState<string>('')
@@ -17,12 +20,7 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
 
     const addTaskHandler = async () => {
         if (title.trim() !== '') {
-            try {
-                await addFn(title.trim())
-                setTitle('')
-            } catch (err: any) {
-                setError(err.message)
-            }
+            await addFn(title.trim(), {setTitle, setError})
         } else {
             setError('Invalid title!')
         }

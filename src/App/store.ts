@@ -7,6 +7,7 @@ import {seaAuthReducer, seaLoginActionsType} from "../Features/SeaLogin/SeaAuthR
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
 import {useMemo} from "react";
+import {FielErrorType} from "../Api/SeaApi";
 
 const seaReducer = combineReducers({
     todolists: todolistReducer,
@@ -42,7 +43,11 @@ export function useSeaAction<T extends ActionCreatorsMapObject<any>>(actions: T)
 
     const boundAction = useMemo(() => {
         return bindActionCreators(actions, dispatch)
-    }, [actions,dispatch])
+    }, [actions, dispatch])
 
     return boundAction
+}
+
+export type ThunkErrorType = {
+    rejectValue: { errors?: string[], fieldsErrors?: FielErrorType[] }
 }
