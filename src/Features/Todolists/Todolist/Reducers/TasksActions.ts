@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {ItemType, tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
-import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
+import {seaAsyncHandleNetwork, seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
 import {AxiosError} from "axios";
 import {seaReducerType, ThunkErrorType} from "../../../../App/store";
 import {changeTodolistStatus} from "./TodolistReducer";
@@ -28,26 +28,22 @@ export const removeTask = createAsyncThunk(tasksActionsEnum.REMOVE_TASK, async (
     }
 })
 
-export const addTask = createAsyncThunk<ItemType, { todolistID: string, title: string }, ThunkErrorType>(tasksActionsEnum.ADD_TASK, async (seaParam, {
-    dispatch,
-    rejectWithValue
-}) => {
-    dispatch(setSeaAppStatus({status: 'loading'}))
+export const addTask = createAsyncThunk<ItemType, { todolistID: string, title: string }, ThunkErrorType>(tasksActionsEnum.ADD_TASK, async (seaParam, thunkAPI) => {
+    thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         const sea = await tasksAPI.addTask(seaParam.todolistID, seaParam.title)
         if (sea.resultCode === 0) {
-            dispatch(setSeaAppStatus({status: 'succesed'}))
+            thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
             return sea.data.item
         } else {
-            seaHandleServer(sea, dispatch, false)
-            return rejectWithValue({errors: sea.messages, fieldsErrors: sea.fieldsErrors})
+            seaHandleServer(sea, thunkAPI.dispatch, false)
+            return thunkAPI.rejectWithValue({errors: sea.messages, fieldsErrors: sea.fieldsErrors})
         }
-    } catch (e: any) {
-        const err: AxiosError = e
-        seaHandleNetwork(err, dispatch, false)
-        return rejectWithValue({errors: [err.message], fieldsErrors: undefined})
+    } catch (err: any) {
+        // seaHandleNetwork(err, dispatch, false)
+        return seaAsyncHandleNetwork(err, thunkAPI, false)
     } finally {
-
+        thunkAPI.dispatch(setSeaAppStatus({status: 'idle'}))
     }
 
 })
@@ -86,7 +82,7 @@ export const changeTask = createAsyncThunk(tasksActionsEnum.CHANGE_TASK, async (
             dispatch(getTasks(seaParam.todolistID))
             return rejectWithValue({})
         }
-    } catch (e) {
+    } catch (e: any) {
         seaHandleNetwork(e, dispatch)
         return rejectWithValue({})
 

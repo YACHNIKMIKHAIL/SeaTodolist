@@ -16,7 +16,7 @@ export const getTodolists = createAsyncThunk(TodolistActions.SET_FROM_SERVER, as
     try {
         let sea = await todolistAPI.getTodolists()
         return {data: sea}
-    } catch (e) {
+    } catch (e:any) {
         seaHandleNetwork(e, dispatch)
         return rejectWithValue(null)
     } finally {
@@ -54,7 +54,7 @@ export const removeTodolists = createAsyncThunk(TodolistActions.REMOVE_TODOLIST,
     try {
         await todolistAPI.deleteTodolists(param.todolistID)
         return {todolistId: param.todolistID}
-    } catch (e) {
+    } catch (e:any) {
         seaHandleNetwork(e, dispatch)
         return rejectWithValue(null)
     } finally {
@@ -75,7 +75,7 @@ export const changeTodolists = createAsyncThunk(TodolistActions.CHANGE_TODOLIST,
             seaHandleServer(sea.data, dispatch)
             return rejectWithValue(null)
         }
-    } catch (e) {
+    } catch (e:any) {
         seaHandleNetwork(e, dispatch)
         return rejectWithValue(null)
 
@@ -100,7 +100,7 @@ export const reorderTodolists = createAsyncThunk(TodolistActions.REORDER_TODOLIS
             seaHandleServer(sea.data, dispatch)
             return rejectWithValue(null)
         }
-    } catch (e) {
+    } catch (e:any) {
         seaHandleNetwork(e, dispatch)
         return rejectWithValue(null)
 
