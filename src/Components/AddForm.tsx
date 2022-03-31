@@ -6,7 +6,7 @@ import {seaStatusTypes} from "../App/SeaAppReducer";
 import styled from "styled-components";
 
 type AddFormPropsType = {
-    addFn: (title: string) => void
+    addFn: (title: string) => Promise<any>
 }
 const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const [title, setTitle] = useState<string>('')
@@ -15,11 +15,15 @@ const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const seaStatus = useSelector<seaReducerType, seaStatusTypes>(state => state.app.seaStatus)
 
 
-    const addTaskHandler = () => {
+    const addTaskHandler = async () => {
         if (title.trim() !== '') {
             if (title.trim().length < 20) {
-                addFn(title.trim())
-                setTitle('')
+                try {
+                    await addFn(title.trim())
+                    setTitle('')
+                } catch (err:any) {
+                    setError(err)
+                }
             } else {
                 setError('Title is too long!')
             }

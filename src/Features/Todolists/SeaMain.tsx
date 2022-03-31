@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
 import {useSeaAction, useSeaSelector} from "../../App/store";
@@ -18,6 +18,10 @@ const SeaMain = () => {
 
         const [dropTodolistId, setDropTodolistId] = useState<string | null>(null)
         const [todolistBackground, setTodolistBackground] = useState<string>('#8AA8D2')
+
+        const addTodolistX = useCallback(async (newTitle: string) => {
+            postTodolists(newTitle)
+        }, [postTodolists])
 
         useEffect(() => {
             getTodolists()
@@ -60,7 +64,7 @@ const SeaMain = () => {
         return (
             <>
                 <Grid container style={{padding: '20px', color: 'white'}}>
-                    <AddForm addFn={postTodolists}/>
+                    <AddForm addFn={addTodolistX}/>
                 </Grid>
                 <Grid container spacing={5} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
                     {todolists.map((t, i) => {
@@ -69,19 +73,19 @@ const SeaMain = () => {
                             todoTasks = []
                         }
 
-                        return <Grid item key={i} >
-                                <TodolistCase
-                                    $backgroundColor={'#8AA8D2'}
-                                    $borderColor={todolistBackground === t.id ? 'hotpink' : '#8AA8D2'}
-                                    draggable
-                                    onDragStart={(e) => onDragTodolistStartHandler(e, t)}
-                                    onDragLeave={(e) => onDragTodolistLeaveHandler(e)}
-                                    onDragEnd={(e) => onDragTodolistEndHandler(e, t)}
-                                    onDragOver={(e) => onDragTodolistOverHandler(e)}
-                                    onDrop={(e) => onDropTodolistHandler(e, t)}
-                                >
-                                    <TodolistsList t={t} todoTasks={todoTasks}/>
-                                </TodolistCase>
+                        return <Grid item key={i}>
+                            <TodolistCase
+                                $backgroundColor={'#8AA8D2'}
+                                $borderColor={todolistBackground === t.id ? 'hotpink' : '#8AA8D2'}
+                                draggable
+                                onDragStart={(e) => onDragTodolistStartHandler(e, t)}
+                                onDragLeave={(e) => onDragTodolistLeaveHandler(e)}
+                                onDragEnd={(e) => onDragTodolistEndHandler(e, t)}
+                                onDragOver={(e) => onDragTodolistOverHandler(e)}
+                                onDrop={(e) => onDropTodolistHandler(e, t)}
+                            >
+                                <TodolistsList t={t} todoTasks={todoTasks}/>
+                            </TodolistCase>
                         </Grid>;
                     })}
                 </Grid>
