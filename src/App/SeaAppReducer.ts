@@ -39,7 +39,7 @@ export const initializedSeaAppTC = createAsyncThunk(SeaAppActions.SET_IS_INITIAL
 export const asyncAppActions={
     initializedSeaAppTC
 }
-const slice = createSlice({
+export const slice = createSlice({
     name: 'seaApp',
     initialState: {
         seaStatus: 'idle',

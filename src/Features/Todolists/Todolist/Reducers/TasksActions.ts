@@ -1,5 +1,4 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {ItemType, tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
 import {seaAsyncHandleNetwork, seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
 import {AxiosError} from "axios";
@@ -7,6 +6,9 @@ import {seaReducerType, ThunkErrorType} from "../../../../App/store";
 import {changeTodolistStatus} from "./TodolistReducer";
 import {loadTask} from "./TaskReducer";
 import {tasksActionsEnum, UpdateSeaTaskType} from "../ActionsEnum/TasksActionsEnum";
+import {appActions} from "../../../../App/appIndex";
+
+const {setSeaAppStatus} = appActions
 
 export const getTasks = createAsyncThunk(tasksActionsEnum.SET_TASKS_FROM_SERVER, async (todolistID: string, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))

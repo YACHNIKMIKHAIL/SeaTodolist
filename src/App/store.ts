@@ -7,7 +7,8 @@ import {useMemo} from "react";
 import {FielErrorType} from "../Api/SeaApi";
 import {seaAuthReducer} from "../Features/SeaLogin/authIndex";
 import {seaLoginActionsType} from "../Features/SeaLogin/SeaAuthReducer";
-import {taskReducer, todolistReducer} from "../Features/Todolists/Todolist/todoTasksIndex";
+import { todolistReducer} from "../Features/Todolists/Todolist/todoTasksIndex";
+import { taskReducer } from "../Features/Todolists/Todolist/Reducers/TaskReducer";
 
 const seaReducer = combineReducers({
     todolists: todolistReducer,

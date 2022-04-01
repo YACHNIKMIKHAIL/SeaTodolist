@@ -1,5 +1,4 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {todolistAPI} from "../../../../Api/SeaApi";
 import {
     seaAsyncHandleNetwork,
@@ -11,6 +10,9 @@ import {changeTodolistStatus} from "./TodolistReducer";
 import {getTasks} from "./TasksActions";
 import {TodolistActions} from "../ActionsEnum/TodolistsActionsEnum";
 import {ThunkErrorType} from "../../../../App/store";
+import {appActions} from "../../../../App/appIndex";
+
+const {setSeaAppStatus} = appActions
 
 export const getTodolists = createAsyncThunk(TodolistActions.SET_FROM_SERVER, async (param, {
     dispatch,
@@ -36,7 +38,7 @@ export const postTodolists = createAsyncThunk<{ item: { id: string; title: strin
             const {item} = sea.data;
             return {item: item}
         } else {
-            return seaHandleAsyncServer(sea,thunkAPI,false)
+            return seaHandleAsyncServer(sea, thunkAPI, false)
         }
     } catch (e: any) {
         return seaAsyncHandleNetwork(e, thunkAPI)
