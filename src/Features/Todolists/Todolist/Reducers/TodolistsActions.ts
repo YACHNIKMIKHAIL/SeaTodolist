@@ -1,11 +1,15 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {todolistAPI} from "../../../../Api/SeaApi";
-import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
+import {
+    seaAsyncHandleNetwork,
+    seaHandleAsyncServer,
+    seaHandleNetwork,
+    seaHandleServer
+} from "../../../../SeaUtils/SeaErrorUtils";
 import {changeTodolistStatus} from "./TodolistReducer";
 import {getTasks} from "./TasksActions";
 import {TodolistActions} from "../ActionsEnum/TodolistsActionsEnum";
-import {AxiosError} from "axios";
 import {ThunkErrorType} from "../../../../App/store";
 
 export const getTodolists = createAsyncThunk(TodolistActions.SET_FROM_SERVER, async (param, {
@@ -16,17 +20,15 @@ export const getTodolists = createAsyncThunk(TodolistActions.SET_FROM_SERVER, as
     try {
         let sea = await todolistAPI.getTodolists()
         return {data: sea}
-    } catch (e:any) {
+    } catch (e: any) {
         seaHandleNetwork(e, dispatch)
         return rejectWithValue(null)
     } finally {
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }
 })
-export const postTodolists = createAsyncThunk<{ item: { id: string; title: string; addedDate: string; order: number } }, string, ThunkErrorType>(TodolistActions.ADD_TODOLIST, async (title: string, {
-    dispatch,
-    rejectWithValue
-}) => {
+export const postTodolists = createAsyncThunk<{ item: { id: string; title: string; addedDate: string; order: number } }, string, ThunkErrorType>(TodolistActions.ADD_TODOLIST, async (title: string, thunkAPI) => {
+    const {dispatch} = thunkAPI
     dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await todolistAPI.postTodolists(title)
@@ -34,13 +36,10 @@ export const postTodolists = createAsyncThunk<{ item: { id: string; title: strin
             const {item} = sea.data;
             return {item: item}
         } else {
-            seaHandleServer(sea, dispatch, false)
-            return rejectWithValue({errors: sea.messages, fieldsErrors: sea.fieldsErrors})
+            return seaHandleAsyncServer(sea,thunkAPI,false)
         }
     } catch (e: any) {
-        const err: AxiosError = e
-        seaHandleNetwork(err, dispatch, false)
-        return rejectWithValue({errors: [err.message], fieldsErrors: undefined})
+        return seaAsyncHandleNetwork(e, thunkAPI)
     } finally {
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }
@@ -54,34 +53,30 @@ export const removeTodolists = createAsyncThunk(TodolistActions.REMOVE_TODOLIST,
     try {
         await todolistAPI.deleteTodolists(param.todolistID)
         return {todolistId: param.todolistID}
-    } catch (e:any) {
+    } catch (e: any) {
         seaHandleNetwork(e, dispatch)
         return rejectWithValue(null)
     } finally {
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }
 })
-export const changeTodolists = createAsyncThunk(TodolistActions.CHANGE_TODOLIST, async (seaParam: { todolistID: string, title: string }, {
-    dispatch,
-    rejectWithValue
-}) => {
+export const changeTodolists = createAsyncThunk(TodolistActions.CHANGE_TODOLIST, async (seaParam: { todolistID: string, title: string }, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
     dispatch(setSeaAppStatus({status: 'loading'}))
     dispatch(changeTodolistStatus({todolistId: seaParam.todolistID, status: 'loading'}))
+
     try {
         let sea = await todolistAPI.changeTodolists(seaParam.todolistID, seaParam.title)
         if (sea.data.resultCode === 0) {
             return {todolistId: seaParam.todolistID, newTitle: seaParam.title}
         } else {
-            seaHandleServer(sea.data, dispatch)
-            return rejectWithValue(null)
+            seaHandleServer(sea.data, dispatch, false)
+            return rejectWithValue({errors: sea.data.messages, fieldsErrors: sea.data.fieldsErrors})
         }
-    } catch (e:any) {
-        seaHandleNetwork(e, dispatch)
-        return rejectWithValue(null)
-
+    } catch (e: any) {
+        return seaAsyncHandleNetwork(e, thunkAPI, false)
     } finally {
         dispatch(setSeaAppStatus({status: 'succesed'}))
-        dispatch(changeTodolistStatus({todolistId: seaParam.todolistID, status: 'succesed'}))
     }
 })
 
@@ -100,7 +95,7 @@ export const reorderTodolists = createAsyncThunk(TodolistActions.REORDER_TODOLIS
             seaHandleServer(sea.data, dispatch)
             return rejectWithValue(null)
         }
-    } catch (e:any) {
+    } catch (e: any) {
         seaHandleNetwork(e, dispatch)
         return rejectWithValue(null)
 

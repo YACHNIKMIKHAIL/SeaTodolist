@@ -1,13 +1,13 @@
 import {ActionCreatorsMapObject, bindActionCreators, combineReducers} from "redux";
-import {todolistReducer} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
-import {taskReducer} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
 import seaThunk, {ThunkAction} from "redux-thunk";
 import {seaAppResucer} from "./SeaAppReducer";
-import {seaAuthReducer, seaLoginActionsType} from "../Features/SeaLogin/SeaAuthReducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
 import {useMemo} from "react";
 import {FielErrorType} from "../Api/SeaApi";
+import {seaAuthReducer} from "../Features/SeaLogin/authIndex";
+import {seaLoginActionsType} from "../Features/SeaLogin/SeaAuthReducer";
+import {taskReducer, todolistReducer} from "../Features/Todolists/Todolist/todoTasksIndex";
 
 const seaReducer = combineReducers({
     todolists: todolistReducer,

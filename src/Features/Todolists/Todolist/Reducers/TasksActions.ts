@@ -41,7 +41,7 @@ export const addTask = createAsyncThunk<ItemType, { todolistID: string, title: s
         }
     } catch (err: any) {
         // seaHandleNetwork(err, dispatch, false)
-        return seaAsyncHandleNetwork(err, thunkAPI, false)
+        return seaAsyncHandleNetwork(err, thunkAPI)
     } finally {
         thunkAPI.dispatch(setSeaAppStatus({status: 'idle'}))
     }

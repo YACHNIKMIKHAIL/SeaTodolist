@@ -7,7 +7,11 @@ const todolistsActions = {
     ...slice.actions
 }
 
+const todolistReducer = slice.reducer
+const taskReducer = slice.reducer
 export {
     tasksActions,
     todolistsActions,
+    todolistReducer,
+    taskReducer
 }

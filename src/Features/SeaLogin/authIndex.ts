@@ -7,9 +7,10 @@ const asyncAuthActions = {
     ...slice.actions
 }
 
-
+const seaAuthReducer = slice.reducer
 export {
     authSelectors,
     SeaLogin,
-    asyncAuthActions
+    asyncAuthActions,
+    seaAuthReducer
 }
