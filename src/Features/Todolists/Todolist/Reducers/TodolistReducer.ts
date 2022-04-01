@@ -20,27 +20,28 @@ export const slice = createSlice({
         },
     },
     extraReducers: (builder => {
-        builder.addCase(getTodolists.fulfilled, (state, action) => {
-            return action.payload.data.map(m => ({...m, filter: 'all', todolistStatus: 'idle'}))
-        })
-        builder.addCase(postTodolists.fulfilled, (state, action) => {
-            state.unshift({...action.payload.item, filter: 'all', todolistStatus: 'idle'})
-        })
-        builder.addCase(removeTodolists.fulfilled, (state, action) => {
-            // return state.filter(f => f.id !== action.payload.todolistId)
-            const index = state.findIndex(f => f.id === action.payload.todolistId)
-            if (index > -1) {
-                state.splice(index, 1)
-            }
-        })
-        builder.addCase(changeTodolists.fulfilled, (state, action) => {
-            // return state.map(m => m.id === action.payload.todolistId ? {...m, title: action.payload.newTitle} : m)
-            const index = state.findIndex(f => f.id === action.payload.todolistId)
-            state[index].title = action.payload.newTitle
-        });
-        builder.addCase(reorderTodolists.fulfilled, () => {
+        builder
+            .addCase(getTodolists.fulfilled, (state, action) => {
+                return action.payload.data.map(m => ({...m, filter: 'all', todolistStatus: 'idle'}))
+            })
+            .addCase(postTodolists.fulfilled, (state, action) => {
+                state.unshift({...action.payload.item, filter: 'all', todolistStatus: 'idle'})
+            })
+            .addCase(removeTodolists.fulfilled, (state, action) => {
+                // return state.filter(f => f.id !== action.payload.todolistId)
+                const index = state.findIndex(f => f.id === action.payload.todolistId)
+                if (index > -1) {
+                    state.splice(index, 1)
+                }
+            })
+            .addCase(changeTodolists.fulfilled, (state, action) => {
+                // return state.map(m => m.id === action.payload.todolistId ? {...m, title: action.payload.newTitle} : m)
+                const index = state.findIndex(f => f.id === action.payload.todolistId)
+                state[index].title = action.payload.newTitle
+            })
+            .addCase(reorderTodolists.fulfilled, () => {
 
-        })
+            })
     })
 })
 export const todolistReducer = slice.reducer

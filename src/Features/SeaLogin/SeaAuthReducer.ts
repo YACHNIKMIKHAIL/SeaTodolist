@@ -42,7 +42,7 @@ export const seaLoginOut = createAsyncThunk(loginActions.SET_LOGIN_OUT, async (s
         }
     } catch (e: any) {
         const err: AxiosError = e
-        return  seaAsyncHandleNetwork(err, thunkAPI)
+        return seaAsyncHandleNetwork(err, thunkAPI)
     } finally {
         thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
     }
@@ -65,12 +65,13 @@ export const slice = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(seaLogin.fulfilled, (state) => {
-            state.isLoginIn = true
-        })
-        builder.addCase(seaLoginOut.fulfilled, (state) => {
-            state.isLoginIn = false
-        })
+        builder
+            .addCase(seaLogin.fulfilled, (state) => {
+                state.isLoginIn = true
+            })
+            .addCase(seaLoginOut.fulfilled, (state) => {
+                state.isLoginIn = false
+            })
     }
 })
 export const seaAuthReducer = slice.reducer
