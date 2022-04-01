@@ -1,6 +1,6 @@
 import {FielErrorType} from "../Api/ApiTypes";
 
-export type ThunkErrorType = {
+export type ThunkErrorAPIConfigType = {
     rejectValue: { errors?: string[], fieldsErrors?: FielErrorType[] }
 }
 

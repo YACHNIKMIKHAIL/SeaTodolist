@@ -1,10 +1,10 @@
-import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
+import {seaAsyncHandleNetwork, seaHandleAsyncServer} from "../../SeaUtils/SeaErrorUtils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {setSeaAppStatus} from "../SeaApplication/SeaApplicationReducer";
 import {AxiosError} from "axios";
 import {seaAuthAPI} from "../../Api/SeaApi";
 import {initialLoginType} from "../../Api/ApiTypes";
-import {ThunkErrorType} from "../../SeaUtils/UtilsTypes";
+import {ThunkErrorAPIConfigType} from "../../SeaUtils/UtilsTypes";
 
 
 export enum loginActions {
@@ -12,7 +12,7 @@ export enum loginActions {
     SET_LOGIN_OUT = 'SET_LOGIN_OUT',
 }
 
-export const seaLogin = createAsyncThunk<undefined, initialLoginType, ThunkErrorType>(loginActions.SET_LOGIN_IN, async (seaData, thunkAPI) => {
+export const seaLogin = createAsyncThunk<undefined, initialLoginType, ThunkErrorAPIConfigType>(loginActions.SET_LOGIN_IN, async (seaData, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await seaAuthAPI.login(seaData)
@@ -20,13 +20,11 @@ export const seaLogin = createAsyncThunk<undefined, initialLoginType, ThunkError
             thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
             return
         } else {
-            seaHandleServer(sea.data, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: sea.data.messages, fieldsErrors: sea.data.fieldsErrors})
+            return seaHandleAsyncServer(sea.data, thunkAPI)
         }
     } catch (e: any) {
         const err: AxiosError = e
-        seaHandleNetwork(err, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({errors: [err.message], fieldsErrors: undefined})
+        return seaAsyncHandleNetwork(err, thunkAPI)
     } finally {
         thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
     }
@@ -40,15 +38,11 @@ export const seaLoginOut = createAsyncThunk(loginActions.SET_LOGIN_OUT, async (s
             thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
             return
         } else {
-            seaHandleServer(sea.data, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({})
-
+            return seaHandleAsyncServer(sea.data, thunkAPI)
         }
     } catch (e: any) {
         const err: AxiosError = e
-        seaHandleNetwork(err, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({})
-
+        return  seaAsyncHandleNetwork(err, thunkAPI)
     } finally {
         thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
     }

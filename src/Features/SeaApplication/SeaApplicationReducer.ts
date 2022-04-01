@@ -1,5 +1,5 @@
 import {seaAuthAPI} from "../../Api/SeaApi";
-import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
+import {seaAsyncHandleNetwork, seaHandleAsyncServer} from "../../SeaUtils/SeaErrorUtils";
 import {isLoginIn} from "../SeaLogin/SeaAuthReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
@@ -12,7 +12,9 @@ export enum SeaAppActions {
     SET_IS_INITIALIZED = 'SET_IS_INITIALIZED'
 }
 
-export const initializedSeaApp = createAsyncThunk(SeaAppActions.SET_IS_INITIALIZED, async (seaData, {dispatch}) => {
+export const initializedSeaApp = createAsyncThunk(SeaAppActions.SET_IS_INITIALIZED, async (seaData, thunkAPI) => {
+    const {dispatch}=thunkAPI
+
     dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await seaAuthAPI.me()
@@ -22,11 +24,11 @@ export const initializedSeaApp = createAsyncThunk(SeaAppActions.SET_IS_INITIALIZ
             return
         } else {
             dispatch(isLoginIn({value: false}))
-            seaHandleServer(sea.data, dispatch)
+            seaHandleAsyncServer(sea.data, thunkAPI)
         }
     } catch (e: any) {
         const err: AxiosError = e
-        seaHandleNetwork(err, dispatch)
+        seaAsyncHandleNetwork(err, thunkAPI)
     } finally {
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }
