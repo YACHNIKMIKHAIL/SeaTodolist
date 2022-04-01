@@ -9,7 +9,7 @@ import {
 import {changeTodolistStatus} from "./TodolistReducer";
 import {getTasks} from "./TasksActions";
 import {TodolistActions} from "../ActionsEnum/TodolistsActionsEnum";
-import {appActions} from "../../../SeaApp/appIndex";
+import {appActions} from "../../../SeaApplication/applicationIndex";
 import {ThunkErrorType} from "../../../../SeaUtils/UtilsTypes";
 
 const {setSeaAppStatus} = appActions

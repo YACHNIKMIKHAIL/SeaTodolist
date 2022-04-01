@@ -5,36 +5,35 @@ import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/icons/Menu';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
-import {asyncAppActions} from '../Features/SeaApp/SeaAppReducer';
 import Error from "../Components/Error";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
 import {asyncActions} from "../Features/SeaLogin/SeaAuthReducer";
-import {appSelectors} from "../Features/SeaApp/appIndex";
 import {authSelectors, SeaLogin} from "../Features/SeaLogin/authIndex";
 import {useSeaAction} from "../SeaUtils/ReduxUtils";
+import {appActions, appSelectors} from "../Features/SeaApplication/applicationIndex";
 
 
 export const App = () => {
     const seaStatus = useSelector(appSelectors.selectSeaStatus)
     const isInitializedApp = useSelector(appSelectors.selectIsInitializedApp)
     const isLoginIn = useSelector(authSelectors.selectIsLoginIn)
-    const {seaLoginOutTC} = useSeaAction(asyncActions)
+    const {seaLoginOut} = useSeaAction(asyncActions)
+    const {initializedSeaApp} = useSeaAction(appActions)
 
 
-    const dispatch = useDispatch()
     const logout = useCallback(() => {
-        seaLoginOutTC()
-    }, [seaLoginOutTC])
+        seaLoginOut()
+    }, [seaLoginOut])
 
     useEffect(() => {
-        dispatch(asyncAppActions.initializedSeaAppTC())
-    }, [dispatch])
+        initializedSeaApp()
+    }, [initializedSeaApp])
 
     if (!isInitializedApp) {
         return <AppCase

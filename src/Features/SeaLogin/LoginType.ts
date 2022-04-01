@@ -6,7 +6,7 @@ export type initialLoginStateType = {
 }
 
 export type seaLoginActionsType =
-    ReturnType<typeof slice.actions.isLoginInAC>
+    ReturnType<typeof slice.actions.isLoginIn>
 
 export type FormValuesType = {
     email: string

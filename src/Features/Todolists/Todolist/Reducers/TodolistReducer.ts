@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {changeTodolists, getTodolists, postTodolists, removeTodolists, reorderTodolists} from "./TodolistsActions";
 import {FilterType, SeaTodolistsType} from "../TodolistTypes";
-import {seaStatusTypes} from "../../../SeaApp/AppTypes";
+import {seaStatusTypes} from "../../../SeaApplication/ApplicationTypes";
 
 
 export const slice = createSlice({

@@ -1,5 +1,5 @@
 import {ApiTodolistType, ItemType} from "../../../Api/ApiTypes";
-import {seaStatusTypes} from "../../SeaApp/AppTypes";
+import {seaStatusTypes} from "../../SeaApplication/ApplicationTypes";
 
 export type TodolistsListPropsType={
     t:SeaTodolistsType

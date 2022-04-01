@@ -1,4 +1,4 @@
-import {setSeaAppError, setSeaAppStatus} from "../Features/SeaApp/SeaAppReducer";
+import {setSeaAppError, setSeaAppStatus} from "../Features/SeaApplication/SeaApplicationReducer";
 import {Dispatch} from "redux";
 import {AxiosError} from "axios";
 import {thunkAPIType} from "./UtilsTypes";

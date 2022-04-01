@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import styled from "styled-components";
 import {AddFormPropsType} from "./ComponentsTypes";
 import {seaReducerType} from "../App/AppTypes";
-import {seaStatusTypes} from "../Features/SeaApp/AppTypes";
+import {seaStatusTypes} from "../Features/SeaApplication/ApplicationTypes";
 
 const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const [title, setTitle] = useState<string>('')

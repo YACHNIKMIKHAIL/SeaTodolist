@@ -21,7 +21,7 @@ import {FormValuesType} from "./LoginType";
 const SeaLogin = () => {
     const isLoggedInSea = useSelector(authSelectors.selectIsLoginIn)
     const dispatch = useSeaDispatch()
-    const {seaLoginTC} = useSeaAction(asyncAuthActions)
+    const {seaLogin} = useSeaAction(asyncAuthActions)
 
     const formik = useFormik({
         validate: (values) => {
@@ -38,8 +38,8 @@ const SeaLogin = () => {
             rememberMe: false,
         },
         onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
-            const action = await dispatch(seaLoginTC(values))
-            if (seaLoginTC.rejected.match(action)) {
+            const action = await dispatch(seaLogin(values))
+            if (seaLogin.rejected.match(action)) {
                 if (action.payload?.fieldsErrors?.length) {
                     const error = action.payload?.fieldsErrors[0]
                     formikHelpers.setFieldError(error.field, error.error)

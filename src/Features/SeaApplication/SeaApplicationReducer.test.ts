@@ -1,9 +1,9 @@
-import { SeaAppInitStateType } from "./AppTypes";
+import { SeaAppInitStateType } from "./ApplicationTypes";
 import {
     seaAppResucer,
     setSeaAppError,
     setSeaAppStatus
-} from "./SeaAppReducer";
+} from "./SeaApplicationReducer";
 
 
 let startState: SeaAppInitStateType

@@ -4,7 +4,7 @@ import {AxiosError} from "axios";
 import {changeTodolistStatus} from "./TodolistReducer";
 import {loadTask} from "./TaskReducer";
 import {tasksActionsEnum, UpdateSeaTaskType} from "../ActionsEnum/TasksActionsEnum";
-import {appActions} from "../../../SeaApp/appIndex";
+import {appActions} from "../../../SeaApplication/applicationIndex";
 import {tasksAPI} from "../../../../Api/SeaApi";
 import {ItemType, UpdateTaskType} from "../../../../Api/ApiTypes";
 import {seaReducerType} from "../../../../App/AppTypes";

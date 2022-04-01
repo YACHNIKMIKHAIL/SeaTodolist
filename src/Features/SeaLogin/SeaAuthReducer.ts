@@ -1,12 +1,10 @@
 import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setSeaAppStatus} from "../SeaApp/SeaAppReducer";
+import {setSeaAppStatus} from "../SeaApplication/SeaApplicationReducer";
 import {AxiosError} from "axios";
 import {seaAuthAPI} from "../../Api/SeaApi";
 import {initialLoginType} from "../../Api/ApiTypes";
 import {ThunkErrorType} from "../../SeaUtils/UtilsTypes";
-
-
 
 
 export enum loginActions {
@@ -14,7 +12,7 @@ export enum loginActions {
     SET_LOGIN_OUT = 'SET_LOGIN_OUT',
 }
 
-export const seaLoginTC = createAsyncThunk<undefined, initialLoginType, ThunkErrorType>(loginActions.SET_LOGIN_IN, async (seaData, thunkAPI) => {
+export const seaLogin = createAsyncThunk<undefined, initialLoginType, ThunkErrorType>(loginActions.SET_LOGIN_IN, async (seaData, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await seaAuthAPI.login(seaData)
@@ -34,7 +32,7 @@ export const seaLoginTC = createAsyncThunk<undefined, initialLoginType, ThunkErr
     }
 })
 
-export const seaLoginOutTC = createAsyncThunk(loginActions.SET_LOGIN_OUT, async (seaData, thunkAPI) => {
+export const seaLoginOut = createAsyncThunk(loginActions.SET_LOGIN_OUT, async (seaData, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         let sea = await seaAuthAPI.logOut()
@@ -55,9 +53,9 @@ export const seaLoginOutTC = createAsyncThunk(loginActions.SET_LOGIN_OUT, async 
         thunkAPI.dispatch(setSeaAppStatus({status: 'succesed'}))
     }
 })
-export const asyncActions={
-    seaLoginTC,
-    seaLoginOutTC
+export const asyncActions = {
+    seaLogin,
+    seaLoginOut
 }
 
 
@@ -68,18 +66,18 @@ export const slice = createSlice({
         myName: null
     },
     reducers: {
-        isLoginInAC(state, action: PayloadAction<{ value: boolean }>) {
+        isLoginIn(state, action: PayloadAction<{ value: boolean }>) {
             state.isLoginIn = action.payload.value
         }
     },
     extraReducers: builder => {
-        builder.addCase(seaLoginTC.fulfilled, (state) => {
+        builder.addCase(seaLogin.fulfilled, (state) => {
             state.isLoginIn = true
         })
-        builder.addCase(seaLoginOutTC.fulfilled, (state) => {
+        builder.addCase(seaLoginOut.fulfilled, (state) => {
             state.isLoginIn = false
         })
     }
 })
 export const seaAuthReducer = slice.reducer
-export const {isLoginInAC} = slice.actions
+export const {isLoginIn} = slice.actions
