@@ -12,7 +12,7 @@ import {ThunkErrorAPIConfigType} from "../../../../SeaUtils/UtilsTypes";
 
 const {setSeaAppStatus} = appActions
 
-export const getTasks = createAsyncThunk(tasksActionsEnum.SET_TASKS_FROM_SERVER, async (todolistID: string, thunkAPI) => {
+export const getTasks = createAsyncThunk<{ tasks: ItemType[], todolistID: string }, string, ThunkErrorAPIConfigType>(tasksActionsEnum.SET_TASKS_FROM_SERVER, async (todolistID, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         const sea = await tasksAPI.getTasks(todolistID)
@@ -26,7 +26,7 @@ export const getTasks = createAsyncThunk(tasksActionsEnum.SET_TASKS_FROM_SERVER,
     }
 })
 
-export const removeTask = createAsyncThunk(tasksActionsEnum.REMOVE_TASK, async (seaParam: { todolistID: string, taskID: string }, thunkAPI) => {
+export const removeTask = createAsyncThunk<{ todolistID: string, taskID: string }, { todolistID: string, taskID: string }, ThunkErrorAPIConfigType>(tasksActionsEnum.REMOVE_TASK, async (seaParam, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         await tasksAPI.removeTask(seaParam.todolistID, seaParam.taskID)
@@ -57,7 +57,7 @@ export const addTask = createAsyncThunk<ItemType, { todolistID: string, title: s
     }
 
 })
-export const changeTask = createAsyncThunk(tasksActionsEnum.CHANGE_TASK, async (seaParam: { todolistID: string, taskID: string, model: UpdateSeaTaskType }, thunkAPI) => {
+export const changeTask = createAsyncThunk<{ seaParam: { todolistID: string, taskID: string, model: UpdateSeaTaskType }, item: ItemType }, { todolistID: string, taskID: string, model: UpdateSeaTaskType }, ThunkErrorAPIConfigType>(tasksActionsEnum.CHANGE_TASK, async (seaParam, thunkAPI) => {
 
     const {
         dispatch,
@@ -68,7 +68,8 @@ export const changeTask = createAsyncThunk(tasksActionsEnum.CHANGE_TASK, async (
     const state = getState() as seaReducerType
     const actualTaskParams = state.tasks[seaParam.todolistID].filter((f: { id: string; }) => f.id === seaParam.taskID)[0]
     if (!actualTaskParams) {
-        return rejectWithValue('task is undefined!')
+        return
+        //rejectWithValue('task is undefined!')
     }
     const apiModel: UpdateTaskType = {
         title: actualTaskParams.title,
@@ -103,10 +104,9 @@ export const changeTask = createAsyncThunk(tasksActionsEnum.CHANGE_TASK, async (
     }
 })
 
-export const reorderTask = createAsyncThunk(tasksActionsEnum.reorderTask, async (seaParam: { todolistID: string, taskID: string, putAfterItemId: string | null }, thunkAPI) => {
+export const reorderTask = createAsyncThunk<void, { todolistID: string, taskID: string, putAfterItemId: string | null }, ThunkErrorAPIConfigType>(tasksActionsEnum.reorderTask, async (seaParam, thunkAPI) => {
     const {
         dispatch,
-        rejectWithValue
     } = thunkAPI
 
     dispatch(setSeaAppStatus({status: 'loading'}))
@@ -119,8 +119,7 @@ export const reorderTask = createAsyncThunk(tasksActionsEnum.reorderTask, async 
         }
     } catch (e: any) {
         const err: AxiosError = e
-        seaAsyncHandleNetwork(err, thunkAPI)
-        return rejectWithValue(null)
+        return seaAsyncHandleNetwork(err, thunkAPI)
     } finally {
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }
