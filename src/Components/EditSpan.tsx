@@ -1,11 +1,7 @@
 import React, {ChangeEvent, useState} from 'react';
 import {TextField} from "@material-ui/core";
+import {EditSpanPropsType} from "./ComponentsTypes";
 
-
-type EditSpanPropsType = {
-    title: string
-    callback: (title: string) => void
-}
 const EditSpan = React.memo(({title, callback}: EditSpanPropsType) => {
     const [changeMode, setChangeMode] = useState<boolean>(false)
     const [stateTitle, setStateTitle] = useState('')

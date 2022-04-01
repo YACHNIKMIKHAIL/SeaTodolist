@@ -3,21 +3,18 @@ import EditSpan from "../../../../Components/EditSpan";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
-import {useSeaAction, useSeaSelector} from "../../../../App/store";
-import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
+import { useSeaSelector} from "../../../../App/store";
+import { TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
 import {tasksActions} from "../todoTasksIndex";
+import {useSeaAction} from "../../../../SeaUtils/ReduxUtils";
+import {TaskPropsType} from "./TaskTypes";
+import {ItemType} from "../../../../Api/ApiTypes";
 
-
-type TaskPropsType = {
-    id: string
-    todolistID: string
-    taskBackground: string
-}
 const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
-        const seaTaskLoading = useSeaSelector<boolean>(state => state.tasks[todolistID].filter(f => f.id === id)[0].loading)
-        const actualTask = useSeaSelector<ItemType>(state => state.tasks[todolistID].filter(f => f.id === id)[0])
+        const seaTaskLoading = useSeaSelector<boolean>(state => state.tasks[todolistID].filter((f: { id: string; }) => f.id === id)[0].loading)
+        const actualTask = useSeaSelector<ItemType>(state => state.tasks[todolistID].filter((f: { id: string; }) => f.id === id)[0])
         const {removeTask, changeTask} = useSeaAction(tasksActions)
 
         const removeTaskX = useCallback(() => {

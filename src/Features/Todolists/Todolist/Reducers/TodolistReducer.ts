@@ -1,7 +1,7 @@
-import {ApiTodolistType} from "../../../../Api/SeaApi";
-import {seaStatusTypes} from "../../../../App/SeaAppReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {changeTodolists, getTodolists, postTodolists, removeTodolists, reorderTodolists} from "./TodolistsActions";
+import {FilterType, SeaTodolistsType} from "../TodolistTypes";
+import {seaStatusTypes} from "../../../SeaApp/AppTypes";
 
 
 export const slice = createSlice({
@@ -49,8 +49,3 @@ export const {
     changeTodolistStatus
 } = slice.actions
 
-export type FilterType = 'all' | 'complited' | 'active'
-
-export type SeaTodolistsType = ApiTodolistType & {
-    filter: FilterType, todolistStatus: seaStatusTypes
-}

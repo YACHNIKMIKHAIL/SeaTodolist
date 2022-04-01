@@ -1,15 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import AddForm, {AddFormSubmitHelperType} from "../../../Components/AddForm";
 import EditSpan from "../../../Components/EditSpan";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import Task from "./Task/Task";
-import {SeaTodolistsType} from "./Reducers/TodolistReducer";
-import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
-import {useSeaAction, useSeaDispatch, useSeaSelector} from "../../../App/store";
+import {useSeaSelector} from "../../../App/store";
 import {tasksActions, todolistsActions} from "./todoTasksIndex";
 import {FilteredButton} from "../../../Components/FilteredButton";
+import {useSeaAction, useSeaDispatch} from "../../../SeaUtils/ReduxUtils";
+import {SeaTodolistsType} from "./TodolistTypes";
+import {ItemType} from "../../../Api/ApiTypes";
+import {AddFormSubmitHelperType} from "../../../Components/ComponentsTypes";
+import {TaskStatuses} from "../../../Api/SeaApi";
+import AddForm from "../../../Components/AddForm";
 
 
 type PropsType = {
@@ -37,18 +40,18 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             if (tasksActions.addTask.rejected.match(resultAction)) {
                 if (resultAction.payload?.errors?.length) {
                     const errorMessage = resultAction.payload?.errors[0]
-                    if(helper) {
+                    if (helper) {
                         helper.setError(errorMessage)
                     }
                     throw new Error(errorMessage)
                 } else {
-                    if(helper) {
+                    if (helper) {
                         helper.setError('Some error occured')
                     }
                     throw new Error('Some error occured')
                 }
             } else {
-                if(helper) {
+                if (helper) {
                     helper.setTitle('')
                 }
             }

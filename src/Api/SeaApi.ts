@@ -1,4 +1,13 @@
 import axios from "axios";
+import {
+    ApiTaskType,
+    ApiTodolistType,
+    initialLoginType,
+    ItemType,
+    PostTodolistType,
+    SeaResponseType,
+    UpdateTaskType
+} from "./ApiTypes";
 
 const instance = axios.create({
     withCredentials: true,
@@ -79,58 +88,6 @@ export const tasksAPI = {
     }
 }
 
-export type ApiTodolistType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
-export type PostTodolistType = {
-    data: {
-        item: {
-            id: string,
-            title: string,
-            addedDate: string,
-            order: number
-        }
-    },
-    messages: [],
-    fieldsErrors: [],
-    resultCode: number
-}
-export type FielErrorType={ field: string, error: string }
- export type SeaResponseType<D = {}> = {
-    data: D
-    messages: string[]
-    fieldsErrors?: Array<FielErrorType>
-    resultCode: number
-}
-export type UpdateTaskType = {
-    title: string
-    description: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-}
-export type ItemType = {
-    id: string,
-    title: string,
-    description: string,
-    todoListId: string,
-    order: number,
-    status: TaskStatuses,
-    priority: TaskPriorities,
-    startDate: string,
-    deadline: string,
-    addedDate: string
-} & { loading: boolean }
-export type ApiTaskType = {
-    items: Array<ItemType>
-    totalCount: number
-    error: string | null
-}
-
 export const seaAuthAPI = {
     async login(seaData: initialLoginType) {
         return await instance.post<SeaResponseType<{
@@ -149,11 +106,4 @@ export const seaAuthAPI = {
     async logOut() {
         return await instance.delete<SeaResponseType>(`/auth/login`)
     }
-}
-
-export type initialLoginType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha?: string
 }

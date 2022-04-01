@@ -1,6 +1,5 @@
-import {TasksStateType} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
-import {SeaTodolistsType} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
-
+import {TasksStateType} from "../Features/Todolists/Todolist/Task/TaskTypes";
+import {SeaTodolistsType} from "../Features/Todolists/Todolist/TodolistTypes";
 
 // const todolist1 = v1()
 // const todolist2 = v1()
@@ -11,6 +10,8 @@ import {SeaTodolistsType} from "../Features/Todolists/Todolist/Reducers/Todolist
 // const todolist7 = v1()
 // const todolist8 = v1()
 // const todolist9 = v1()
+
+
 
 export const initialTasks: TasksStateType = {
     // [todolist1]: [{id: v1(), title: "HTML&CSS", isDone: true},

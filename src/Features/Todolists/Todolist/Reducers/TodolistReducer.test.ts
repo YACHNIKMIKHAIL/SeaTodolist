@@ -2,11 +2,11 @@ import {v1} from "uuid";
 import {
     changeTodolistFilter,
     changeTodolistStatus,
-    SeaTodolistsType,
     todolistReducer
 } from "./TodolistReducer";
-import {ApiTodolistType} from "../../../../Api/SeaApi";
 import {changeTodolists, postTodolists, removeTodolists} from "./TodolistsActions";
+import {SeaTodolistsType} from "../TodolistTypes";
+import {ApiTodolistType} from "../../../../Api/ApiTypes";
 
 let todolistID1: string
 let todolistID2: string

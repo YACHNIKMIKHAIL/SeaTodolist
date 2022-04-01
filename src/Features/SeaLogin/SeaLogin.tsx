@@ -12,15 +12,12 @@ import React from 'react';
 import styled from "styled-components";
 import {FormikHelpers, useFormik} from "formik";
 import {useSelector} from "react-redux";
-import {useSeaAction, useSeaDispatch} from "../../App/store";
 import {Navigate} from "react-router-dom";
 import {asyncAuthActions, authSelectors} from "./authIndex";
+import {useSeaAction, useSeaDispatch} from "../../SeaUtils/ReduxUtils";
+import {FormValuesType} from "./LoginType";
 
-type FormValuesType = {
-    email: string
-    password: string
-    rememberMe: boolean
-}
+
 const SeaLogin = () => {
     const isLoggedInSea = useSelector(authSelectors.selectIsLoginIn)
     const dispatch = useSeaDispatch()

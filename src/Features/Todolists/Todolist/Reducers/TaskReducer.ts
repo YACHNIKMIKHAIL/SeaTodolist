@@ -1,5 +1,4 @@
 import {initialTasks} from "../../../../State/initailsStates";
-import {ItemType} from "../../../../Api/SeaApi";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addTask, changeTask, getTasks, removeTask, reorderTask} from "./TasksActions";
 import {getTodolists, postTodolists, removeTodolists} from "./TodolistsActions";
@@ -10,7 +9,7 @@ const slice = createSlice({
         reducers: {
             loadTask(state, action: PayloadAction<{ todolistID: string, taskID: string, loading: boolean }>) {
                 const task = state[action.payload.todolistID]
-                const index = task.findIndex(i => i.id === action.payload.taskID)
+                const index = task.findIndex((i: { id: string; }) => i.id === action.payload.taskID)
                 if (index > -1) {
                     task[index].loading = action.payload.loading
                 }
@@ -33,7 +32,7 @@ const slice = createSlice({
             });
             builder.addCase(removeTask.fulfilled, (state, action) => {
                 const task = state[action.payload.todolistID]
-                const index = task.findIndex(i => i.id === action.payload.taskID)
+                const index = task.findIndex((i: { id: string; }) => i.id === action.payload.taskID)
                 if (index > -1) {
                     //delete task[index]
                     task.splice(index, 1)
@@ -46,7 +45,7 @@ const slice = createSlice({
             });
             builder.addCase(changeTask.fulfilled, (state, action) => {
                 const task = state[action.payload.seaParam.todolistID]
-                const index = task.findIndex(i => i.id === action.payload.seaParam.taskID)
+                const index = task.findIndex((i: { id: string; }) => i.id === action.payload.seaParam.taskID)
                 if (index > -1) {
                     task[index] = {...task[index], ...action.payload.item}
                 }
@@ -61,4 +60,4 @@ const slice = createSlice({
 export const taskReducer = slice.reducer
 export const {loadTask} = slice.actions
 
-export type TasksStateType = { [key: string]: Array<ItemType> }
+

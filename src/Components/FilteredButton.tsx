@@ -1,13 +1,11 @@
-import {FilterType} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
-import {useSeaAction, useSeaSelector} from "../App/store";
+import {useSeaSelector} from "../App/store";
 import {todolistsActions} from "../Features/Todolists/Todolist/todoTasksIndex";
 import Button from "@material-ui/core/Button";
 import React from "react";
+import {useSeaAction} from "../SeaUtils/ReduxUtils";
+import {FilteredButtonType} from "./ComponentsTypes";
+import {FilterType} from "../Features/Todolists/Todolist/TodolistTypes";
 
-type FilteredButtonType = {
-    actualFilter: FilterType
-    todolistId: string
-}
 export const FilteredButton = ({actualFilter, todolistId}: FilteredButtonType) => {
     const buttonStyle = {
         active: {

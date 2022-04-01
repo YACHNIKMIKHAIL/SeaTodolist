@@ -1,7 +1,8 @@
-import {setSeaAppError, setSeaAppStatus} from "../App/SeaAppReducer";
-import {SeaResponseType} from "../Api/SeaApi";
+import {setSeaAppError, setSeaAppStatus} from "../Features/SeaApp/SeaAppReducer";
 import {Dispatch} from "redux";
 import {AxiosError} from "axios";
+import {thunkAPIType} from "./UtilsTypes";
+import {SeaResponseType} from "../Api/ApiTypes";
 
 
 export const seaHandleServer = <T>(data: SeaResponseType<T>, dispatch: Dispatch, showError = true) => {
@@ -34,9 +35,4 @@ export const seaAsyncHandleNetwork = (err: AxiosError, thunkAPI: thunkAPIType, s
     thunkAPI.dispatch(setSeaAppStatus({status: 'failed'}))
 
     return thunkAPI.rejectWithValue({errors: [err.message], fieldsErrors: undefined})
-}
-
-type thunkAPIType = {
-    dispatch: (action: any) => any
-    rejectWithValue: Function
 }

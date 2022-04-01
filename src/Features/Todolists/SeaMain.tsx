@@ -1,13 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TodolistsList from "./TodolistsList";
-import {useSeaAction, useSeaDispatch, useSeaSelector} from "../../App/store";
-import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
-import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
-import AddForm, {AddFormSubmitHelperType} from "../../Components/AddForm";
+import {useSeaSelector} from "../../App/store";
+import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";
 import {todolistsActions} from "./Todolist/todoTasksIndex";
+import {useSeaAction, useSeaDispatch} from "../../SeaUtils/ReduxUtils";
+import {AddFormSubmitHelperType} from "../../Components/ComponentsTypes";
+import {SeaTodolistsType} from "./Todolist/TodolistTypes";
+import {TasksStateType} from "./Todolist/Task/TaskTypes";
 
 const SeaMain = () => {
         const todolists = useSeaSelector<SeaTodolistsType[]>(state => state.todolists)

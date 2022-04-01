@@ -1,15 +1,13 @@
-import {initialLoginType, seaAuthAPI} from "../../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setSeaAppStatus} from "../../App/SeaAppReducer";
+import {setSeaAppStatus} from "../SeaApp/SeaAppReducer";
 import {AxiosError} from "axios";
-import {ThunkErrorType} from "../../App/store";
+import {seaAuthAPI} from "../../Api/SeaApi";
+import {initialLoginType} from "../../Api/ApiTypes";
+import {ThunkErrorType} from "../../SeaUtils/UtilsTypes";
 
 
-export type initialLoginStateType = {
-    isLoginIn: boolean | undefined
-    myName: string | null
-}
+
 
 export enum loginActions {
     SET_LOGIN_IN = 'SET_LOGIN_IN',
@@ -85,5 +83,3 @@ export const slice = createSlice({
 })
 export const seaAuthReducer = slice.reducer
 export const {isLoginInAC} = slice.actions
-export type seaLoginActionsType =
-    ReturnType<typeof slice.actions.isLoginInAC>

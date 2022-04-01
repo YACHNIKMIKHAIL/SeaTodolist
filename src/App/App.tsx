@@ -8,16 +8,16 @@ import Menu from '@material-ui/icons/Menu';
 import {useDispatch, useSelector} from "react-redux";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
-import {asyncAppActions} from './SeaAppReducer';
+import {asyncAppActions} from '../Features/SeaApp/SeaAppReducer';
 import Error from "../Components/Error";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
 import {asyncActions} from "../Features/SeaLogin/SeaAuthReducer";
-import {appSelectors} from "./appIndex";
+import {appSelectors} from "../Features/SeaApp/appIndex";
 import {authSelectors, SeaLogin} from "../Features/SeaLogin/authIndex";
-import {useSeaAction} from "./store";
+import {useSeaAction} from "../SeaUtils/ReduxUtils";
 
 
 export const App = () => {

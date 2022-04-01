@@ -2,8 +2,8 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useDispatch, useSelector} from "react-redux";
-import {seaReducerType} from "../App/store";
-import {setSeaAppError} from "../App/SeaAppReducer";
+import {setSeaAppError} from "../Features/SeaApp/SeaAppReducer";
+import {seaReducerType} from "../App/AppTypes";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,

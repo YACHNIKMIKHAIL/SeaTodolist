@@ -1,15 +1,11 @@
-import {seaAuthAPI} from "../Api/SeaApi";
-import {seaHandleNetwork, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
-import {isLoginInAC} from "../Features/SeaLogin/SeaAuthReducer";
+import {seaAuthAPI} from "../../Api/SeaApi";
+import {seaHandleNetwork, seaHandleServer} from "../../SeaUtils/SeaErrorUtils";
+import {isLoginInAC} from "../SeaLogin/SeaAuthReducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
+import {SeaAppInitStateType, seaStatusTypes} from "./AppTypes";
 
-export type SeaAppInitStateType = {
-    seaStatus: seaStatusTypes
-    seaError: string | null
-    isInitialized: boolean
-}
-export type seaStatusTypes = 'idle' | 'loading' | 'succesed' | 'failed'
+
 
 export enum SeaAppActions {
     SET_SEA_STATUS = 'SET_SEA_STATUS',

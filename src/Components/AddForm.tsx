@@ -1,16 +1,11 @@
 import React, {useState} from 'react';
 import {Button, TextField} from "@material-ui/core";
 import {useSelector} from "react-redux";
-import {seaReducerType} from "../App/store";
-import {seaStatusTypes} from "../App/SeaAppReducer";
 import styled from "styled-components";
+import {AddFormPropsType} from "./ComponentsTypes";
+import {seaReducerType} from "../App/AppTypes";
+import {seaStatusTypes} from "../Features/SeaApp/AppTypes";
 
-export type AddFormSubmitHelperType =
-    { setTitle: (title: string) => void, setError: (error: string) => void }
-    | undefined
-type AddFormPropsType = {
-    addFn: (title: string, helper?: AddFormSubmitHelperType) => void
-}
 const AddForm = React.memo(({addFn}: AddFormPropsType) => {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string>('')

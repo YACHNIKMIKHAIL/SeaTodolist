@@ -1,12 +1,14 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ItemType, tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
 import {seaAsyncHandleNetwork, seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
 import {AxiosError} from "axios";
-import {seaReducerType, ThunkErrorType} from "../../../../App/store";
 import {changeTodolistStatus} from "./TodolistReducer";
 import {loadTask} from "./TaskReducer";
 import {tasksActionsEnum, UpdateSeaTaskType} from "../ActionsEnum/TasksActionsEnum";
-import {appActions} from "../../../../App/appIndex";
+import {appActions} from "../../../SeaApp/appIndex";
+import {tasksAPI} from "../../../../Api/SeaApi";
+import {ItemType, UpdateTaskType} from "../../../../Api/ApiTypes";
+import {seaReducerType} from "../../../../App/AppTypes";
+import {ThunkErrorType} from "../../../../SeaUtils/UtilsTypes";
 
 const {setSeaAppStatus} = appActions
 
@@ -30,7 +32,8 @@ export const removeTask = createAsyncThunk(tasksActionsEnum.REMOVE_TASK, async (
     }
 })
 
-export const addTask = createAsyncThunk<ItemType, { todolistID: string, title: string }, ThunkErrorType>(tasksActionsEnum.ADD_TASK, async (seaParam, thunkAPI) => {
+export const addTask = createAsyncThunk<ItemType, { todolistID: string, title: string }, ThunkErrorType>
+(tasksActionsEnum.ADD_TASK, async (seaParam, thunkAPI) => {
     thunkAPI.dispatch(setSeaAppStatus({status: 'loading'}))
     try {
         const sea = await tasksAPI.addTask(seaParam.todolistID, seaParam.title)
@@ -55,7 +58,7 @@ export const changeTask = createAsyncThunk(tasksActionsEnum.CHANGE_TASK, async (
     getState
 }) => {
     const state = getState() as seaReducerType
-    const actualTaskParams = state.tasks[seaParam.todolistID].filter(f => f.id === seaParam.taskID)[0]
+    const actualTaskParams = state.tasks[seaParam.todolistID].filter((f: { id: string; }) => f.id === seaParam.taskID)[0]
     if (!actualTaskParams) {
         return rejectWithValue('task is undefined!')
     }

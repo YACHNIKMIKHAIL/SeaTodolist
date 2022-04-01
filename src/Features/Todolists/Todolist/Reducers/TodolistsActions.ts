@@ -9,8 +9,8 @@ import {
 import {changeTodolistStatus} from "./TodolistReducer";
 import {getTasks} from "./TasksActions";
 import {TodolistActions} from "../ActionsEnum/TodolistsActionsEnum";
-import {ThunkErrorType} from "../../../../App/store";
-import {appActions} from "../../../../App/appIndex";
+import {appActions} from "../../../SeaApp/appIndex";
+import {ThunkErrorType} from "../../../../SeaUtils/UtilsTypes";
 
 const {setSeaAppStatus} = appActions
 
@@ -29,7 +29,9 @@ export const getTodolists = createAsyncThunk(TodolistActions.SET_FROM_SERVER, as
         dispatch(setSeaAppStatus({status: 'succesed'}))
     }
 })
-export const postTodolists = createAsyncThunk<{ item: { id: string; title: string; addedDate: string; order: number } }, string, ThunkErrorType>(TodolistActions.ADD_TODOLIST, async (title: string, thunkAPI) => {
+export const postTodolists = createAsyncThunk<{ item: { id: string; title: string; addedDate: string; order: number } },
+    string, ThunkErrorType>
+(TodolistActions.ADD_TODOLIST, async (title: string, thunkAPI) => {
     const {dispatch} = thunkAPI
     dispatch(setSeaAppStatus({status: 'loading'}))
     try {
