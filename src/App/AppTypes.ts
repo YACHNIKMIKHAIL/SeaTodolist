@@ -1,6 +1,7 @@
 import {ThunkAction} from "redux-thunk";
-import {seaReducer, store} from "./store";
+import { store} from "./store";
 import {seaLoginActionsType} from "../Features/SeaLogin/LoginType";
+import {seaReducer} from "./Reducers";
 
 export type seaReducerType = ReturnType<typeof seaReducer>
 export type seaActionsType = seaLoginActionsType

@@ -21,7 +21,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
-        const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter(f => f.id === todolist.id)[0])
+        const seaTodolist = useSeaSelector<SeaTodolistsType>(state => state.todolists.filter((f: { id: string; }) => f.id === todolist.id)[0])
         const [dropTaskId, setDropTaskId] = useState<string | null>(null)
         const [taskBackground, setTaskBackground] = useState<string>('')
 
@@ -62,8 +62,10 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
         }, [todolist.id, changeTodolists])
 
         useEffect(() => {
-            getTasks(todolist.id)
-        }, [todolist.id, getTasks])
+            if(!todoTasks.length) {
+                getTasks(todolist.id)
+            }
+        }, [todolist.id, getTasks,todoTasks.length])
 
         let tasksForRender = todoTasks
         if (todolist.filter === 'complited') {

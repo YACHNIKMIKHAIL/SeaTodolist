@@ -19,7 +19,7 @@ export const useSeaSelector: TypedUseSelectorHook<seaReducerType> = useSelector
 window.store = store
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
-    module.hot.accept('./App/store', () => {
+    module.hot.accept('./store', () => {
         store.replaceReducer(seaReducer)
     })
 }

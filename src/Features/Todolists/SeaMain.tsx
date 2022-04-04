@@ -46,8 +46,10 @@ const SeaMain = () => {
         }, [dispatch])
 
         useEffect(() => {
-            getTodolists()
-        }, [getTodolists])
+            if(!todolists.length) {
+                getTodolists()
+            }
+        }, [getTodolists,todolists.length])
 
         if (!isLoggedInSea) {
             return <Navigate to={'/login'}/>
