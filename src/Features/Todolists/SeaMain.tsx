@@ -88,7 +88,7 @@ const SeaMain = () => {
                 <Grid container style={{padding: '20px', color: 'white'}}>
                     <AddForm addFn={addTodolistX}/>
                 </Grid>
-                <Grid container spacing={5} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
+                <Grid container spacing={1} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
                     {todolists.map((t, i) => {
                         let todoTasks = tasks[t.id]
                         if (todoTasks === undefined) {

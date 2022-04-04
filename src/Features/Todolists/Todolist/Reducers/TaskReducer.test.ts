@@ -1,7 +1,7 @@
 import {v1} from "uuid";
 import {UpdateSeaTaskType} from "../ActionsEnum/TasksActionsEnum";
 import {postTodolists, removeTodolists} from "./TodolistsActions";
-import {addTask, changeTask, removeTask} from "./TasksActions";
+import {changeTask, removeTask} from "./TasksActions";
 import {TasksStateType} from "../Task/TaskTypes";
 import {loadTask, taskReducer} from "./TaskReducer";
 import {SeaTodolistsType} from "../TodolistTypes";
@@ -56,30 +56,6 @@ test('correct todolist should be removed', () => {
     expect(endState[todolistID4].length).toBe(3)
     expect(endState[todolistID2].length).toBe(3)
     expect(endState[todolistID1].length).toBe(3)
-})
-test('correct task should be added', () => {
-    const task = {
-        id: 'string',
-        title: 'bla-bla',
-        description: 'string',
-        todoListId: 'string',
-        order: 4,
-        status: TaskStatuses.New,
-        priority: TaskPriorities.Low,
-        startDate: 'string',
-        deadline: 'string',
-        addedDate: 'string',
-        loading: false
-    }
-    let endState = taskReducer(startState, addTask.fulfilled(task
-        , 'requestId',
-        {title: task.title, todolistID: task.todoListId}))
-
-    expect(endState[todolistID4].length).toBe(3)
-    expect(endState[todolistID2].length).toBe(3)
-    expect(endState[todolistID1].length).toBe(3)
-    expect(endState[todolistID3].length).toBe(4)
-    expect(endState[todolistID3][0].title).toBe('bla-bla')
 })
 test('correct task status should be changed', () => {
     type xType = { todolistID: string; taskID: string; model: UpdateSeaTaskType }
