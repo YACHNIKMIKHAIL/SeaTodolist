@@ -82,7 +82,6 @@ const SeaMain = () => {
             if (index) setDropTodolistId(todolist.id)
             else setDropTodolistId(null)
         }
-
         return (
             <>
                 <Grid container style={{padding: '20px', color: 'white'}}>

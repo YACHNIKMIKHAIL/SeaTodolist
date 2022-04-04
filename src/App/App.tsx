@@ -26,14 +26,15 @@ export const App = () => {
     const {seaLoginOut} = useSeaAction(asyncActions)
     const {initializedSeaApp} = useSeaAction(appActions)
 
-
     const logout = useCallback(() => {
         seaLoginOut()
     }, [seaLoginOut])
 
     useEffect(() => {
-        initializedSeaApp()
-    }, [initializedSeaApp])
+        if(!isInitializedApp) {
+            initializedSeaApp()
+        }
+    }, [initializedSeaApp,isInitializedApp])
 
     if (!isInitializedApp) {
         return <AppCase
