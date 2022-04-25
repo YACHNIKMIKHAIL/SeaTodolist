@@ -5,6 +5,7 @@ import thunk, {ThunkAction} from "redux-thunk";
 import {seaAppActionsType, seaAppResucer} from "./SeaAppReducer";
 import {seaLoginActionsType, seaAuthReducer} from "../Features/SeaLogin/SeaAuthReducer";
 import {TypedUseSelectorHook, useSelector} from "react-redux";
+import createSagaMiddleware from "redux-saga";
 
 const reducer = combineReducers({
     todolists: todolistReducer,
@@ -14,9 +15,17 @@ const reducer = combineReducers({
 })
 
 export type reducerType = ReturnType<typeof reducer>
-export const store = createStore(reducer, applyMiddleware(thunk))
+
+const sagaMiddleware = createSagaMiddleware()
+
+export const store = createStore(reducer, applyMiddleware(thunk, sagaMiddleware))
 export type seaActionsType = seaTasksActionsType | seaTodolistActionsType | seaAppActionsType | seaLoginActionsType
 
+sagaMiddleware.run(rootWatcher)
+
+function* rootWatcher() {
+    alert('rootWatcher')
+}
 
 export const useSeaSelector: TypedUseSelectorHook<reducerType> = useSelector
 export type SeaThunkType<ReturnType = void> = ThunkAction<ReturnType,
@@ -25,3 +34,6 @@ export type SeaThunkType<ReturnType = void> = ThunkAction<ReturnType,
     seaActionsType>
 // @ts-ignore
 window.store = store
+
+
+// then run the saga
