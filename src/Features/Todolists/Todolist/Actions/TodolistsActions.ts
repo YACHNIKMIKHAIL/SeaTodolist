@@ -3,7 +3,7 @@ import {ApiTodolistType, todolistAPI} from "../../../../Api/SeaApi";
 import {SeaThunkType} from "../../../../App/store";
 import {seaStatusTypes, setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
-import {getTasksTC} from "./TasksActions";
+import {getTasks} from "./TasksActions";
 
 export enum TodolistActions {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
@@ -98,7 +98,7 @@ export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkTy
     }
 }
 
-export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string | null): SeaThunkType => async (dispatch) => {
+export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string | null): any => async (dispatch:any) => {
     dispatch(setSeaAppStatus('loading'))
     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
     console.log('reorderTodolistsTC')
@@ -106,7 +106,7 @@ export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string | 
         let sea = await todolistAPI.reorderTodolists(todolistID, putAfterItemId)
         if (sea.data.resultCode === 0) {
             dispatch(getTodolistsTC())
-            dispatch(getTasksTC(todolistID))
+            dispatch(getTasks(todolistID))
         } else {
             seaHandleServer(sea.data, dispatch)
         }

@@ -79,21 +79,3 @@ export function* initializedSeaAppWorkerSaga(): Generator<any, any, any> {
 export const initializedSeaApp=()=>{
     return {type:'APP/INITIALIZE_APP'}
 }
-
-// export const initializedSeaAppTC = (): SeaThunkType => async (dispatch) => {
-//     dispatch(setSeaAppStatus('loading'))
-//     try {
-//         let sea = await seaAuthAPI.me()
-//         if (sea.data.resultCode === 0) {
-//             dispatch(seaLoginActions.isLoginInAC(true))
-//             dispatch(setSeaAppInitialized(true))
-//             dispatch(setSeaAppStatus('succesed'))
-//         } else {
-//             dispatch(seaLoginActions.isLoginInAC(false))
-//             dispatch(setSeaAppInitialized(true))
-//             seaHandleServer(sea.data, dispatch)
-//         }
-//     } catch (e) {
-//         seaHandleNetwork(e, dispatch)
-//     }
-// }

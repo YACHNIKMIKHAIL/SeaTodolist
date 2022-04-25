@@ -1,8 +1,7 @@
-import {getTasksTC, seaTasksActions} from "./TasksActions";
-import {ApiTaskType, ItemType, TaskPriorities, tasksAPI, TaskStatuses, todolistAPI} from "../../../../Api/SeaApi";
+import {getTasks as getTasksTC, seaTasksActions} from "./TasksActions";
+import {ApiTaskType, ItemType, tasksAPI, TaskStatuses} from "../../../../Api/SeaApi";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {seaTodolistActions} from "./TodolistsActions";
-import {seaHandleNetwork} from "../../../../SeaUtils/SeaErrorUtils";
 
 
 jest.mock("../../../../Api/SeaApi")
@@ -23,12 +22,16 @@ taskAPIMock.getTasks.mockReturnValue(Promise.resolve(result))
 test('getTasksTC test', async () => {
     const getTasks = getTasksTC('yes')
 
-    await getTasks(dispatchMock, getStateMock, {})
+    // await getTasks(dispatchMock, getStateMock, {})
 
     expect(dispatchMock).toBeCalledTimes(6)
     expect(dispatchMock).toHaveBeenNthCalledWith(1, setSeaAppStatus('loading'))
     expect(dispatchMock).toHaveBeenNthCalledWith(2, seaTodolistActions.changeTodolistStatusAC('yes', 'loading'))
-    expect(dispatchMock).toHaveBeenNthCalledWith(3, seaTasksActions.setTasksFromServAC("yes", [{"id": "todolistID1", "status": 0, "title": "HTML&CSS"}] as ItemType[]))
+    expect(dispatchMock).toHaveBeenNthCalledWith(3, seaTasksActions.setTasksFromServAC("yes", [{
+        "id": "todolistID1",
+        "status": 0,
+        "title": "HTML&CSS"
+    }] as ItemType[]))
     // expect(dispatchMock).toHaveBeenNthCalledWith(4, seaTasksActions.setTasksFromServAC("yes", [{"id": "todolistID1", "status": 0, "title": "HTML&CSS"}] as ItemType[]))
     expect(dispatchMock).toHaveBeenNthCalledWith(5, seaTodolistActions.changeTodolistStatusAC('todolistID', 'succesed'))
 })
