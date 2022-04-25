@@ -2,7 +2,7 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import {seaTodolistActionsType, todolistReducer} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
 import {seaTasksActionsType, taskReducer} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
 import thunk, {ThunkAction} from "redux-thunk";
-import {seaAppActionsType, seaAppResucer} from "./SeaAppReducer";
+import {initializedSeaAppWorkerSaga, seaAppActionsType, seaAppResucer} from "./SeaAppReducer";
 import {seaLoginActionsType, seaAuthReducer} from "../Features/SeaLogin/SeaAuthReducer";
 import {TypedUseSelectorHook, useSelector} from "react-redux";
 import createSagaMiddleware from "redux-saga";
@@ -25,18 +25,19 @@ export type seaActionsType = seaTasksActionsType | seaTodolistActionsType | seaA
 sagaMiddleware.run(rootWatcher)
 
 function* rootWatcher() {
-    alert('rootWatcher')
+    // alert('rootWatcher')
     yield takeEvery('ACTIVATOR-ACTION-TYPE', rootWorker)
+    yield takeEvery('APP/INITIALIZE_APP', initializedSeaAppWorkerSaga)
 }
 
 function* rootWorker() {
-    yield alert('rootWorker')
+     alert('rootWorker')
 }
 
-setTimeout(() => {
-    // @ts-ignore
-    store.dispatch({type: 'ACTIVATOR-ACTION-TYPE'})
-}, 3000)
+// setTimeout(() => {
+//     // @ts-ignore
+//     store.dispatch({type: 'ACTIVATOR-ACTION-TYPE'})
+// }, 3000)
 
 export const useSeaSelector: TypedUseSelectorHook<reducerType> = useSelector
 export type SeaThunkType<ReturnType = void> = ThunkAction<ReturnType,
