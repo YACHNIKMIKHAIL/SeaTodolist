@@ -9,7 +9,7 @@ import {useDispatch} from "react-redux";
 import {useSeaSelector} from "./store";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
-import {initializedSeaAppTC, seaStatusTypes} from './SeaAppReducer';
+import {initializedSeaApp, seaStatusTypes} from './SeaAppReducer';
 import Error from "../Components/Error";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -24,14 +24,13 @@ export const App = () => {
     const isLoginIn = useSeaSelector<boolean>(state => state.auth.isLoginIn)
 
 
-
     const dispatch = useDispatch()
     const logout = useCallback(() => {
         dispatch(seaLoginOutTC())
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(initializedSeaAppTC())
+        dispatch(initializedSeaApp())
     }, [dispatch])
 
     if (!isInitializedApp) {

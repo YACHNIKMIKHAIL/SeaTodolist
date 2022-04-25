@@ -6,6 +6,7 @@ import {seaAppActionsType, seaAppResucer} from "./SeaAppReducer";
 import {seaLoginActionsType, seaAuthReducer} from "../Features/SeaLogin/SeaAuthReducer";
 import {TypedUseSelectorHook, useSelector} from "react-redux";
 import createSagaMiddleware from "redux-saga";
+import {takeEvery} from "redux-saga/effects";
 
 const reducer = combineReducers({
     todolists: todolistReducer,
@@ -25,7 +26,17 @@ sagaMiddleware.run(rootWatcher)
 
 function* rootWatcher() {
     alert('rootWatcher')
+    yield takeEvery('ACTIVATOR-ACTION-TYPE', rootWorker)
 }
+
+function* rootWorker() {
+    yield alert('rootWorker')
+}
+
+setTimeout(() => {
+    // @ts-ignore
+    store.dispatch({type: 'ACTIVATOR-ACTION-TYPE'})
+}, 3000)
 
 export const useSeaSelector: TypedUseSelectorHook<reducerType> = useSelector
 export type SeaThunkType<ReturnType = void> = ThunkAction<ReturnType,

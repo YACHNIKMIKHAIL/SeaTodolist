@@ -1,7 +1,7 @@
-import {SeaThunkType} from "./store";
 import {seaAuthAPI} from "../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
 import {seaLoginActions} from "../Features/SeaLogin/SeaAuthReducer";
+import {call, put} from "redux-saga/effects";
 
 export type SeaAppInitStateType = {
     seaStatus: seaStatusTypes
@@ -15,6 +15,7 @@ const seaInitState: SeaAppInitStateType = {
     seaError: null,
     isInitialized: false
 }
+
 export enum SeaAppActions {
     SET_SEA_STATUS = 'SET_SEA_STATUS',
     SET_SEA_ERROR = 'SET_SEA_ERROR',
@@ -57,20 +58,42 @@ export const setSeaAppInitialized = (isInitial: boolean) => {
 }
 export type seaAppActionsType = setSeaAppStatusType | setSeaAppErrorType | setSeaAppInitializedType
 
-export const initializedSeaAppTC = (): SeaThunkType => async (dispatch) => {
-    dispatch(setSeaAppStatus('loading'))
+export function* initializedSeaAppWorkerSaga(): Generator<any, any, any> {
+    put(setSeaAppStatus('loading'))
     try {
-        let sea = await seaAuthAPI.me()
+        let sea = yield call(seaAuthAPI.me)
         if (sea.data.resultCode === 0) {
-            dispatch(seaLoginActions.isLoginInAC(true))
-            dispatch(setSeaAppInitialized(true))
-            dispatch(setSeaAppStatus('succesed'))
+            yield put(seaLoginActions.isLoginInAC(true))
+            yield put(setSeaAppInitialized(true))
+            yield put(setSeaAppStatus('succesed'))
         } else {
-            dispatch(seaLoginActions.isLoginInAC(false))
-            dispatch(setSeaAppInitialized(true))
-            seaHandleServer(sea.data, dispatch)
+            yield put(seaLoginActions.isLoginInAC(false))
+            yield  put(setSeaAppInitialized(true))
+            seaHandleServer(sea.data,yield put)
         }
     } catch (e) {
-        seaHandleNetwork(e, dispatch)
+        seaHandleNetwork(e,yield put)
     }
 }
+
+export const initializedSeaApp=()=>{
+    return {type:'APP/INITIALIZE_APP'}
+}
+
+// export const initializedSeaAppTC = (): SeaThunkType => async (dispatch) => {
+//     dispatch(setSeaAppStatus('loading'))
+//     try {
+//         let sea = await seaAuthAPI.me()
+//         if (sea.data.resultCode === 0) {
+//             dispatch(seaLoginActions.isLoginInAC(true))
+//             dispatch(setSeaAppInitialized(true))
+//             dispatch(setSeaAppStatus('succesed'))
+//         } else {
+//             dispatch(seaLoginActions.isLoginInAC(false))
+//             dispatch(setSeaAppInitialized(true))
+//             seaHandleServer(sea.data, dispatch)
+//         }
+//     } catch (e) {
+//         seaHandleNetwork(e, dispatch)
+//     }
+// }
