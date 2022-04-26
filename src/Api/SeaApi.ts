@@ -54,7 +54,7 @@ export enum TaskPriorities {
 }
 
 export const tasksAPI = {
-    async getTasks(todolistID: string) {
+    async getTasks(todolistID: string): Promise<ApiTaskType> {
         let res = await instance.get<ApiTaskType>(`/todo-lists/${todolistID}/tasks`)
         return res.data
     },

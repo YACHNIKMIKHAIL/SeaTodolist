@@ -9,7 +9,7 @@ import {useDispatch} from "react-redux";
 import {useSeaSelector} from "./store";
 import img2 from '../Images/wallpaperflare.com_wallpaper (1).jpg'
 import styled from "styled-components";
-import {initializedSeaApp, seaStatusTypes} from './SeaAppReducer';
+import {seaStatusTypes} from './SeaAppReducer';
 import Error from "../Components/Error";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -17,6 +17,7 @@ import SeaLogin from "../Features/SeaLogin/SeaLogin";
 import {Route, Routes} from 'react-router-dom';
 import SeaMain from "../Features/Todolists/SeaMain";
 import {seaLoginOutTC} from "../Features/SeaLogin/SeaAuthReducer";
+import {initializedSeaApp} from "./AppSagas";
 
 export const App = () => {
     const seaStatus = useSeaSelector<seaStatusTypes>(state => state.app.seaStatus)

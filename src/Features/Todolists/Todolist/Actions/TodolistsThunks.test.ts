@@ -1,4 +1,5 @@
-import {getTasks as getTasksTC, seaTasksActions} from "./TasksActions";
+import { seaTasksActions} from "./TasksActions";
+import { getTasks as getTasksTC} from "./../Sagas/TasksSagas";
 import {ApiTaskType, ItemType, tasksAPI, TaskStatuses} from "../../../../Api/SeaApi";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {seaTodolistActions} from "./TodolistsActions";

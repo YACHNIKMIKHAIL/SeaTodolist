@@ -2,12 +2,12 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import {seaTodolistActionsType, todolistReducer} from "../Features/Todolists/Todolist/Reducers/TodolistReducer";
 import {seaTasksActionsType, taskReducer} from "../Features/Todolists/Todolist/Reducers/TaskReducer";
 import thunk, {ThunkAction} from "redux-thunk";
-import {initializedSeaAppWorkerSaga, seaAppActionsType, seaAppResucer} from "./SeaAppReducer";
-import {seaLoginActionsType, seaAuthReducer} from "../Features/SeaLogin/SeaAuthReducer";
+import {seaAppActionsType, seaAppResucer} from "./SeaAppReducer";
+import {seaAuthReducer, seaLoginActionsType} from "../Features/SeaLogin/SeaAuthReducer";
 import {TypedUseSelectorHook, useSelector} from "react-redux";
 import createSagaMiddleware from "redux-saga";
-import {takeEvery} from "redux-saga/effects";
-import {getTasksWorkerSaga} from "../Features/Todolists/Todolist/Actions/TasksActions";
+import {tasksWatcherSaga} from "../Features/Todolists/Todolist/Sagas/TasksSagas";
+import {appWatcherSaga} from "./AppSagas";
 
 const reducer = combineReducers({
     todolists: todolistReducer,
@@ -26,10 +26,10 @@ export type seaActionsType = seaTasksActionsType | seaTodolistActionsType | seaA
 sagaMiddleware.run(rootWatcher)
 
 function* rootWatcher() {
-    yield takeEvery('APP/INITIALIZE_APP', initializedSeaAppWorkerSaga)
-    yield takeEvery('TASKS/GET_TASKS', getTasksWorkerSaga)
-}
+    yield appWatcherSaga()
+    yield tasksWatcherSaga()
 
+}
 
 
 export const useSeaSelector: TypedUseSelectorHook<reducerType> = useSelector
