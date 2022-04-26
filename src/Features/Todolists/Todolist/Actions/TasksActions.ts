@@ -128,20 +128,20 @@ export const changeTaskTC = (todolistID: string, taskID: string, model: UpdateSe
 
 
 
-
-export const reorderTaskTC = (todolistID: string, taskID: string, putAfterItemId: string | null): any => async (dispatch: Dispatch) => {
-    dispatch(setSeaAppStatus('loading'))
-    dispatch(seaTasksActions.loadTask(todolistID, taskID, true))
-    try {
-        let res = await tasksAPI.reorderTask(todolistID, taskID, putAfterItemId)
-        if (res.data.resultCode === 0) {
-            dispatch(getTasks(todolistID))
-        } else {
-            seaHandleServer(res.data, dispatch)
-        }
-    } catch (e) {
-        seaHandleNetwork(e, dispatch)
-    } finally {
-        dispatch(setSeaAppStatus('succesed'))
-    }
-}
+//
+// export const reorderTaskTC = (todolistID: string, taskID: string, putAfterItemId: string | null): any => async (dispatch: Dispatch) => {
+//     dispatch(setSeaAppStatus('loading'))
+//     dispatch(seaTasksActions.loadTask(todolistID, taskID, true))
+//     try {
+//         let res = await tasksAPI.reorderTask(todolistID, taskID, putAfterItemId)
+//         if (res.data.resultCode === 0) {
+//             dispatch(getTasks(todolistID))
+//         } else {
+//             seaHandleServer(res.data, dispatch)
+//         }
+//     } catch (e) {
+//         seaHandleNetwork(e, dispatch)
+//     } finally {
+//         dispatch(setSeaAppStatus('succesed'))
+//     }
+// }

@@ -68,7 +68,7 @@ export const removeTask = (todolistID: string, taskID: string) => {
     return {type: 'TASKS/REMOVE_TASK', todolistID, taskID}
 }
 
-export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>, getState: () => reducerType) {
+export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>, getState: () => reducerType): Generator<any, any, any> {
     const actualTaskParams = getState().tasks[action.todolistID].filter(f => f.id === action.taskID)[0]
     if (!actualTaskParams) return
     const apiModel: UpdateTaskType = {
@@ -110,12 +110,37 @@ export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>, get
 }
 
 export const changeTask = (todolistID: string, taskID: string, model: UpdateSeaTaskType) => {
-    return {type: 'TASKS/REMOVE_TASK', todolistID, taskID, model}
+    return {type: 'TASKS/CHANGE_TASK', todolistID, taskID, model}
 }
 
+export function* reorderTaskWorkerSaga(action: ReturnType<typeof reorderTask>) {
+    yield  put(setSeaAppStatus('loading'))
+    yield  put(seaTasksActions.loadTask(action.todolistID, action.taskID, true))
+    try {
+        yield  call(tasksAPI.removeTask, action.todolistID, action.taskID)
+        yield  put(seaTasksActions.removeTaskAC(action.todolistID, action.taskID))
+
+        let res:AxiosResponse<SeaResponseType> = yield  call(tasksAPI.reorderTask, action.todolistID, action.taskID, action.putAfterItemId)
+        if (res.data.resultCode === 0) {
+            yield  put(getTasks(action.todolistID))
+        } else {
+            seaHandleServer(res.data, yield  put)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, yield  put)
+    } finally {
+        yield  put(setSeaAppStatus('succesed'))
+    }
+}
+
+export const reorderTask = (todolistID: string, taskID: string, putAfterItemId: string | null) => {
+    return {type: 'TASKS/REORDER_TASK', todolistID, taskID, putAfterItemId}
+}
 
 export function* tasksWatcherSaga() {
     yield takeEvery('TASKS/GET_TASKS', getTasksWorkerSaga)
     yield takeEvery('TASKS/ADD_TASK', addTaskWorkerSaga)
     yield takeEvery('TASKS/REMOVE_TASK', removeTaskWorkerSaga)
+    // yield takeEvery('TASKS/CHANGE_TASK', changeTaskWorkerSaga)
+    yield takeEvery('TASKS/REORDER_TASK', reorderTaskWorkerSaga)
 }
