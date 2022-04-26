@@ -26,6 +26,7 @@ export type seaActionsType = seaTasksActionsType | seaTodolistActionsType | seaA
 sagaMiddleware.run(rootWatcher)
 
 function* rootWatcher() {
+    debugger
     yield appWatcherSaga()
     yield tasksWatcherSaga()
 

@@ -8,6 +8,7 @@ import {reducerType} from "../../../../App/store";
 import {AxiosResponse} from "axios";
 
 export function* getTasksWorkerSaga(action: ReturnType<typeof getTasks>) {
+    debugger
     yield  put(setSeaAppStatus('loading'))
     yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'loading'))
     try {
@@ -22,6 +23,7 @@ export function* getTasksWorkerSaga(action: ReturnType<typeof getTasks>) {
 }
 
 export const getTasks = (todolistID: string) => {
+    debugger
     return {type: 'TASKS/GET_TASKS', todolistID}
 }
 
@@ -44,31 +46,17 @@ export function* addTaskWorkerSaga(action: ReturnType<typeof addTask>) {
         yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
     }
 }
-
 export const addTask = (todolistID: string, title: string) => {
     return {type: 'TASKS/ADD_TASK', todolistID, title}
 }
 
-export function* removeTaskWorkerSaga(action: ReturnType<typeof removeTask>) {
-    yield  put(setSeaAppStatus('loading'))
-    yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'loading'))
-    yield  put(seaTasksActions.loadTask(action.todolistID, action.taskID, true))
-    try {
-        yield  call(tasksAPI.removeTask, action.todolistID, action.taskID)
-        yield  put(seaTasksActions.removeTaskAC(action.todolistID, action.taskID))
-    } catch (e) {
-        seaHandleNetwork(e, yield  put)
-    } finally {
-        yield  put(setSeaAppStatus('succesed'))
-        yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
-    }
-}
+export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>, getState: () => reducerType)
+    // : SagaIterator<void>
 
-export const removeTask = (todolistID: string, taskID: string) => {
-    return {type: 'TASKS/REMOVE_TASK', todolistID, taskID}
-}
-
-export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>, getState: () => reducerType): Generator<any, any, any> {
+    // : Generator<any,
+    // ItemType | undefined,
+    // AxiosResponse<SeaResponseType<{ item: ItemType }>, Dispatch<any>>>
+{
     const actualTaskParams = getState().tasks[action.todolistID].filter(f => f.id === action.taskID)[0]
     if (!actualTaskParams) return
     const apiModel: UpdateTaskType = {
@@ -108,10 +96,31 @@ export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>, get
         yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
     }
 }
-
 export const changeTask = (todolistID: string, taskID: string, model: UpdateSeaTaskType) => {
     return {type: 'TASKS/CHANGE_TASK', todolistID, taskID, model}
 }
+
+
+export function* removeTaskWorkerSaga(action: ReturnType<typeof removeTask>) {
+    yield  put(setSeaAppStatus('loading'))
+    yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'loading'))
+    yield  put(seaTasksActions.loadTask(action.todolistID, action.taskID, true))
+    try {
+        yield  call(tasksAPI.removeTask, action.todolistID, action.taskID)
+        yield  put(seaTasksActions.removeTaskAC(action.todolistID, action.taskID))
+    } catch (e) {
+        seaHandleNetwork(e, yield  put)
+    } finally {
+        yield  put(setSeaAppStatus('succesed'))
+        yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
+    }
+}
+
+export const removeTask = (todolistID: string, taskID: string) => {
+    return {type: 'TASKS/REMOVE_TASK', todolistID, taskID}
+}
+
+
 
 export function* reorderTaskWorkerSaga(action: ReturnType<typeof reorderTask>) {
     yield  put(setSeaAppStatus('loading'))
@@ -120,7 +129,7 @@ export function* reorderTaskWorkerSaga(action: ReturnType<typeof reorderTask>) {
         yield  call(tasksAPI.removeTask, action.todolistID, action.taskID)
         yield  put(seaTasksActions.removeTaskAC(action.todolistID, action.taskID))
 
-        let res:AxiosResponse<SeaResponseType> = yield  call(tasksAPI.reorderTask, action.todolistID, action.taskID, action.putAfterItemId)
+        let res: AxiosResponse<SeaResponseType> = yield  call(tasksAPI.reorderTask, action.todolistID, action.taskID, action.putAfterItemId)
         if (res.data.resultCode === 0) {
             yield  put(getTasks(action.todolistID))
         } else {
@@ -138,6 +147,7 @@ export const reorderTask = (todolistID: string, taskID: string, putAfterItemId: 
 }
 
 export function* tasksWatcherSaga() {
+    debugger
     yield takeEvery('TASKS/GET_TASKS', getTasksWorkerSaga)
     yield takeEvery('TASKS/ADD_TASK', addTaskWorkerSaga)
     yield takeEvery('TASKS/REMOVE_TASK', removeTaskWorkerSaga)

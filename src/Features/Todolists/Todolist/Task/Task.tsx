@@ -5,8 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../../../App/store";
-import {changeTaskTC} from "../Actions/TasksActions";
-import {removeTask as removeTaskSagaActivator} from "../Sagas/TasksSagas";
+import {changeTask as changeTaskSagaActivator, removeTask as removeTaskSagaActivator} from "../Sagas/TasksSagas";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -26,10 +25,10 @@ const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
             dispatch(removeTaskSagaActivator(todolistID, id))
         }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((num: boolean) => {
-            dispatch(changeTaskTC(todolistID, id, {status: num ? TaskStatuses.Complited : TaskStatuses.New}))
+            dispatch(changeTaskSagaActivator(todolistID, id, {status: num ? TaskStatuses.Complited : TaskStatuses.New}))
         }, [dispatch, todolistID, id])
         const changeTaskTitle = useCallback((title: string) => {
-            dispatch(changeTaskTC(todolistID, actualTask.id, {title}))
+            dispatch(changeTaskSagaActivator(todolistID, actualTask.id, {title}))
         }, [dispatch, todolistID, actualTask.id])
 
         return (
