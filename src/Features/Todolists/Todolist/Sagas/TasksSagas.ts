@@ -1,9 +1,11 @@
 import {call, put, takeEvery} from "redux-saga/effects";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {seaTodolistActions} from "../Actions/TodolistsActions";
-import {ApiTaskType, tasksAPI} from "../../../../Api/SeaApi";
-import {seaHandleNetwork} from "../../../../SeaUtils/SeaErrorUtils";
-import { seaTasksActions} from "../Actions/TasksActions";
+import {ApiTaskType, ItemType, SeaResponseType, tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
+import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
+import {seaTasksActions, UpdateSeaTaskType} from "../Actions/TasksActions";
+import {reducerType} from "../../../../App/store";
+import {AxiosResponse} from "axios";
 
 export function* getTasksWorkerSaga(action: ReturnType<typeof getTasks>) {
     yield  put(setSeaAppStatus('loading'))
@@ -21,6 +23,30 @@ export function* getTasksWorkerSaga(action: ReturnType<typeof getTasks>) {
 
 export const getTasks = (todolistID: string) => {
     return {type: 'TASKS/GET_TASKS', todolistID}
+}
+
+export function* addTaskWorkerSaga(action: ReturnType<typeof addTask>) {
+    yield  put(setSeaAppStatus('loading'))
+    try {
+        let res: SeaResponseType<{
+            item: ItemType
+        }> = yield  call(tasksAPI.addTask, action.todolistID, action.title)
+        if (res.resultCode === 0) {
+            const {item} = res.data;
+            yield  put(seaTasksActions.addTaskAC(action.todolistID, item))
+        } else {
+            seaHandleServer(res, yield  put)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, yield  put)
+    } finally {
+        yield  put(setSeaAppStatus('succesed'))
+        yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
+    }
+}
+
+export const addTask = (todolistID: string, title: string) => {
+    return {type: 'TASKS/ADD_TASK', todolistID, title}
 }
 
 export function* removeTaskWorkerSaga(action: ReturnType<typeof removeTask>) {
@@ -42,7 +68,54 @@ export const removeTask = (todolistID: string, taskID: string) => {
     return {type: 'TASKS/REMOVE_TASK', todolistID, taskID}
 }
 
-export function* tasksWatcherSaga(){
+export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>, getState: () => reducerType) {
+    const actualTaskParams = getState().tasks[action.todolistID].filter(f => f.id === action.taskID)[0]
+    if (!actualTaskParams) return
+    const apiModel: UpdateTaskType = {
+        title: actualTaskParams.title,
+        description: actualTaskParams.description,
+        status: actualTaskParams.status,
+        priority: actualTaskParams.priority,
+        startDate: actualTaskParams.startDate,
+        deadline: actualTaskParams.deadline,
+        ...action.model
+    }
+    yield  put(setSeaAppStatus('loading'))
+    yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'loading'))
+    yield  put(seaTasksActions.loadTask(action.todolistID, action.taskID, true))
+
+    try {
+        yield  call(tasksAPI.removeTask, action.todolistID, action.taskID)
+        yield  put(seaTasksActions.removeTaskAC(action.todolistID, action.taskID))
+
+        let res: AxiosResponse<SeaResponseType<{
+            item: ItemType
+        }>> = yield  call(tasksAPI.changeTask, action.todolistID, action.taskID, apiModel)
+        const {item} = res.data.data
+        if (res.data.resultCode === 0) {
+            yield  put(seaTasksActions.changeTaskAC(action.todolistID, action.taskID, item))
+            yield  put(seaTasksActions.loadTask(action.todolistID, action.taskID, false))
+        } else {
+            seaHandleServer(res.data, yield  put)
+            yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'failed'))
+            yield  put(getTasks(action.todolistID))
+
+        }
+    } catch (e) {
+        seaHandleNetwork(e, yield  put)
+    } finally {
+        yield  put(setSeaAppStatus('succesed'))
+        yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
+    }
+}
+
+export const changeTask = (todolistID: string, taskID: string, model: UpdateSeaTaskType) => {
+    return {type: 'TASKS/REMOVE_TASK', todolistID, taskID, model}
+}
+
+
+export function* tasksWatcherSaga() {
     yield takeEvery('TASKS/GET_TASKS', getTasksWorkerSaga)
+    yield takeEvery('TASKS/ADD_TASK', addTaskWorkerSaga)
     yield takeEvery('TASKS/REMOVE_TASK', removeTaskWorkerSaga)
 }
