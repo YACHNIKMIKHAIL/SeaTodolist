@@ -81,23 +81,23 @@ export const seaTodolistActions = {
 //         dispatch(setSeaAppStatus('succesed'))
 //     }
 // }
-export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkType => async (dispatch) => {
-    dispatch(setSeaAppStatus('loading'))
-    dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
-    try {
-        let sea = await todolistAPI.changeTodolists(todolistID, title)
-        if (sea.data.resultCode === 0) {
-            dispatch(seaTodolistActions.changeTodolistTitleAC(todolistID, title))
-        } else {
-            seaHandleServer(sea.data, dispatch)
-        }
-    } catch (e) {
-        seaHandleNetwork(e, dispatch)
-    } finally {
-        dispatch(setSeaAppStatus('succesed'))
-        dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
-    }
-}
+// export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkType => async (dispatch) => {
+//     dispatch(setSeaAppStatus('loading'))
+//     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
+//     try {
+//         let sea = await todolistAPI.changeTodolists(todolistID, title)
+//         if (sea.data.resultCode === 0) {
+//             dispatch(seaTodolistActions.changeTodolistTitleAC(todolistID, title))
+//         } else {
+//             seaHandleServer(sea.data, dispatch)
+//         }
+//     } catch (e) {
+//         seaHandleNetwork(e, dispatch)
+//     } finally {
+//         dispatch(setSeaAppStatus('succesed'))
+//         dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
+//     }
+// }
 
 export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string | null): any => async (dispatch:any) => {
     dispatch(setSeaAppStatus('loading'))
