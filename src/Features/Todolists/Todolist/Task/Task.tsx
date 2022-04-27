@@ -4,7 +4,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
-import {useSeaSelector} from "../../../../App/store";
+import {store, useSeaSelector} from "../../../../App/store";
 import {changeTask as changeTaskSagaActivator, removeTask as removeTaskSagaActivator} from "../Sagas/TasksSagas";
 import {ItemType, TaskStatuses} from "../../../../Api/SeaApi";
 import styled from "styled-components";
@@ -22,13 +22,15 @@ const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
         const dispatch = useDispatch()
 
         const removeTask = useCallback(() => {
+            debugger
             dispatch(removeTaskSagaActivator(todolistID, id))
         }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((num: boolean) => {
-            dispatch(changeTaskSagaActivator(todolistID, id, {status: num ? TaskStatuses.Complited : TaskStatuses.New}))
+            debugger
+            dispatch(changeTaskSagaActivator(todolistID, id, {status: num ? TaskStatuses.Complited : TaskStatuses.New},store.getState))
         }, [dispatch, todolistID, id])
         const changeTaskTitle = useCallback((title: string) => {
-            dispatch(changeTaskSagaActivator(todolistID, actualTask.id, {title}))
+            dispatch(changeTaskSagaActivator(todolistID, actualTask.id, {title},store.getState))
         }, [dispatch, todolistID, actualTask.id])
 
         return (

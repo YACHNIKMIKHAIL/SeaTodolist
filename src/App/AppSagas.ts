@@ -4,7 +4,11 @@ import {seaLoginActions} from "../Features/SeaLogin/SeaAuthReducer";
 import {seaHandleNetwork, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
 import {setSeaAppInitialized, setSeaAppStatus} from "./SeaAppReducer";
 
-export function* initializedSeaAppWorkerSaga(): Generator<any, any, any> {
+// type GeneratorYieldType =
+//     PutEffect<{ readonly type: loginActions; readonly value: boolean}>
+// |CallEffect<SagaReturnType<() => Promise<AxiosResponse<SeaResponseType<{id: number, login: string, email: string}>>>>>
+
+export function* initializedSeaAppWorkerSaga(): Generator<unknown, void, any> {
     put(setSeaAppStatus('loading'))
     try {
         let sea = yield call(seaAuthAPI.me)
@@ -14,7 +18,7 @@ export function* initializedSeaAppWorkerSaga(): Generator<any, any, any> {
             yield put(setSeaAppStatus('succesed'))
         } else {
             yield put(seaLoginActions.isLoginInAC(false))
-            yield  put(setSeaAppInitialized(true))
+            yield put(setSeaAppInitialized(true))
             seaHandleServer(sea.data, yield put)
         }
     } catch (e) {
@@ -28,5 +32,4 @@ export const initializedSeaApp = () => {
 
 export function* appWatcherSaga(){
     yield takeEvery('APP/INITIALIZE_APP', initializedSeaAppWorkerSaga)
-
 }

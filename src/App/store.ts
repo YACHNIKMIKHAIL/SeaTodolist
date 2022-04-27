@@ -8,6 +8,7 @@ import {TypedUseSelectorHook, useSelector} from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import {tasksWatcherSaga} from "../Features/Todolists/Todolist/Sagas/TasksSagas";
 import {appWatcherSaga} from "./AppSagas";
+import { all } from "redux-saga/effects";
 
 const reducer = combineReducers({
     todolists: todolistReducer,
@@ -26,10 +27,10 @@ export type seaActionsType = seaTasksActionsType | seaTodolistActionsType | seaA
 sagaMiddleware.run(rootWatcher)
 
 function* rootWatcher() {
-    debugger
-    yield appWatcherSaga()
-    yield tasksWatcherSaga()
-
+    yield all([
+        appWatcherSaga(),
+        tasksWatcherSaga()
+    ])
 }
 
 
