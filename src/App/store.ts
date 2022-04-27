@@ -8,7 +8,8 @@ import {TypedUseSelectorHook, useSelector} from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import {tasksWatcherSaga} from "../Features/Todolists/Todolist/Sagas/TasksSagas";
 import {appWatcherSaga} from "./AppSagas";
-import { all } from "redux-saga/effects";
+import {all} from "redux-saga/effects";
+import {todolistWatcherSaga} from "../Features/Todolists/Todolist/Sagas/TodolistsSagas";
 
 const reducer = combineReducers({
     todolists: todolistReducer,
@@ -29,7 +30,8 @@ sagaMiddleware.run(rootWatcher)
 function* rootWatcher() {
     yield all([
         appWatcherSaga(),
-        tasksWatcherSaga()
+        tasksWatcherSaga(),
+        todolistWatcherSaga()
     ])
 }
 

@@ -5,7 +5,8 @@ import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../App/store";
 import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
 import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
-import {getTodolistsTC, postTodolistsTC, reorderTodolistsTC} from "./Todolist/Actions/TodolistsActions";
+import {postTodolistsTC, reorderTodolistsTC} from "./Todolist/Actions/TodolistsActions";
+import {getTodolists as getTodolistsSagaActivator} from "./Todolist/Sagas/TodolistsSagas";
 import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";
@@ -24,7 +25,7 @@ const SeaMain = () => {
         }, [dispatch])
 
         useEffect(() => {
-            dispatch(getTodolistsTC())
+            dispatch(getTodolistsSagaActivator())
         }, [dispatch])
 
         if (!isLoggedInSea) {
