@@ -5,8 +5,8 @@ import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../App/store";
 import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
 import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
-import {postTodolistsTC, reorderTodolistsTC} from "./Todolist/Actions/TodolistsActions";
-import {getTodolists as getTodolistsSagaActivator} from "./Todolist/Sagas/TodolistsSagas";
+import { reorderTodolistsTC} from "./Todolist/Actions/TodolistsActions";
+import {getTodolists as getTodolistsSagaActivator, postTodolists as postTodolistsSagaActivator} from "./Todolist/Sagas/TodolistsSagas";
 import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";
@@ -21,7 +21,7 @@ const SeaMain = () => {
         const [todolistBackground, setTodolistBackground] = useState<string>('#8AA8D2')
 
         const addTodolist = useCallback((newTitle: string) => {
-            dispatch(postTodolistsTC(newTitle))
+            dispatch(postTodolistsSagaActivator(newTitle))
         }, [dispatch])
 
         useEffect(() => {
