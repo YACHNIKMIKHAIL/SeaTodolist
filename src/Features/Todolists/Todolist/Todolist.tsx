@@ -5,13 +5,15 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
-import {changeTodolistsTC, removeTodolistsTC, seaTodolistActions} from "./Actions/TodolistsActions";
+import {changeTodolistsTC, seaTodolistActions} from "./Actions/TodolistsActions";
+import {removeTodolists as removeTodolistsSagaActivator} from "./Sagas/TodolistsSagas";
 import Task from "./Task/Task";
 import {addTask as addTaskSagaActivator, getTasks, reorderTask as reorderTaskSagaActivator} from "./Sagas/TasksSagas";
 import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {useSeaSelector} from "../../../App/store";
+import {removeTodolists} from "./Sagas/TodolistsSagas";
 
 
 type PropsType = {
@@ -32,7 +34,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
             dispatch(seaTodolistActions.changeTodolistFilterAC(todolist.id, filter))
         }
         const removeTodolist = useCallback(() => {
-            dispatch(removeTodolistsTC(todolist.id))
+            dispatch(removeTodolistsSagaActivator(todolist.id))
         }, [dispatch, todolist.id])
         const addTask = useCallback((newTitle: string) => {
             dispatch(addTaskSagaActivator(todolist.id, newTitle))

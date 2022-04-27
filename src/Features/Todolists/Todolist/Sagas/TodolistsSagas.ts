@@ -1,5 +1,4 @@
 import {call, put, takeEvery} from "redux-saga/effects";
-import {getTasksWorkerSaga} from "./TasksSagas";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {ApiTodolistType, PostTodolistType, todolistAPI} from "../../../../Api/SeaApi";
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
@@ -44,7 +43,26 @@ export const postTodolists = (title: string) => {
     return {type: 'TODOLISTS/POST_TODOLISTS', title}
 }
 
+export function* removeTodolistsWorkerSaga(action: ReturnType<typeof removeTodolists>) {
+    yield  put(setSeaAppStatus('loading'))
+    yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'loading'))
+    try {
+        yield  call(todolistAPI.deleteTodolists, action.todolistID)
+        yield  put(seaTodolistActions.removeTodolistAC(action.todolistID))
+    } catch (e) {
+        seaHandleNetwork(e, yield  put)
+    } finally {
+        yield  put(setSeaAppStatus('succesed'))
+    }
+}
+
+export const removeTodolists = (todolistID: string) => {
+    debugger
+    return {type: 'TODOLISTS/REMOVE_TODOLISTS', todolistID}
+}
+
 export function* todolistWatcherSaga() {
     yield takeEvery('TODOLISTS/GET_TODOLISTS', getTodolistsWorkerSaga)
     yield takeEvery('TODOLISTS/POST_TODOLISTS', postTodolistsWorkerSaga)
+    yield takeEvery('TODOLISTS/REMOVE_TODOLISTS', removeTodolistsWorkerSaga)
 }

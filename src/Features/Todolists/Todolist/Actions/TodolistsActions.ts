@@ -69,18 +69,18 @@ export const seaTodolistActions = {
 //     }
 // }
 
-export const removeTodolistsTC = (todolistID: string): SeaThunkType => async (dispatch) => {
-    dispatch(setSeaAppStatus('loading'))
-    dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
-    try {
-        await todolistAPI.deleteTodolists(todolistID)
-        dispatch(seaTodolistActions.removeTodolistAC(todolistID))
-    } catch (e) {
-        seaHandleNetwork(e, dispatch)
-    } finally {
-        dispatch(setSeaAppStatus('succesed'))
-    }
-}
+// export const removeTodolistsTC = (todolistID: string): SeaThunkType => async (dispatch) => {
+//     dispatch(setSeaAppStatus('loading'))
+//     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
+//     try {
+//         await todolistAPI.deleteTodolists(todolistID)
+//         dispatch(seaTodolistActions.removeTodolistAC(todolistID))
+//     } catch (e) {
+//         seaHandleNetwork(e, dispatch)
+//     } finally {
+//         dispatch(setSeaAppStatus('succesed'))
+//     }
+// }
 export const changeTodolistsTC = (todolistID: string, title: string): SeaThunkType => async (dispatch) => {
     dispatch(setSeaAppStatus('loading'))
     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
