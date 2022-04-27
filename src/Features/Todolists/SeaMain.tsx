@@ -5,8 +5,11 @@ import {useDispatch} from "react-redux";
 import {useSeaSelector} from "../../App/store";
 import {SeaTodolistsType} from "./Todolist/Reducers/TodolistReducer";
 import {TasksStateType} from "./Todolist/Reducers/TaskReducer";
-import { reorderTodolistsTC} from "./Todolist/Actions/TodolistsActions";
-import {getTodolists as getTodolistsSagaActivator, postTodolists as postTodolistsSagaActivator} from "./Todolist/Sagas/TodolistsSagas";
+import {
+    getTodolists as getTodolistsSagaActivator,
+    postTodolists as postTodolistsSagaActivator,
+    rearderTodolists as reorderTodolistsSagaActivator
+} from "./Todolist/Sagas/TodolistsSagas";
 import AddForm from "../../Components/AddForm";
 import {Navigate} from 'react-router-dom';
 import styled from "styled-components";
@@ -43,7 +46,7 @@ const SeaMain = () => {
         }
         const onDragTodolistEndHandler = (e: React.DragEvent<HTMLDivElement>, todolist: SeaTodolistsType) => {
             e.stopPropagation()
-            dispatch(reorderTodolistsTC(todolist.id, dropTodolistId))
+            dispatch(reorderTodolistsSagaActivator(todolist.id, dropTodolistId))
         }
         const onDragTodolistOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
             e.stopPropagation()

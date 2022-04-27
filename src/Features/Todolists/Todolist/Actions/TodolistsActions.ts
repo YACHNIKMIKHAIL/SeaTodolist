@@ -1,10 +1,6 @@
 import {FilterType} from "../Reducers/TodolistReducer";
-import {ApiTodolistType, todolistAPI} from "../../../../Api/SeaApi";
-import {SeaThunkType} from "../../../../App/store";
-import {seaStatusTypes, setSeaAppStatus} from "../../../../App/SeaAppReducer";
-import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
-import {getTasks} from "../Sagas/TasksSagas";
-import {getTodolists} from "../Sagas/TodolistsSagas";
+import {ApiTodolistType} from "../../../../Api/SeaApi";
+import {seaStatusTypes} from "../../../../App/SeaAppReducer";
 
 export enum TodolistActions {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
@@ -99,22 +95,22 @@ export const seaTodolistActions = {
 //     }
 // }
 
-export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string | null): any => async (dispatch:any) => {
-    dispatch(setSeaAppStatus('loading'))
-    dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
-    console.log('reorderTodolistsTC')
-    try {
-        let sea = await todolistAPI.reorderTodolists(todolistID, putAfterItemId)
-        if (sea.data.resultCode === 0) {
-            dispatch(getTodolists())
-            dispatch(getTasks(todolistID))
-        } else {
-            seaHandleServer(sea.data, dispatch)
-        }
-    } catch (e) {
-        seaHandleNetwork(e, dispatch)
-    } finally {
-        dispatch(setSeaAppStatus('succesed'))
-        dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
-    }
-}
+// export const reorderTodolistsTC = (todolistID: string, putAfterItemId: string | null): any => async (dispatch:any) => {
+//     dispatch(setSeaAppStatus('loading'))
+//     dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'loading'))
+//     console.log('reorderTodolistsTC')
+//     try {
+//         let sea = await todolistAPI.reorderTodolists(todolistID, putAfterItemId)
+//         if (sea.data.resultCode === 0) {
+//             dispatch(getTodolists())
+//             dispatch(getTasks(todolistID))
+//         } else {
+//             seaHandleServer(sea.data, dispatch)
+//         }
+//     } catch (e) {
+//         seaHandleNetwork(e, dispatch)
+//     } finally {
+//         dispatch(setSeaAppStatus('succesed'))
+//         dispatch(seaTodolistActions.changeTodolistStatusAC(todolistID, 'succesed'))
+//     }
+// }

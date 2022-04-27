@@ -4,8 +4,9 @@ import {ApiTodolistType, PostTodolistType, SeaResponseType, todolistAPI} from ".
 import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
 import {seaTodolistActions} from "../Actions/TodolistsActions";
 import {AxiosResponse} from "axios";
+import {getTasks} from "./TasksSagas";
 
-export function* getTodolistsWorkerSaga(action: ReturnType<typeof getTodolists>) {
+export function* getTodolistsWorkerSaga() {
     yield  put(setSeaAppStatus('loading'))
     try {
         let sea: Array<ApiTodolistType> = yield  call(todolistAPI.getTodolists)
@@ -80,10 +81,33 @@ export function* changeTodolistsWorkerSaga(action: ReturnType<typeof changeTodol
 
     }
 }
-
 export const changeTodolists = (todolistID: string, title: string) => {
     debugger
     return {type: 'TODOLISTS/CHANGE_TODOLISTS', todolistID, title}
+}
+
+export function* rearderTodolistsWorkerSaga(action: ReturnType<typeof rearderTodolists>) {
+    yield  put(setSeaAppStatus('loading'))
+    yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'loading'))
+    try {
+        let sea: AxiosResponse<SeaResponseType> = yield  call(todolistAPI.reorderTodolists,action.todolistID, action.putAfterItemId)
+        if (sea.data.resultCode === 0) {
+            yield  put(getTodolists())
+            yield  put(getTasks(action.todolistID))
+        } else {
+            seaHandleServer(sea.data, yield  put)
+        }
+    } catch (e) {
+        seaHandleNetwork(e, yield  put)
+    } finally {
+        yield  put(setSeaAppStatus('succesed'))
+        yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
+
+    }
+}
+export const rearderTodolists = (todolistID: string, putAfterItemId: string | null) => {
+    debugger
+    return {type: 'TODOLISTS/REORDER_TODOLISTS', todolistID, putAfterItemId}
 }
 
 export function* todolistWatcherSaga() {
@@ -91,4 +115,5 @@ export function* todolistWatcherSaga() {
     yield takeEvery('TODOLISTS/POST_TODOLISTS', postTodolistsWorkerSaga)
     yield takeEvery('TODOLISTS/REMOVE_TODOLISTS', removeTodolistsWorkerSaga)
     yield takeEvery('TODOLISTS/CHANGE_TODOLISTS', changeTodolistsWorkerSaga)
+    yield takeEvery('TODOLISTS/REORDER_TODOLISTS', rearderTodolistsWorkerSaga)
 }
