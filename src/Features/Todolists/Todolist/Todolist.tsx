@@ -6,15 +6,16 @@ import IconButton from "@material-ui/core/IconButton";
 import Delete from "@material-ui/icons/Delete";
 import {useDispatch} from "react-redux";
 import {seaTodolistActions} from "./Actions/TodolistsActions";
-import {changeTodolists as changeTodolistsSagaActivator} from "./Sagas/TodolistsSagas";
-import {changeTodolists, removeTodolists as removeTodolistsSagaActivator} from "./Sagas/TodolistsSagas";
+import {
+    changeTodolists as changeTodolistsSagaActivator,
+    removeTodolists as removeTodolistsSagaActivator
+} from "./Sagas/TodolistsSagas";
 import Task from "./Task/Task";
 import {addTask as addTaskSagaActivator, getTasks, reorderTask as reorderTaskSagaActivator} from "./Sagas/TasksSagas";
 import {FilterType, SeaTodolistsType} from "./Reducers/TodolistReducer";
 import {ItemType, TaskStatuses} from "../../../Api/SeaApi";
 import styled from "styled-components";
 import {useSeaSelector} from "../../../App/store";
-import {removeTodolists} from "./Sagas/TodolistsSagas";
 
 
 type PropsType = {

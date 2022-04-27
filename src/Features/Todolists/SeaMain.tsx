@@ -100,7 +100,6 @@ export default SeaMain;
 
 const TodolistCase = styled.div<{ $backgroundColor: string, $borderColor: string }>`
   padding: 10px;
-  //background-color: #8AA8D2;
   border: 5px solid ${props => props.$borderColor};
   background-color: ${props => props.$backgroundColor};
   opacity: 0.95;

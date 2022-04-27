@@ -4,10 +4,6 @@ import {seaLoginActions} from "../Features/SeaLogin/SeaAuthReducer";
 import {seaHandleNetwork, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
 import {setSeaAppInitialized, setSeaAppStatus} from "./SeaAppReducer";
 
-// type GeneratorYieldType =
-//     PutEffect<{ readonly type: loginActions; readonly value: boolean}>
-// |CallEffect<SagaReturnType<() => Promise<AxiosResponse<SeaResponseType<{id: number, login: string, email: string}>>>>>
-
 export function* initializedSeaAppWorkerSaga(): Generator<unknown, void, any> {
     put(setSeaAppStatus('loading'))
     try {

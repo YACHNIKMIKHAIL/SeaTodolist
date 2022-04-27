@@ -22,11 +22,9 @@ const Task = React.memo(({todolistID, id, taskBackground}: TaskPropsType) => {
         const dispatch = useDispatch()
 
         const removeTask = useCallback(() => {
-            debugger
             dispatch(removeTaskSagaActivator(todolistID, id))
         }, [dispatch, todolistID, id])
         const changeTaskStatus = useCallback((num: boolean) => {
-            debugger
             dispatch(changeTaskSagaActivator(todolistID, id, {status: num ? TaskStatuses.Complited : TaskStatuses.New},store.getState))
         }, [dispatch, todolistID, id])
         const changeTaskTitle = useCallback((title: string) => {
@@ -73,5 +71,4 @@ export const TaskCase = styled.div<{ $opacity: string, $color: string, $fontWeig
   padding: 5px;
   background-color: ${props => props.$backgroundColor};
   border-radius: 10px;
-  //margin: 10px;
 `

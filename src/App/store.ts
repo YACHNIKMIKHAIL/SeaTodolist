@@ -45,4 +45,3 @@ export type SeaThunkType<ReturnType = void> = ThunkAction<ReturnType,
 window.store = store
 
 
-// then run the saga

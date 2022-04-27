@@ -87,7 +87,6 @@ export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>)
     }
 }
 export const changeTask = (todolistID: string, taskID: string, model: UpdateSeaTaskType, getState: () => reducerType) => {
-    debugger
     return {type: 'TASKS/CHANGE_TASK', todolistID, taskID, model,getState}
 }
 

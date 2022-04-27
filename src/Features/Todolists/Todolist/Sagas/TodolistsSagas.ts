@@ -19,7 +19,6 @@ export function* getTodolistsWorkerSaga() {
 }
 
 export const getTodolists = () => {
-    debugger
     return {type: 'TODOLISTS/GET_TODOLISTS'}
 }
 
@@ -41,7 +40,6 @@ export function* postTodolistsWorkerSaga(action: ReturnType<typeof postTodolists
 }
 
 export const postTodolists = (title: string) => {
-    debugger
     return {type: 'TODOLISTS/POST_TODOLISTS', title}
 }
 
@@ -59,7 +57,6 @@ export function* removeTodolistsWorkerSaga(action: ReturnType<typeof removeTodol
 }
 
 export const removeTodolists = (todolistID: string) => {
-    debugger
     return {type: 'TODOLISTS/REMOVE_TODOLISTS', todolistID}
 }
 
@@ -82,7 +79,6 @@ export function* changeTodolistsWorkerSaga(action: ReturnType<typeof changeTodol
     }
 }
 export const changeTodolists = (todolistID: string, title: string) => {
-    debugger
     return {type: 'TODOLISTS/CHANGE_TODOLISTS', todolistID, title}
 }
 
@@ -106,7 +102,6 @@ export function* rearderTodolistsWorkerSaga(action: ReturnType<typeof rearderTod
     }
 }
 export const rearderTodolists = (todolistID: string, putAfterItemId: string | null) => {
-    debugger
     return {type: 'TODOLISTS/REORDER_TODOLISTS', todolistID, putAfterItemId}
 }
 
