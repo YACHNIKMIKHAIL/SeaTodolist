@@ -139,14 +139,16 @@ export const seaAuthAPI = {
 
     },
     async me() {
-        return await instance.get<SeaResponseType<{
-            id: number,
-            login: string,
-            email: string
-        }>>(`/auth/me`)
+        return await instance.get<MeResponseType>(`/auth/me`)
 
     },
     async logOut() {
         return await instance.delete<SeaResponseType>(`/auth/login`)
     }
 }
+
+export type MeResponseType = SeaResponseType<{
+    id: number,
+    login: string,
+    email: string
+}>
