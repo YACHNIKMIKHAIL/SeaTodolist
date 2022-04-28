@@ -33,6 +33,11 @@ function* rootWatcher() {
         tasksWatcherSaga(),
         todolistWatcherSaga()
     ])
+    //or II variant
+    // yield* appWatcherSaga(),
+    //     yield* tasksWatcherSaga(),
+    //     yield* todolistWatcherSaga()
+
 }
 
 

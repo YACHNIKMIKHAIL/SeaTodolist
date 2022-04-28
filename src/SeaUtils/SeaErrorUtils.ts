@@ -19,7 +19,7 @@ export function* seaHandleServerSaga<T>(data: SeaResponseType<T>) {
     } else {
         yield  put(setSeaAppError('Some sea trouble was happend!'))
     }
-    return  put(setSeaAppStatus('failed'))
+    yield  put(setSeaAppStatus('failed'))
 }
 
 export const seaHandleNetwork = (err: any, dispatch: Dispatch<seaAppActionsType>) => {
@@ -29,5 +29,5 @@ export const seaHandleNetwork = (err: any, dispatch: Dispatch<seaAppActionsType>
 
 export function* seaHandleNetworkSaga  (err: any)  {
     yield  put(setSeaAppError(err.message ? err.message : 'Some sea trouble was happend!'))
-    return  put(setSeaAppStatus('failed'))
+    yield  put(setSeaAppStatus('failed'))
 }

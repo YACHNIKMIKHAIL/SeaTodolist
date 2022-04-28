@@ -35,10 +35,10 @@ export function* addTaskWorkerSaga(action: ReturnType<typeof addTask>) {
             const {item} = res.data;
             yield  put(seaTasksActions.addTaskAC(action.todolistID, item))
         } else {
-            yield  seaHandleServerSaga(res)
+            yield*  seaHandleServerSaga(res)
         }
     } catch (e) {
-        yield seaHandleNetworkSaga(e)
+        yield* seaHandleNetworkSaga(e)
     } finally {
         yield  put(setSeaAppStatus('succesed'))
         yield put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
@@ -74,13 +74,13 @@ export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>) {
             yield  put(seaTasksActions.changeTaskAC(action.todolistID, action.taskID, item))
             yield  put(seaTasksActions.loadTask(action.todolistID, action.taskID, false))
         } else {
-            yield seaHandleServerSaga(res.data)
+            yield* seaHandleServerSaga(res.data)
             yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'failed'))
             yield  put(getTasks(action.todolistID))
 
         }
     } catch (e) {
-        yield seaHandleNetworkSaga(e)
+        yield* seaHandleNetworkSaga(e)
     } finally {
         yield  put(setSeaAppStatus('succesed'))
         yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))

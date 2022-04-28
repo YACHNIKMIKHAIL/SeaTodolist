@@ -1,12 +1,11 @@
 import {call, put} from "redux-saga/effects";
-import {seaAppActionsType, setSeaAppStatus} from "../../../../App/SeaAppReducer";
+import {seaAppActionsType, setSeaAppError, setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {addTaskWorkerSaga, getTasksWorkerSaga} from "./TasksSagas";
 import {seaTodolistActions} from "../Actions/TodolistsActions";
 import {ApiTaskType, ItemType, TaskPriorities, tasksAPI, TaskStatuses} from "../../../../Api/SeaApi";
 import {seaTasksActions} from "../Actions/TasksActions";
 import {v1} from "uuid";
 import {Dispatch} from "redux";
-import {seaHandleNetworkSaga} from "../../../../SeaUtils/SeaErrorUtils";
 
 let fakeResponse: { data: { item: ItemType; }; messages: never[]; fieldsErrors: never[]; resultCode: number; }
 beforeEach(() => {
@@ -52,7 +51,6 @@ test('getTasksWorkerSaga success', () => {
 })
 
 
-
 const actionII = {type: 'TASKS/ADD_TASK', todolistID: '123', title: 'string'}
 test('addTaskWorkerSaga success', () => {
     const generator = addTaskWorkerSaga(actionII)
@@ -70,12 +68,7 @@ test('addTaskWorkerSaga error', () => {
     const generator = addTaskWorkerSaga(actionII)
     expect(generator.next().value).toEqual(put(setSeaAppStatus('loading')))
     expect(generator.next().value).toEqual(call(tasksAPI.addTask, actionII.todolistID, actionII.title))
-    fakeResponse.resultCode=1
-
-    expect(generator.next(fakeResponse as any).value).toEqual(seaHandleNetworkSaga(fakeResponse))
-    expect(generator.next().value).toEqual(put(setSeaAppStatus('succesed')))
-    let next = generator.next()
-    expect(next.value).toEqual(put(seaTodolistActions.changeTodolistStatusAC(actionII.todolistID, 'succesed')))
-    expect(next.done).toBeFalsy()
+    expect(generator.throw({message: 'some error'}).value).toEqual(put(setSeaAppError('some error')))
+    expect(generator.next().value).toEqual(put(setSeaAppStatus('failed')))
 })
 
