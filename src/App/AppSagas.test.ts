@@ -20,24 +20,14 @@ beforeEach(() => {
 
 test('initializedSeaAppWorkerSaga login success', () => {
     const generator = initializedSeaAppWorkerSaga()
-
-    let result = generator.next()
-    expect(result.value).toEqual(call(seaAuthAPI.me))
-
-    result = generator.next(meResponse)
-    expect(result.value).toEqual(put(seaLoginActions.isLoginInAC(true)))
-
-    result = generator.next()
-    expect(result.value).toEqual( put(setSeaAppInitialized(true)))
+    expect(generator.next().value).toEqual(call(seaAuthAPI.me))
+    expect(generator.next(meResponse).value).toEqual(put(seaLoginActions.isLoginInAC(false)))
+    expect(generator.next().value).toEqual( put(setSeaAppInitialized(true)))
 })
 
 test('initializedSeaAppWorkerSaga login unsuccess', () => {
     const generator = initializedSeaAppWorkerSaga()
-
-    let result = generator.next()
-    expect(result.value).toEqual(call(seaAuthAPI.me))
-
+    expect(generator.next().value).toEqual(call(seaAuthAPI.me))
     meResponse.resultCode = 1
-    result = generator.next(meResponse)
-    expect(result.value).toEqual(put(seaLoginActions.isLoginInAC(false)))
+    expect(generator.next(meResponse).value).toEqual(put(seaLoginActions.isLoginInAC(false)))
 })

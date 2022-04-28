@@ -17,7 +17,7 @@ export function* getTasksWorkerSaga(action: ReturnType<typeof getTasks>) {
         seaHandleNetwork(e, yield  put)
     } finally {
         yield  put(setSeaAppStatus('succesed'))
-        yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
+        return  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
     }
 }
 
