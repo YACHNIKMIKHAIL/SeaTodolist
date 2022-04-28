@@ -1,7 +1,7 @@
 import {call, put, takeEvery} from "redux-saga/effects";
 import {seaAuthAPI} from "../Api/SeaApi";
 import {seaLoginActions} from "../Features/SeaLogin/SeaAuthReducer";
-import {seaHandleNetwork, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
+import {seaHandleNetworkSaga, seaHandleServer} from "../SeaUtils/SeaErrorUtils";
 import {setSeaAppInitialized, setSeaAppStatus} from "./SeaAppReducer";
 
 export function* initializedSeaAppWorkerSaga(): Generator<unknown, void, any> {
@@ -18,7 +18,7 @@ export function* initializedSeaAppWorkerSaga(): Generator<unknown, void, any> {
             seaHandleServer(sea.data, yield put)
         }
     } catch (e) {
-        seaHandleNetwork(e, yield put)
+        yield seaHandleNetworkSaga(e)
     }
 }
 

@@ -2,7 +2,7 @@ import {call, put, takeEvery} from "redux-saga/effects";
 import {setSeaAppStatus} from "../../../../App/SeaAppReducer";
 import {seaTodolistActions} from "../Actions/TodolistsActions";
 import {ApiTaskType, ItemType, SeaResponseType, tasksAPI, UpdateTaskType} from "../../../../Api/SeaApi";
-import {seaHandleNetwork, seaHandleServer} from "../../../../SeaUtils/SeaErrorUtils";
+import {seaHandleNetworkSaga, seaHandleServerSaga} from "../../../../SeaUtils/SeaErrorUtils";
 import {seaTasksActions, UpdateSeaTaskType} from "../Actions/TasksActions";
 import {reducerType} from "../../../../App/store";
 import {AxiosResponse} from "axios";
@@ -14,10 +14,10 @@ export function* getTasksWorkerSaga(action: ReturnType<typeof getTasks>) {
         let res: ApiTaskType = yield  call(tasksAPI.getTasks, action.todolistID)
         yield  put(seaTasksActions.setTasksFromServAC(action.todolistID, res.items))
     } catch (e) {
-        seaHandleNetwork(e, yield  put)
+        yield seaHandleNetworkSaga(e)
     } finally {
         yield  put(setSeaAppStatus('succesed'))
-        return  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
+        yield put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
     }
 }
 
@@ -35,21 +35,21 @@ export function* addTaskWorkerSaga(action: ReturnType<typeof addTask>) {
             const {item} = res.data;
             yield  put(seaTasksActions.addTaskAC(action.todolistID, item))
         } else {
-            seaHandleServer(res, yield  put)
+            yield  seaHandleServerSaga(res)
         }
     } catch (e) {
-        seaHandleNetwork(e, yield  put)
+        yield seaHandleNetworkSaga(e)
     } finally {
         yield  put(setSeaAppStatus('succesed'))
-        yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
+        yield put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
     }
 }
+
 export const addTask = (todolistID: string, title: string) => {
     return {type: 'TASKS/ADD_TASK', todolistID, title}
 }
 
-export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>)
-{
+export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>) {
     const actualTaskParams = action.getState().tasks[action.todolistID].filter(f => f.id === action.taskID)[0]
     if (!actualTaskParams) return
     const apiModel: UpdateTaskType = {
@@ -74,20 +74,21 @@ export function* changeTaskWorkerSaga(action: ReturnType<typeof changeTask>)
             yield  put(seaTasksActions.changeTaskAC(action.todolistID, action.taskID, item))
             yield  put(seaTasksActions.loadTask(action.todolistID, action.taskID, false))
         } else {
-            seaHandleServer(res.data, yield  put)
+            yield seaHandleServerSaga(res.data)
             yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'failed'))
             yield  put(getTasks(action.todolistID))
 
         }
     } catch (e) {
-        seaHandleNetwork(e, yield  put)
+        yield seaHandleNetworkSaga(e)
     } finally {
         yield  put(setSeaAppStatus('succesed'))
         yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
     }
 }
+
 export const changeTask = (todolistID: string, taskID: string, model: UpdateSeaTaskType, getState: () => reducerType) => {
-    return {type: 'TASKS/CHANGE_TASK', todolistID, taskID, model,getState}
+    return {type: 'TASKS/CHANGE_TASK', todolistID, taskID, model, getState}
 }
 
 
@@ -99,7 +100,7 @@ export function* removeTaskWorkerSaga(action: ReturnType<typeof removeTask>) {
         yield  call(tasksAPI.removeTask, action.todolistID, action.taskID)
         yield  put(seaTasksActions.removeTaskAC(action.todolistID, action.taskID))
     } catch (e) {
-        seaHandleNetwork(e, yield  put)
+        yield seaHandleNetworkSaga(e)
     } finally {
         yield  put(setSeaAppStatus('succesed'))
         yield  put(seaTodolistActions.changeTodolistStatusAC(action.todolistID, 'succesed'))
@@ -111,7 +112,6 @@ export const removeTask = (todolistID: string, taskID: string) => {
 }
 
 
-
 export function* reorderTaskWorkerSaga(action: ReturnType<typeof reorderTask>) {
     yield  put(setSeaAppStatus('loading'))
     yield  put(seaTasksActions.loadTask(action.todolistID, action.taskID, true))
@@ -120,10 +120,10 @@ export function* reorderTaskWorkerSaga(action: ReturnType<typeof reorderTask>) {
         if (res.data.resultCode === 0) {
             yield  put(getTasks(action.todolistID))
         } else {
-            seaHandleServer(res.data, yield  put)
+            yield seaHandleServerSaga(res.data)
         }
     } catch (e) {
-        seaHandleNetwork(e, yield  put)
+        yield seaHandleNetworkSaga(e)
     } finally {
         yield  put(setSeaAppStatus('succesed'))
     }
