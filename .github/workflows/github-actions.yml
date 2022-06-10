@@ -19,7 +19,7 @@ jobs:
       - name: install modules
         run: yarn install
       - name: build project
-        run: npm run build
+        run: CI=false yarn build
       - name: unit test
         run: yarn run test:unit
       - name: e2e test
