@@ -115,7 +115,7 @@ export const Todolist = React.memo(({todolist, todoTasks}: PropsType) => {
                 <h3><EditSpan title={todolist.title} callback={changeTodolistTitle}/></h3>
             </HCase>
             <AddForm addFn={addTaskX}/>
-            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
                 {tasksForRender.map((m, i) => {
                     return <div key={i}
                                 draggable
