@@ -51,7 +51,7 @@ export const App = () => {
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
-                        SEA_TODOLIST
+                        SEA_CI/CD_TODOLIST
                     </Typography>
                     {isLoginIn ? <Button color="inherit" style={{color: 'hotpink'}}
                                          onClick={logout}>sea_OUT</Button>
