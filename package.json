@@ -49,7 +49,7 @@
     "lint": "node ./scripts/eslint.js",
     "type:check": "node ./scripts/typecheck.js",
     "i18n:check": "node ./scripts/i18n-check.js",
-    "heroku_push": "git push heroku master"
+    "heroku_push": "git push heroku HEAD:master"
   },
   "eslintConfig": {
     "extends": [
