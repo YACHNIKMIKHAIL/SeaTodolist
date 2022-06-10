@@ -26,4 +26,6 @@ jobs:
         run: yarn run test:e2e
       - name: lint code
         run: yarn run lint
+      - name: heroku push
+        run: yarn run heroku_push
 
