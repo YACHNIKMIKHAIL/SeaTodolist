@@ -21,7 +21,7 @@ jobs:
       - name: build project
         run: CI=false yarn build
       - name: unit test
-        run: yarn run test:unit
+        run: yarn run test
       - name: e2e test
         run: yarn run test:e2e
       - name: lint code
