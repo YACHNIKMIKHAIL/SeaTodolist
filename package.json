@@ -45,8 +45,6 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-
-    "test:unit": "react-scripts test",
     "test:e2e": "node ./scripts/e2e.test.js",
     "lint": "node ./scripts/eslint.js",
     "type:check": "node ./scripts/typecheck.js",
